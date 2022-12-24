@@ -1,4 +1,4 @@
-import {createElement} from "../render.js";
+import {createElement} from '../render.js';
 function WaypointTemplate() {
   return `<li class="trip-events__item">
               <div class="event">

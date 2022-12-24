@@ -1,8 +1,10 @@
-function markup(where,element,className) {
+class CreateAndRender {
+  constructor(where,element,className) {
     where = document.querySelector(where);
     element = document.createElement(element);
-    element.className= className;
+    element.className = className;
     where.appendChild(element);
     return element;
+  }
 }
-export default markup;
+export default CreateAndRender;

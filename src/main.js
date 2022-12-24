@@ -1,5 +1,5 @@
-import render from "./render.js";
-import boardPresenter from "./presenter/BoardPresenterTemplate.js";
-const tripEventsTripSort = document.querySelector(".trip-events__trip-sort");
-const boardPresenter = new boardPresenter({boardContainer: tripEventsTripSort});
+import BoardPresenter from './presenter/board-presenter-template.js';
+import CreateAndRender from './view/create-And-Render.js';
+const tripFilters = new CreateAndRender('.trip-controls__filters','form','trip-filters');
+const boardPresenter = new BoardPresenter({boardContainer: tripFilters});
 boardPresenter.init();
