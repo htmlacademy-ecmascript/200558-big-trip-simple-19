@@ -1,5 +1,5 @@
 import {createElement} from '../render.js';
-function creatingWaypointTemplate() {
+function giveformWaypointTemplate() {
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
@@ -163,9 +163,9 @@ function creatingWaypointTemplate() {
               </form>
             </li>`;
 }
-class CreatingWaypoint {
+class formWaypoint {
   getTemplate() {
-    return creatingWaypointTemplate();
+    return giveformWaypointTemplate();
   }
 
   getElement() {
@@ -180,4 +180,4 @@ class CreatingWaypoint {
     this.element = null;
   }
 }
-export default CreatingWaypoint;
+export default formWaypoint;

@@ -1,5 +1,7 @@
-import BoardPresenter from './presenter/board-presenter-template.js';
-import CreateAndRender from './view/create-And-Render.js';
-const tripFilters = new CreateAndRender('.trip-controls__filters','form','trip-filters');
+import BoardPresenter from './presenter/board-waypoint.js';
+const containerFilters = document.querySelector('.trip-controls__filters');
+const tripFilters = document.createElement('form');
+tripFilters.className = 'trip-filters';
+containerFilters.appendChild(tripFilters);
 const boardPresenter = new BoardPresenter({boardContainer: tripFilters});
 boardPresenter.init();
