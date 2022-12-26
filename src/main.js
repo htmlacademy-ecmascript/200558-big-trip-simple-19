@@ -1,4 +1,4 @@
-import BoardPresenter from './presenter/board-waypoint.js';
+import BoardPresenter from './presenter/board-presenter.js';
 const containerFilters = document.querySelector('.trip-controls__filters');
 const tripFilters = document.createElement('form');
 tripFilters.className = 'trip-filters';

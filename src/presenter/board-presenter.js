@@ -1,10 +1,10 @@
 import {render} from '../render.js';
-import FiltersWapoint from '../view/filters-waypoint.js';
+import FiltersWapoint from '../view/filters.js';
 import FormWaypoint from '../view/form-waypoint.js';
 import Waypoint from '../view/waypoint.js';
-import SortingWaypoint from '../view/sorting-waypoint.js';
-import ContainerWaypoint from '../view/container-waypoint.js';
-class BoardWaypoint {
+import SortingWaypoint from '../view/sorting.js';
+import ContainerWaypoint from '../view/waypoint-container.js';
+class BoardPresenter {
   constructor({boardContainer}) {
     this.boardContainer = boardContainer;
     this.tripEvents = document.querySelector('.trip-events');
@@ -22,4 +22,4 @@ class BoardWaypoint {
     }
   }
 }
-export default BoardWaypoint;
+export default BoardPresenter;

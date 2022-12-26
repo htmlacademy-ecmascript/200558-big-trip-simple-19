@@ -1,10 +1,10 @@
 import {createElement} from '../render.js';
-function containerWaypointTemplate() {
+function getContainerWaypointTemplate() {
   return '<ul class="trip-events__list"></ul>';
 }
-class ContainerWaypoint {
+class WaypointContainer {
   getTemplate() {
-    return containerWaypointTemplate();
+    return getContainerWaypointTemplate();
   }
 
   getElement() {
@@ -19,4 +19,4 @@ class ContainerWaypoint {
     this.element = null;
   }
 }
-export default ContainerWaypoint;
+export default WaypointContainer;

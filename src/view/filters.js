@@ -1,5 +1,5 @@
 import {createElement} from '../render.js';
-function giveFiltersWaypointTemplate() {
+function getFiltersTemplate() {
   return `<form class="trip-filters" action="#" method="get">
                 <div class="trip-filters__filter">
                   <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked="">
@@ -14,9 +14,9 @@ function giveFiltersWaypointTemplate() {
                 <button class="visually-hidden" type="submit">Accept filter</button>
               </form>`;
 }
-class FiltersWaypoint {
+class Filters {
   getTemplate() {
-    return giveFiltersWaypointTemplate();
+    return getFiltersTemplate();
   }
 
   getElement() {
@@ -31,4 +31,4 @@ class FiltersWaypoint {
     this.element = null;
   }
 }
-export default FiltersWaypoint;
+export default Filters;

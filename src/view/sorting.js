@@ -1,5 +1,5 @@
 import {createElement} from '../render.js';
-function giveSortingWaypointTemplate() {
+function getSortingTemplate() {
   return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
             <div class="trip-sort__item  trip-sort__item--day">
               <input id="sort-day" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-day" checked="">
@@ -27,9 +27,9 @@ function giveSortingWaypointTemplate() {
             </div>
           </form>`;
 }
-class SortingWaypoint {
+class Sorting {
   getTemplate() {
-    return giveSortingWaypointTemplate();
+    return getSortingTemplate();
   }
 
   getElement() {
@@ -43,4 +43,4 @@ class SortingWaypoint {
     this.element = null;
   }
 }
-export default SortingWaypoint;
+export default Sorting;
