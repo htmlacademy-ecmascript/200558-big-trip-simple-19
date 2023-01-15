@@ -1,4 +1,4 @@
-let data = [
+const data = [
   {
     type: null,
     offers:[
@@ -174,12 +174,12 @@ let data = [
       },
       {
         id: null,
-        titlnull,
+        title: null,
         price: null
       }
     ]
   },
-]; 
+];
 const destinations = [
   {
     id: 1,
@@ -195,7 +195,7 @@ const destinations = [
   {
     id: 2,
     description: null,
-    name: null,   
+    name: null,
     pictures: [
       {
         src: null,
@@ -221,17 +221,8 @@ const mockPoints = [
     id: null,
     type: null,
     offers: null,
-    destination: 2,
-    basePrice: 500,
-    dateFrom: null,
-    dateTo: null
-  },
-  {
-    id: null,
-    type: null,
-    offers: null,,
-    destination: 1,
-    basePrice: 200,
+    destination: null,
+    basePrice: null,
     dateFrom: null,
     dateTo: null
   },
@@ -240,7 +231,16 @@ const mockPoints = [
     type: null,
     offers: null,
     destination: 1,
-    basePrice: 300,
+    basePrice: null,
+    dateFrom: null,
+    dateTo: null
+  },
+  {
+    id: null,
+    type: null,
+    offers: null,
+    destination: null,
+    basePrice: null,
     dateFrom: null,
     dateTo: null
   },
@@ -248,8 +248,8 @@ const mockPoints = [
     id: null,
     type: 'taxi',
     offers: null,
-    destination: 2,
-    basePrice: 100,
+    destination: null,
+    basePrice: null,
     dateFrom: null,
     dateTo: null
   },
@@ -257,8 +257,8 @@ const mockPoints = [
     id: null,
     type: null,
     offers: null,
-    destination: 3,
-    basePrice: 50,
+    destination: null,
+    basePrice: null,
     dateFrom: null,
     dateTo: null
   },
@@ -266,8 +266,8 @@ const mockPoints = [
     id: null,
     type: null,
     offers: null,
-    destination: 1,
-    basePrice: 150,
+    destination: null,
+    basePrice: null,
     dateFrom: null,
     dateTo: null
   },
@@ -275,16 +275,16 @@ const mockPoints = [
     id: null,
     type: null,
     offers: null,
-    destination: 3,
-    basePrice: 200,
+    destination: null,
+    basePrice: null,
     dateFrom: null,
     dateTo: null
   },
   {
     id: null,
     type: null,
-    offers: [1],
-    destination: 2,
+    offers: null,
+    destination: null,
     basePrice: 120,
     dateFrom: null,
     dateTo: null
@@ -292,12 +292,11 @@ const mockPoints = [
   {
     id: null,
     type: null,
-    offers: [1, 2, 3],
-    destination: 1,
-    basePrice: 300,
+    offers: null,
+    destination: null,
+    basePrice: null,
     dateFrom: null,
     dateTo: null
   }
 ];
-console.log("data[]",data[0]);
 export default data;

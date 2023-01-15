@@ -1,4 +1,5 @@
-export let data = [
+import {data} from "../data.js";
+export const data = [
   {
     type: 'Taxi',
     offers:[
@@ -179,7 +180,7 @@ export let data = [
       }
     ]
   },
-]; 
+];
 export const destinations = [
   {
     id: 1,
@@ -195,7 +196,7 @@ export const destinations = [
   {
     id: 2,
     description: 'Add luggage +€  50 Switch to comfort +€  ',
-    name: 'Geneva',   
+    name: 'Geneva',
     pictures: [
       {
         src: 'http://picsum.photos/300/200?r=0.0762563005163318',
@@ -222,8 +223,8 @@ export const mockPoints = [
     offers: [1, 2],
     destination: 2,
     basePrice: 500,
-    dateFrom: "2019-07-18T22:55:56.845Z",
-    dateTo: "2019-07-11T11:22:13.375Z"
+    dateFrom: '2019-07-18T22:55:56.845Z',
+    dateTo: '2019-07-11T11:22:13.375Z'
   },
   {
     id: 2,
@@ -231,8 +232,8 @@ export const mockPoints = [
     offers: [1, 2],
     destination: 1,
     basePrice: 200,
-    dateFrom: "2019-07-18T22:56:56.845Z",
-    dateTo: "2019-07-11T11:22:14.375Z"
+    dateFrom: '2019-07-18T22:56:56.845Z',
+    dateTo: '2019-07-11T11:22:14.375Z'
   },
   {
     id: 3,
@@ -240,8 +241,8 @@ export const mockPoints = [
     offers: [],
     destination: 1,
     basePrice: 300,
-    dateFrom: "2019-07-18T22:54:56.845Z",
-    dateTo: "2019-07-11T11:22:08.375Z"
+    dateFrom: '2019-07-18T22:54:56.845Z',
+    dateTo: '2019-07-11T11:22:08.375Z'
   },
   {
     id: 4,
@@ -249,8 +250,8 @@ export const mockPoints = [
     offers: [1, 2],
     destination: 2,
     basePrice: 100,
-    dateFrom: "2019-07-18T12:55:56.845Z",
-    dateTo: "2019-07-11T11:15:13.375Z"
+    dateFrom: '2019-07-18T12:55:56.845Z',
+    dateTo: '2019-07-11T11:15:13.375Z'
   },
   {
     id: 5,
@@ -258,8 +259,8 @@ export const mockPoints = [
     offers: [],
     destination: 3,
     basePrice: 50,
-    dateFrom: "2019-07-19T13:13:56.845Z",
-    dateTo: "2019-07-11T11:15:13.375Z"
+    dateFrom: '2019-07-19T13:13:56.845Z',
+    dateTo: '2019-07-11T11:15:13.375Z'
   },
   {
     id: 6,
@@ -267,8 +268,8 @@ export const mockPoints = [
     offers: [1,2],
     destination: 1,
     basePrice: 150,
-    dateFrom: "2019-07-19T18:34:56.845Z",
-    dateTo: "2019-07-11T11:10:13.375Z"
+    dateFrom: '2019-07-19T18:34:56.845Z',
+    dateTo: '2019-07-11T11:10:13.375Z'
   },
   {
     id: 7,
@@ -276,8 +277,8 @@ export const mockPoints = [
     offers: [1, 2, 3],
     destination: 3,
     basePrice: 200,
-    dateFrom: "2019-07-19T19:06:56.845Z",
-    dateTo: "2019-07-11T11:12:12.375Z"
+    dateFrom: '2019-07-19T19:06:56.845Z',
+    dateTo: '2019-07-11T11:12:12.375Z'
   },
   {
     id: 8,
@@ -285,8 +286,8 @@ export const mockPoints = [
     offers: [1],
     destination: 2,
     basePrice: 120,
-    dateFrom: "2019-07-20T11:11:56.845Z",
-    dateTo: "2019-07-11T14:13:13.375Z"
+    dateFrom: '2019-07-20T11:11:56.845Z',
+    dateTo: '2019-07-11T14:13:13.375Z'
   },
   {
     id: 9,
@@ -294,7 +295,7 @@ export const mockPoints = [
     offers: [1, 2, 3],
     destination: 1,
     basePrice: 300,
-    dateFrom: "2019-07-20T19:10:56.845Z",
-    dateTo: "2019-07-11T11:20:00.375Z"
+    dateFrom: '2019-07-20T19:10:56.845Z',
+    dateTo: '2019-07-11T11:20:00.375Z'
   }
 ];

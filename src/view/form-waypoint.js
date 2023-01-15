@@ -1,7 +1,6 @@
 import {createElement} from '../render.js';
-import {data} from "../model/model.js";
-function getFormWaypointTemplate() {
-  var string = `<li class="trip-events__item">
+function getFormWaypointTemplate(data) {
+  let string = `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
                   <div class="event__type-wrapper">
@@ -122,7 +121,7 @@ function getFormWaypointTemplate() {
             </li>`;
 
 
-  string=`<li class="trip-events__item">
+  string = `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
                   <div class="event__type-wrapper">
@@ -220,7 +219,7 @@ function getFormWaypointTemplate() {
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                     <div class="event__available-offers">`;
-  var offers= `    <div class="event__offer-selector">
+  let offers = `    <div class="event__offer-selector">
                         <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
                         <label class="event__offer-label" for="event-offer-train-1">
                           <span class="event__offer-title">Travel by train</span>
@@ -229,7 +228,7 @@ function getFormWaypointTemplate() {
                         </label>
                       </div>`;
   for(let i = 0; i < data[0].offers.length; i++) {
-    offers= `    
+    offers = `    
                     <div class="event__offer-selector">
                         <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
                         <label class="event__offer-label" for="event-offer-train-1">
@@ -238,9 +237,9 @@ function getFormWaypointTemplate() {
                           <span class="event__offer-price">${data[0].offers[i].price}</span>
                         </label>
                       </div>`;
-    string+=offers;
+    string += offers;
   }
-  string+=`</div>
+  string += `</div>
                   </section>
 
                   <section class="event__section  event__section--destination">
@@ -260,12 +259,14 @@ function getFormWaypointTemplate() {
                 </section>
               </form>
             </li>`;
-  console.log("string",string);
   return string;
-  }
+}
 class FormWaypoint {
+  constructor(data) {
+    this.data = data;
+  }
   getTemplate() {
-    return getFormWaypointTemplate();
+    return getFormWaypointTemplate(this.data);
   }
 
   getElement() {
