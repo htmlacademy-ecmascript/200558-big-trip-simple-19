@@ -1,12 +1,12 @@
 import {createElement} from '../render.js';
-function WaypointTemplate(destinations, mockPoints) {
-  let string = `<li class="trip-events__item">
+function getWaypointTemplate(destinations, mockPoints) {
+  return `<li class="trip-events__item">
               <div class="event">
                 <time class="event__date" datetime="2019-03-18">MAR ${mockPoints.dateFrom.substr(8,2)}</time>
                 <div class="event__type">
-                  <img class="event__type-icon" width="42" height="42" src="${destinations.find(element => () element.id === mockPoints.destination).pictures[0].src}" alt="${destinations.find(element => () element.id === mockPoints.destination).pictures[0].src}">
+                  <img class="event__type-icon" width="42" height="42" src="${destinations.find((element)=> element.id === mockPoints.destination).pictures[0].src}" alt="${destinations.find((element) => element.id === mockPoints.destination).pictures[0].src}">
                 </div>
-                <h3 class="event__title">${mockPoints.type} ${destinations.find(element => element.id === mockPoints.destination).name}</h3>
+                <h3 class="event__title">${mockPoints.type} ${destinations.find((element) => element.id === mockPoints.destination).name}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                     <time class="event__start-time" datetime="2019-03-18T12:25">${mockPoints.dateFrom.substr(11,5)}</time>
@@ -30,20 +30,19 @@ function WaypointTemplate(destinations, mockPoints) {
                 </button>
               </div>
             </li>`;
-  return string;
 }
 class Waypoint {
   constructor(destinations,mockPoints){
     this.destinations = destinations;
     this.mockPoints = mockPoints;
   }
-  getTemplate() {
-    return WaypointTemplate(this.destinations, this.mockPoints);
+
+  getTemplate(){
+    return getWaypointTemplate(this.destinations, this.mockPoints);
   }
 
   getElement() {
     if (!this.element) {
-      //console.log('this.getTemplate()='+this.getTemplate());
       this.element = createElement(this.getTemplate());
     }
     return this.element;

@@ -1,4 +1,15 @@
 import {createElement} from '../render.js';
+function getOffers(offers) {
+  return `    
+                    <div class="event__offer-selector">
+                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
+                        <label class="event__offer-label" for="event-offer-train-1">
+                          <span class="event__offer-title">${offers.title}</span>
+                          +€&nbsp;
+                          <span class="event__offer-price">${offers.price}</span>
+                        </label>
+                      </div>`;
+}
 function getFormWaypointTemplate(data) {
   let string = `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -119,8 +130,6 @@ function getFormWaypointTemplate(data) {
                 </section>
               </form>
             </li>`;
-
-
   string = `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
@@ -219,25 +228,9 @@ function getFormWaypointTemplate(data) {
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                     <div class="event__available-offers">`;
-  let offers = `    <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
-                        <label class="event__offer-label" for="event-offer-train-1">
-                          <span class="event__offer-title">Travel by train</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">40</span>
-                        </label>
-                      </div>`;
   for(let i = 0; i < data[0].offers.length; i++) {
-    offers = `    
-                    <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
-                        <label class="event__offer-label" for="event-offer-train-1">
-                          <span class="event__offer-title">${data[0].offers[i].title}</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">${data[0].offers[i].price}</span>
-                        </label>
-                      </div>`;
-    string += offers;
+    const Offers = getOffers(data[0].offers[i]);
+    string += Offers;
   }
   string += `</div>
                   </section>
@@ -265,6 +258,7 @@ class FormWaypoint {
   constructor(data) {
     this.data = data;
   }
+
   getTemplate() {
     return getFormWaypointTemplate(this.data);
   }
