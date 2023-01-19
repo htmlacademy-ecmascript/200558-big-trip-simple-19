@@ -1,6 +1,17 @@
 import {createElement} from '../render.js';
-function getFormWaypointTemplate() {
-  return `<li class="trip-events__item">
+function getOffers(offers) {
+  return `    
+                    <div class="event__offer-selector">
+                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
+                        <label class="event__offer-label" for="event-offer-train-1">
+                          <span class="event__offer-title">${offers.title}</span>
+                          +€&nbsp;
+                          <span class="event__offer-price">${offers.price}</span>
+                        </label>
+                      </div>`;
+}
+function getFormWaypointTemplate(data) {
+  let string = `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
                   <div class="event__type-wrapper">
@@ -97,52 +108,12 @@ function getFormWaypointTemplate() {
                   <section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
-                    <div class="event__available-offers">
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked="">
-                        <label class="event__offer-label" for="event-offer-luggage-1">
-                          <span class="event__offer-title">Add luggage</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">30</span>
-                        </label>
-                      </div>
-
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked="">
-                        <label class="event__offer-label" for="event-offer-comfort-1">
-                          <span class="event__offer-title">Switch to comfort class</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">100</span>
-                        </label>
-                      </div>
-
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
-                        <label class="event__offer-label" for="event-offer-meal-1">
-                          <span class="event__offer-title">Add meal</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">15</span>
-                        </label>
-                      </div>
-
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
-                        <label class="event__offer-label" for="event-offer-seats-1">
-                          <span class="event__offer-title">Choose seats</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">5</span>
-                        </label>
-                      </div>
-
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
-                        <label class="event__offer-label" for="event-offer-train-1">
-                          <span class="event__offer-title">Travel by train</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">40</span>
-                        </label>
-                      </div>
-                    </div>
+                    <div class="event__available-offers">`;
+  for(let i = 0; i < data[0].offers.length; i++) {
+    const Offers = getOffers(data[0].offers[i]);
+    string += Offers;
+  }
+  string += `</div>
                   </section>
 
                   <section class="event__section  event__section--destination">
@@ -162,10 +133,15 @@ function getFormWaypointTemplate() {
                 </section>
               </form>
             </li>`;
+  return string;
 }
 class FormWaypoint {
+  constructor(data) {
+    this.data = data;
+  }
+
   getTemplate() {
-    return getFormWaypointTemplate();
+    return getFormWaypointTemplate(this.data);
   }
 
   getElement() {
