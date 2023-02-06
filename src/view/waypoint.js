@@ -9,9 +9,9 @@ function getWaypointTemplate(destinations, mockPoints) {
                 <h3 class="event__title">${mockPoints.type} ${destinations.find((element) => element.id === mockPoints.destination).name}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
-                    <time class="event__start-time" datetime="2019-03-18T12:25">${mockPoints.dateFrom.substr(11,5)}</time>
+                    <time class="event__start-time" datetime="2019-03-18T${mockPoints.dateFrom.substr(11,5)}">${mockPoints.dateFrom.substr(11,5)}</time>
                     —
-                    <time class="event__end-time" datetime="2019-03-18T13:35">${mockPoints.dateTo.substr(11,5)}</time>
+                    <time class="event__end-time" datetime="2019-03-18T${mockPoints.dateFrom.substr(11,5)}">${mockPoints.dateTo.substr(11,5)}</time>
                   </p>
                 </div>
                 <p class="event__price">
