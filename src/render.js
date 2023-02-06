@@ -10,7 +10,8 @@ export function createElement(template) {
   newElement.innerHTML = template;
   return newElement.firstElementChild;
 }
-
 export function render(component, container, place = RenderPosition.BEFOREEND) {
+  console.log('container=',container);
+  console.log('component.getElement()=',component.getElement());
   container.insertAdjacentElement(place, component.getElement());
 }
