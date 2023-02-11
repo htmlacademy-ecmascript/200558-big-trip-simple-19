@@ -4,7 +4,7 @@ function getWaypointTemplate(destinations, mockPoints) {
               <div class="event">
                 <time class="event__date" datetime="2019-03-18">MAR ${mockPoints.dateFrom.substr(8,2)}</time>
                 <div class="event__type">
-                  <img class="event__type-icon" width="42" height="42" src="${destinations.find((element)=> element.id === mockPoints.destination).pictures[0].src}" alt="${destinations.find((element) => element.id === mockPoints.destination).pictures[0].src}">
+                  <img class="event__type-icon" width="42" height="42" src="img/icons/${mockPoints.type}.png" alt="${destinations.find((element) => element.id === mockPoints.destination).pictures[0].src}">
                 </div>
                 <h3 class="event__title">${mockPoints.type} ${destinations.find((element) => element.id === mockPoints.destination).name}</h3>
                 <div class="event__schedule">

@@ -1,110 +1,51 @@
-import {render} from '../render.js';
+import {render,replaceElement} from '../render.js';
 import FiltersWapoint from '../view/filters.js';
 import Waypoint from '../view/waypoint.js';
 import SortingWaypoint from '../view/sorting.js';
 import ContainerWaypoint from '../view/waypoint-container.js';
-import editPoint from '../view/editPoint.js';
+import EditPoint from '../view/editPoint.js';
 import {data,destinations,mockPoints} from '../model/model.js';
 import message from '../view/message.js';
-var waypointTag = [];
 class BoardPresenter {
   constructor({boardContainer}) {
     this.boardContainer = boardContainer;
     this.tripEvents = document.querySelector('.trip-events');
     this.containerWaypoint = new ContainerWaypoint();
+    this.waypointTag = [];
   }
 
   init() {
     render(new FiltersWapoint(), this.boardContainer);
     render(new SortingWaypoint(), this.tripEvents);
     render(this.containerWaypoint,this.tripEvents);
-    let amountPoints = mockPoints.length;
-    for(let i = 0; i < amountPoints; i++) {
-      waypointTag[i] = new Waypoint(destinations,mockPoints[i]);
-      render(waypointTag[i], this.containerWaypoint.getElement());
-      waypointTag[i] = waypointTag[i].getElement();
-    }
-    this.#renderTask(waypointTag,amountPoints);
+    const amountPoints = mockPoints.length;
+    this.#renderTask(amountPoints);
   }
-  #renderTask(waypointTag,amountPoints) {
-    console.log('oll');
-    let eventRollupBtn = document.querySelectorAll('.event__rollup-btn');
-    eventRollupBtn = Array.from(eventRollupBtn);
-    console.log('eventRollupBtn.length=',eventRollupBtn.length);
-    for(let i in eventRollupBtn) {
-      let onEventRollupBtnClick = [];
-      onEventRollupBtnClick[i] = function(evt) {
-        let currentIndex = i;
-        let tripEventsItem = evt.target;
-        while(tripEventsItem.className!='trip-events__item') {
-          tripEventsItem = tripEventsItem.parentNode;
 
-        }
-        let eventTitle = tripEventsItem.querySelector('.event__title');
-        let title = eventTitle.textContent;
-        let eventStartTime = tripEventsItem.querySelector('.event__start-time');
-        let eventEndTime = tripEventsItem.querySelector('.event__end-time');
-        let time = {
-          start: eventStartTime.textContent,
-          end: eventEndTime.textContent
-        };
-        console.log('time=',time);
-        let options = {
-          time: {
-            start: time.start,
-            end: time.end
-          },
-          title: title
-        };           
-        let editPointСopy = new editPoint(options);
-        let editPointTag = [];
-        editPointTag[i] = editPointСopy.getElement();
-        waypointTag[i].parentNode.replaceChild(editPointTag[i],waypointTag[i]); 
-        let buttonSave = [];
-        buttonSave[i] = editPointTag[i].querySelector('.event__save-btn');
-        let buttonReset = [];
-        buttonReset[i] = editPointTag[i].querySelector('.event__reset-btn');
-        // console.log('buttonSave['+i+']=',buttonSave[i]);
-        let eventEdit = document.querySelector('.event--edit');
-        eventEdit.onsubmit = function(evt) {
+  #renderTask(amountPoints) {
+    for(let i = 0; i < amountPoints; i++) {
+      this.waypointTag[i] = new Waypoint(destinations,mockPoints[i]);
+      this.waypointTag[i].getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+        const editPointForm = new EditPoint(mockPoints[i],data);
+        replaceElement(editPointForm.getElement(),this.waypointTag[i].getElement());
+        editPointForm.getElement().querySelector('.event--edit').addEventListener('submit', (evt) => {
           evt.preventDefault();
-          editPointTag[i].parentNode.replaceChild(waypointTag[i],editPointTag[i]);
-          eventRollupBtn[i].onclick = onEventRollupBtnClick[i]; 
-        };
-        console.log('editPointTag[i]=',editPointTag[i]);
-        document.onkeydown = function(evt) {
-          console.log('evt.key=',evt.key);
-          if(evt.key=='Escape') {
-            console.log('esk');
-            editPointTag[i].parentNode.replaceChild(waypointTag[i],editPointTag[i]);
-            eventRollupBtn[i].onclick = onEventRollupBtnClick[i];
-          }
-        }
-        buttonReset[i].onclick = function (evt) {
-          evt.preventDefault();
-          console.log("evts=",evt);
-          let parentTag = evt.target;
-          while(parentTag.className!='trip-events__item') {
-            parentTag = parentTag.parentNode;
-          }
-          parentTag.remove();
+          replaceElement(this.waypointTag[i].getElement(),editPointForm.getElement());
+        });
+        editPointForm.getElement().querySelector('.event__reset-btn').addEventListener('click', () => {
+          editPointForm.getElement().remove();
           amountPoints--;
-          if(amountPoints == 0) {
-            console.log('sos');
-            render(new message(),this.tripEvents);  
+          if(amountPoints === 0) {
+            render(new message(), this.tripEvents);
+          }
+        });
+        document.onkeydown = (evt) => {
+          if(evt.key === 'Escape') {
+            replaceElement(this.waypointTag[i].getElement(),editPointForm.getElement());
           }
         };
-      }
-      eventRollupBtn[i].onclick = onEventRollupBtnClick[i]; 
-      document.onkeydown = function(evt) {
-        if(evt.key=='d') {
-          for(let element of waypointTag) {
-            element.remove();
-          }
-          amountPoints = 0;
-          console.log('amountPoints=',amountPoints);
-        } 
-      }
+      });
+      render(this.waypointTag[i], this.containerWaypoint.getElement());
     }
   }
 }
