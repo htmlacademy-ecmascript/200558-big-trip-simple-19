@@ -6,7 +6,7 @@ function getMessageTemplate() {
           </div>`;
 }
 class message {
-	getTemplate() {
+  getTemplate() {
     return getMessageTemplate();
   }
 

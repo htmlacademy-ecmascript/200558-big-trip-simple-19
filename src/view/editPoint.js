@@ -1,12 +1,13 @@
 import {createElement} from '../render.js';
-function editPointTemplate (options) {
-	return `<li class="trip-events__item">
+import {destinations} from '../model/model.js';
+function editPointTemplate (options,data) {
+  let markup = `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
                   <div class="event__type-wrapper">
                     <label class="event__type  event__type-btn" for="event-type-toggle-1">
                       <span class="visually-hidden">Choose event type</span>
-                      <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+                      <img class="event__type-icon" width="17" height="17" src="img/icons/${options.type}.png" alt="Event type icon">
                     </label>
                     <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -64,9 +65,9 @@ function editPointTemplate (options) {
 
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
-                      Flight
+                      ${options.type} to
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${options.title}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinations.find((el) => el.id === options.destination).name}" list="destination-list-1">
                     <datalist id="destination-list-1">
                       <option value="Amsterdam"></option>
                       <option value="Geneva"></option>
@@ -76,10 +77,10 @@ function editPointTemplate (options) {
 
                   <div class="event__field-group  event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 ${options.time.start}">
+                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${options.dateFrom.substr(11,2)}">
                     —
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 ${options.time.start}">
+                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${options.dateTo.substr(14,2)}">
                   </div>
 
                   <div class="event__field-group  event__field-group--price">
@@ -87,7 +88,7 @@ function editPointTemplate (options) {
                       <span class="visually-hidden">Price</span>
                       €
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="160">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${options.basePrice}">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -101,67 +102,57 @@ function editPointTemplate (options) {
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                     <div class="event__available-offers">
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked="">
-                        <label class="event__offer-label" for="event-offer-luggage-1">
-                          <span class="event__offer-title">Add luggage</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">50</span>
-                        </label>
-                      </div>
-
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked="">
-                        <label class="event__offer-label" for="event-offer-comfort-1">
-                          <span class="event__offer-title">Switch to comfort</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">80</span>
-                        </label>
-                      </div>
-
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
-                        <label class="event__offer-label" for="event-offer-meal-1">
-                          <span class="event__offer-title">Add meal</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">15</span>
-                        </label>
-                      </div>
-
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
-                        <label class="event__offer-label" for="event-offer-seats-1">
-                          <span class="event__offer-title">Choose seats</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">5</span>
-                        </label>
-                      </div>
-
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
-                        <label class="event__offer-label" for="event-offer-train-1">
-                          <span class="event__offer-title">Travel by train</span>
-                          +€&nbsp;
-                          <span class="event__offer-price">40</span>
-                        </label>
-                      </div>
+                    event__offer-selector
                     </div>
                   </section>
 
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">Chamonix-Mont-Blanc (usually shortened to Chamonix) is a resort area near the junction of France, Switzerland and Italy. At the base of Mont Blanc, the highest summit in the Alps, it's renowned for its skiing.</p>
+                    <p class="event__destination-description">${destinations.find((el) => el.id === options.destination).description}</p>
                   </section>
                 </section>
               </form>
             </li>`;
+  let offers = '';
+  offers = data.find((el) => el.type === options.type).offers;
+  const offersMarkup = offers.map((offer,index) => {
+    let checked = '';
+    for(const el of options.offers) {
+      if(el === index) {
+        checked = 'checked';
+      }
+    }
+    return (`<div class="event__offear-selector">
+                  <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-${offer.id}" type="checkbox" name="event-offer-comfort" ${checked}>
+                  <label class="event__offer-label" for="event-offer-comfort-${offer.id}">
+                    <span class="event__offer-title">${offer.title}</span>
+                    +€&nbsp;
+                    <span class="event__offer-price">${offer.price}</span>
+                  </label>
+                </div>
+                `);}).join('');
+  // for(let i in data.offers) {
+    // offers += `<div class="event__offear-selector">
+    //               <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-${i}" type="checkbox" name="event-offer-comfort" checked="">
+    //               <label class="event__offer-label" for="event-offer-comfort-${i}">
+    //                 <span class="event__offer-title">${data.offers[i].title}</span>
+    //                 +€&nbsp;
+    //                 <span class="event__offer-price">${data.offers[i].price}</span>
+    //               </label>
+    //             </div>
+    //             `;
+  // }
+  markup = markup.replace('event__offer-selector',offersMarkup);
+  return markup;
 }
 class editPoint {
-  constructor(options) {
-  this.options = options;
+  constructor(options,data) {
+    this.options = options;
+    this.data = data;
   }
-	getTemplate() {
-    return editPointTemplate(this.options);
+
+  getTemplate() {
+    return editPointTemplate(this.options,this.data);
   }
 
   getElement() {
