@@ -1,167 +1,219 @@
+function random(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+function randomArray(array) {
+  return array[random(0, array.length - 1)];  
+}
+function randomType() {
+  return randomArray(['taxi','bus','train','ship','drive','flight','sightseeing','restaurant']);
+}
+function randomPrice() {
+  return random(1,1000);
+}
+let fromHour,
+    fromMin,
+    toHour,
+    toMin,
+    fromDay,
+    toDay;
+function  numberFormat(number) {
+  if(number<10) {
+      return '0' + number;
+  }
+    else {
+    return number;
+  }
+}
+function randomDateFrom() {
+  fromDay = random(1,31);
+  fromHour = random(10,15);
+  fromMin = random(0,60);
+  let date;
+  let stringDay = numberFormat(fromDay),
+      stringHour = numberFormat(fromHour),
+      stringMin = numberFormat(fromMin);
+  return `2019-07-${stringDay}T${stringHour}:${stringMin}:56.845Z`;
+}
+function randomDateFromTo() {
+  toDay = (((fromDay * 24 + fromHour) * 60 + fromMin) + random(10, 2880)) / 1440;
+  console.log('toDay=',toDay); 
+  toHour = toDay * 24 % 24; 
+  toDay = Math.round(toDay);
+  toMin =  toHour * 60 % 60;
+  toHour = Math.round(toHour);
+  toMin = Math.round(toMin);
+
+  toDay = numberFormat(toDay);
+  toHour = numberFormat(toHour);
+  toMin = numberFormat(toMin);
+  //console.log(`2019-07-${toDay}T${toHour}:${toMin}:56.845Z`);
+
+  return `2019-07-${toDay}T${toHour}:${toMin}:56.845Z`;
+}
 export const data = [
   {
-    type: 'taxi',
+    type: randomType(),
     offers:[
       {
         id: 1,
         title: 'Add luggage 1.1',
-        price: 30
+        price: randomPrice()
       },
       {
         id: 2,
         title: 'Switch to comfort class 1.2',
-        price: 100
+        price: randomPrice()
       },
       {
         id: 3,
         title: 'Add meal 1.3',
-        price: 15
+        price: randomPrice()
       }
     ]
   },
   {
-    type: 'bus',
+    type: randomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 2.1',
-        price: 344
+        price: randomPrice()
       },
       {
         id: 2,
         title: 'Add luggage 2.2',
-        price: 15
+        price: randomPrice()
       },
       {
         id: 3,
         title: 'Add meal 2.3',
-        price: 90
+        price: randomPrice()
       },
       {
         id: 4,
         title: 'Add meal 2.4',
-        price: 16
+        price: randomPrice()
       }
 
     ]
   },
   {
-    type: 'train',
+    type: randomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 3.1',
-        price: 56
+        price: randomPrice()
       },
       {
         id: 2,
         title: 'Add luggage 3.2',
-        price: 76
+        price: randomPrice()
       },
       {
         id: 3,
         title: 'Add meal 3.3',
-        price: 1
+        price: randomPrice()
       },
       {
         id: 3,
         title: 'Add meal 3.4',
-        price: 9
+        price: randomPrice()
       }
     ]
   },
   {
-    type: 'ship',
+    type: randomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 4.1',
-        price: 678
+        price: randomPrice()
       },
       {
         id: 2,
         title: 'Add luggage 4.2',
-        price: 111
+        price: randomPrice()
       },
       {
         id: 3,
         title: 'Add meal 4.3',
-        price: 909
+        price: randomPrice()
       },
       {
         id: 3,
         title: 'Add meal 4.4',
-        price: 965
+        price: randomPrice()
       }
     ]
   },
   {
-    type: 'drive',
+    type: randomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 5.1',
-        price: 569
+        price: randomPrice()
       },
       {
         id: 2,
         title: 'Add luggage 5.2',
-        price: 55
+        price: randomPrice()
       },
     ]
   },
   {
-    type: 'flight',
+    type: randomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 6.1',
-        price: 66
+        price: randomPrice()
       },
     ]
   },
   {
-    type: 'check-in',
+    type: randomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 6.2',
-        price: 135
+        price: randomPrice()
       },
     ]
   },
   {
-    type: 'sightseeing',
+    type: randomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 7.1',
-        price: 886
+        price: randomPrice()
       },
       {
         id: 2,
         title: 'Add luggage 7.2',
-        price: 351
+        price: randomPrice()
       },
       {
         id: 3,
         title: 'Add meal 7.3',
-        price: 531
+        price: randomPrice()
       }
     ]
   },
   {
-    type: 'restaurant',
+    type: randomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 8.1',
-        price: 321
+        price: randomPrice()
       },
       {
         id: 2,
         title: 'Add luggage 8.2',
-        price: 21
+        price: randomPrice()
       },
     ]
   },
@@ -204,92 +256,92 @@ export const destinations = [
 export const mockPoints = [
   {
     id: 1,
-    type: 'bus',
+    type: randomType(),
     offers: [0, 1],
     destination: 2,
-    basePrice: 100,
-    dateFrom: '2019-07-18T10:23:56.845Z',
-    dateTo: '2019-07-11T15:32:13.375Z'
+    basePrice: randomPrice(),
+    dateFrom: randomDateFrom(),
+    dateTo: randomDateFromTo(),
   },
   {
     id: 2,
-    type: 'train',
+    type: randomType(),
     offers: [1, 2],
     destination: 1,
-    basePrice: 999,
-    dateFrom: '2019-07-18T19:45:56.845Z',
-    dateTo: '2019-07-11T11:54:14.375Z'
+    basePrice: randomPrice(),
+    dateFrom: randomDateFrom(),
+    dateTo: randomDateFromTo()
   },
   {
     id: 3,
-    type: 'ship',
+    type: randomType(),
     offers: [0,2,3],
     destination: 1,
-    basePrice: 666,
-    dateFrom: '2019-07-18T12:44:56.845Z',
-    dateTo: '2019-07-11T13:12:08.375Z'
+    basePrice: randomPrice(),
+    dateFrom: randomDateFrom(),
+    dateTo: randomDateFromTo()
   },
   {
     id: 4,
-    type: 'drive',
+    type: randomType(),
     offers: [0, 3],
     destination: 2,
-    basePrice: 323,
-    dateFrom: '2019-07-18T14:09:56.845Z',
-    dateTo: '2019-07-11T15:01:13.375Z'
+    basePrice: randomPrice(),
+    dateFrom: randomDateFrom(),
+    dateTo: randomDateFromTo()
   },
   {
     id: 5,
-    type: 'flight',
+    type: randomType(),
     offers: [0,1],
     destination: 3,
-    basePrice: 232,
-    dateFrom: '2019-07-19T16:58:56.845Z',
-    dateTo: '2019-07-11T17:41:13.375Z'
+    basePrice: randomPrice(),
+    dateFrom: randomDateFrom(),
+    dateTo: randomDateFromTo()
   },
   {
     id: 6,
-    type: 'check-in',
+    type: randomType(),
     offers: [1],
     destination: 1,
-    basePrice: 101,
-    dateFrom: '2019-07-19T18:34:56.845Z',
-    dateTo: '2019-07-11T19:10:13.375Z'
+    basePrice: randomPrice(),
+    dateFrom: randomDateFrom(),
+    dateTo: randomDateFromTo()
   },
   {
     id: 7,
-    type: 'sightseeing',
+    type: randomType(),
     offers: [],
     destination: 3,
-    basePrice: 202,
-    dateFrom: '2019-07-19T13:06:56.845Z',
-    dateTo: '2019-07-11T12:12:12.375Z'
+    basePrice: randomPrice(),
+    dateFrom: randomDateFrom(),
+    dateTo: randomDateFromTo()
   },
   {
     id: 8,
-    type: 'restaurant',
+    type: randomType(),
     offers: [0,1],
     destination: 2,
-    basePrice: 631,
-    dateFrom: '2019-07-20T10:11:56.845Z',
-    dateTo: '2019-07-11T12:13:13.375Z'
+    basePrice: randomPrice(),
+    dateFrom: randomDateFrom(),
+    dateTo: randomDateFromTo()
   },
   {
     id: 9,
-    type: 'taxi',
+    type: randomType(),
     offers: [],
     destination: 1,
-    basePrice: 291,
-    dateFrom: '2019-07-20T19:10:56.845Z',
-    dateTo: '2019-07-11T21:20:00.375Z'
+    basePrice: randomPrice(),
+    dateFrom: randomDateFrom(),
+    dateTo: randomDateFromTo()
   },
   {
     id: 10,
-    type: 'taxi',
+    type: randomType(),
     offers: [1, 2, 3],
     destination: 1,
-    basePrice: 291,
-    dateFrom: '2019-07-20T19:10:56.845Z',
-    dateTo: '2019-07-11T21:20:00.375Z'
+    basePrice: randomPrice(),
+    dateFrom: randomDateFrom(),
+    dateTo: randomDateFromTo()
   }
 ];

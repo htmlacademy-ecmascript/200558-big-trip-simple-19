@@ -1,5 +1,6 @@
 import {createElement} from '../render.js';
 import {destinations} from '../model/model.js';
+import AbstractView from '../framework/view/abstract-view.js';
 function editPointTemplate (options,data) {
   let markup = `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -145,25 +146,12 @@ function editPointTemplate (options,data) {
   markup = markup.replace('event__offer-selector',offersMarkup);
   return markup;
 }
-class editPoint {
+class editPoint extends AbstractView {
   constructor(options,data) {
+    super();
     this.options = options;
     this.data = data;
-  }
-
-  getTemplate() {
-    return editPointTemplate(this.options,this.data);
-  }
-
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+    this.template = editPointTemplate(this.options,this.data);
   }
 }
 export default editPoint;

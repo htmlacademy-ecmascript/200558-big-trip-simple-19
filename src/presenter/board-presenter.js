@@ -1,4 +1,5 @@
 import {render,replaceElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import FiltersWapoint from '../view/filters.js';
 import Waypoint from '../view/waypoint.js';
 import SortingWaypoint from '../view/sorting.js';
@@ -10,6 +11,7 @@ class BoardPresenter {
   constructor({boardContainer}) {
     this.boardContainer = boardContainer;
     this.tripEvents = document.querySelector('.trip-events');
+    console.log('this.tripEvents=',this.tripEvents);
     this.containerWaypoint = new ContainerWaypoint();
     this.waypointTag = [];
   }
@@ -25,15 +27,15 @@ class BoardPresenter {
   #renderTask(amountPoints) {
     for(let i = 0; i < amountPoints; i++) {
       this.waypointTag[i] = new Waypoint(destinations,mockPoints[i]);
-      this.waypointTag[i].getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+      this.waypointTag[i].element.querySelector('.event__rollup-btn').addEventListener('click', () => {
         const editPointForm = new EditPoint(mockPoints[i],data);
-        replaceElement(editPointForm.getElement(),this.waypointTag[i].getElement());
-        editPointForm.getElement().querySelector('.event--edit').addEventListener('submit', (evt) => {
+        replaceElement(editPointForm.element,this.waypointTag[i].element);
+        editPointForm.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
           evt.preventDefault();
-          replaceElement(this.waypointTag[i].getElement(),editPointForm.getElement());
+          replaceElement(this.waypointTag[i].element, editPointForm.element);
         });
-        editPointForm.getElement().querySelector('.event__reset-btn').addEventListener('click', () => {
-          editPointForm.getElement().remove();
+        editPointForm.element.querySelector('.event__reset-btn').addEventListener('click', () => {
+          editPointForm.element.remove();
           amountPoints--;
           if(amountPoints === 0) {
             render(new message(), this.tripEvents);
@@ -41,11 +43,11 @@ class BoardPresenter {
         });
         document.onkeydown = (evt) => {
           if(evt.key === 'Escape') {
-            replaceElement(this.waypointTag[i].getElement(),editPointForm.getElement());
+            replaceElement(this.waypointTag[i].element, editPointForm.element);
           }
         };
       });
-      render(this.waypointTag[i], this.containerWaypoint.getElement());
+      render(this.waypointTag[i], this.containerWaypoint.element);
     }
   }
 }
