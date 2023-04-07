@@ -6,10 +6,10 @@ function getMessageTemplate() {
             <p class="trip-events__msg">Loading...</p>
           </div>`;
 }
-class message extends AbstractView {
+class Message extends AbstractView {
   constructor() {
     super();
     this.template = getMessageTemplate();
   }
 }
-export default message;
+export default Message;

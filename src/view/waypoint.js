@@ -3,30 +3,8 @@ import AbstractView from '../framework/view/abstract-view.js';
 function getWaypointTemplate(destinations, mockPoints) {
   console.log('mockPoints.dateFrom=',mockPoints.dateFrom);
   console.log('mockPoints.dateTo=',mockPoints.dateTo);
-  function timeString(string) {
-    let departureTime = null;
-    if(string.substr(12,1) === ':') {
-      departureTime = string.substr(11,1);
-      if(string.substr(15,1)==':') {
-        departureTime += string.substr(13,2);
-      } else {
-        departureTime += string.substr(13,3);
-      }
-    } else {
-      console.log('departureTime_1=',departureTime);
-      departureTime = string.substr(11,2);
-      console.log('departureTime=',departureTime);
-      if(string.substr(15,1) === ':') {
-        console.log('log');
-        departureTime += string.substr(13,2);
-      } else {
-        departureTime += string.substr(13,3);
-      }  
-    }
-    return departureTime;
-  }
-  let StartTime = timeString(mockPoints.dateFrom);
-  let EndTime = timeString(mockPoints.dateTo);
+  let startTime = dayjs(mockPoints.dateFrom).format('hh:mm');
+  let endTime = dayjs(mockPoints.dateTo).format('hh:mm');
   return `<li class="trip-events__item">
               <div class="event">
                 <time class="event__date" datetime="2019-03-18">MAR ${mockPoints.dateFrom.substr(8,2)}</time>
@@ -36,9 +14,9 @@ function getWaypointTemplate(destinations, mockPoints) {
                 <h3 class="event__title">${mockPoints.type} ${destinations.find((element) => element.id === mockPoints.destination).name}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
-                    <time class="event__start-time" datetime="${mockPoints.dateFrom}">${StartTime}</time>
+                    <time class="event__start-time" datetime="${mockPoints.dateFrom}">${startTime}</time>
                     —
-                    <time class="event__end-time" datetime="${mockPoints.dateTo}">${EndTime}</time>
+                    <time class="event__end-time" datetime="${mockPoints.dateTo}">${endTime}</time>
                   </p>
                 </div>
                 <p class="event__price">
@@ -64,6 +42,9 @@ class Waypoint extends AbstractView {
     this.destinations = destinations;
     this.mockPoints = mockPoints;
     this.template = getWaypointTemplate(this.destinations,this.mockPoints);
+  }
+  addClickListener(callback) {
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', callback);
   }
 }
 export default Waypoint;

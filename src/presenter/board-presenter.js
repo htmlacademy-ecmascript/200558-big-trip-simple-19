@@ -6,7 +6,7 @@ import SortingWaypoint from '../view/sorting.js';
 import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/editPoint.js';
 import {data,destinations,mockPoints} from '../model/model.js';
-import message from '../view/message.js';
+import Message from '../view/message.js';
 class BoardPresenter {
   constructor({boardContainer}) {
     this.boardContainer = boardContainer;
@@ -27,7 +27,7 @@ class BoardPresenter {
   #renderTask(amountPoints) {
     for(let i = 0; i < amountPoints; i++) {
       this.waypointTag[i] = new Waypoint(destinations,mockPoints[i]);
-      this.waypointTag[i].element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+      this.waypointTag[i].addClickListener(() => {
         const editPointForm = new EditPoint(mockPoints[i],data);
         replaceElement(editPointForm.element,this.waypointTag[i].element);
         editPointForm.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
@@ -38,7 +38,7 @@ class BoardPresenter {
           editPointForm.element.remove();
           amountPoints--;
           if(amountPoints === 0) {
-            render(new message(), this.tripEvents);
+            render(new Message(), this.tripEvents);
           }
         });
         document.onkeydown = (evt) => {

@@ -1,14 +1,12 @@
-function random(min, max) {
+function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
-function randomArray(array) {
-  return array[random(0, array.length - 1)];  
+function getRandomType() {
+  let array = ['taxi','bus','train','ship','drive','flight','sightseeing','restaurant'];
+  return array[getRandom(0, array.length - 1)];
 }
-function randomType() {
-  return randomArray(['taxi','bus','train','ship','drive','flight','sightseeing','restaurant']);
-}
-function randomPrice() {
-  return random(1,1000);
+function getRandomPrice() {
+  return getRandom(1,1000);
 }
 let fromHour,
     fromMin,
@@ -17,32 +15,37 @@ let fromHour,
     fromDay,
     toDay;
 function  numberFormat(number) {
-  if(number<10) {
+  if(number < 10) {
       return '0' + number;
-  }
-    else {
+  } else {
     return number;
   }
 }
-function randomDateFrom() {
-  fromDay = random(1,31);
-  fromHour = random(10,15);
-  fromMin = random(0,60);
+function getRandomDateFrom() {
+  fromDay = getRandom(1,31);
+  fromHour = getRandom(10,15);
+  fromMin = getRandom(0,60);
   let date;
   let stringDay = numberFormat(fromDay),
       stringHour = numberFormat(fromHour),
       stringMin = numberFormat(fromMin);
   return `2019-07-${stringDay}T${stringHour}:${stringMin}:56.845Z`;
 }
-function randomDateFromTo() {
-  toDay = (((fromDay * 24 + fromHour) * 60 + fromMin) + random(10, 2880)) / 1440;
-  console.log('toDay=',toDay); 
-  toHour = toDay * 24 % 24; 
-  toDay = Math.round(toDay);
-  toMin =  toHour * 60 % 60;
-  toHour = Math.round(toHour);
-  toMin = Math.round(toMin);
-
+function getRandomDateFromTo() {
+  //((((fromDay * 24 + fromHour) * 60 + fromMin)*60) + getRandom(1000000, 10000000))
+  toHour = fromHour + getRandom(1,10);
+  toMin = fromMin + getRandom(5,60);
+  toDay = fromDay + getRandom(1,2);
+  console.log('toMin=',toMin);
+  console.log('toHour=',toHour);
+  let date = new Date(2023,3,toDay,toHour,toMin);
+  console.log('date=',date);
+  toDay = date.getDate();
+  console.log('date.getDate()=',date.getDate());
+  console.log('toDay=',toDay);
+  toHour = date.getHours(); 
+  toMin = date.getMinutes();
+  console.log('toMin=',toMin);
   toDay = numberFormat(toDay);
   toHour = numberFormat(toHour);
   toMin = numberFormat(toMin);
@@ -52,168 +55,168 @@ function randomDateFromTo() {
 }
 export const data = [
   {
-    type: randomType(),
+    type: getRandomType(),
     offers:[
       {
         id: 1,
         title: 'Add luggage 1.1',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 2,
         title: 'Switch to comfort class 1.2',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 3,
         title: 'Add meal 1.3',
-        price: randomPrice()
+        price: getRandomPrice()
       }
     ]
   },
   {
-    type: randomType(),
+    type: getRandomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 2.1',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 2,
         title: 'Add luggage 2.2',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 3,
         title: 'Add meal 2.3',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 4,
         title: 'Add meal 2.4',
-        price: randomPrice()
+        price: getRandomPrice()
       }
 
     ]
   },
   {
-    type: randomType(),
+    type: getRandomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 3.1',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 2,
         title: 'Add luggage 3.2',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 3,
         title: 'Add meal 3.3',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 3,
         title: 'Add meal 3.4',
-        price: randomPrice()
+        price: getRandomPrice()
       }
     ]
   },
   {
-    type: randomType(),
+    type: getRandomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 4.1',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 2,
         title: 'Add luggage 4.2',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 3,
         title: 'Add meal 4.3',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 3,
         title: 'Add meal 4.4',
-        price: randomPrice()
+        price: getRandomPrice()
       }
     ]
   },
   {
-    type: randomType(),
+    type: getRandomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 5.1',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 2,
         title: 'Add luggage 5.2',
-        price: randomPrice()
+        price: getRandomPrice()
       },
     ]
   },
   {
-    type: randomType(),
+    type: getRandomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 6.1',
-        price: randomPrice()
+        price: getRandomPrice()
       },
     ]
   },
   {
-    type: randomType(),
+    type: getRandomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 6.2',
-        price: randomPrice()
+        price: getRandomPrice()
       },
     ]
   },
   {
-    type: randomType(),
+    type: getRandomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 7.1',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 2,
         title: 'Add luggage 7.2',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 3,
         title: 'Add meal 7.3',
-        price: randomPrice()
+        price: getRandomPrice()
       }
     ]
   },
   {
-    type: randomType(),
+    type: getRandomType(),
     offers:[
       {
         id: 1,
         title: 'Upgrade to a business class 8.1',
-        price: randomPrice()
+        price: getRandomPrice()
       },
       {
         id: 2,
         title: 'Add luggage 8.2',
-        price: randomPrice()
+        price: getRandomPrice()
       },
     ]
   },
@@ -256,92 +259,92 @@ export const destinations = [
 export const mockPoints = [
   {
     id: 1,
-    type: randomType(),
+    type: getRandomType(),
     offers: [0, 1],
     destination: 2,
-    basePrice: randomPrice(),
-    dateFrom: randomDateFrom(),
-    dateTo: randomDateFromTo(),
+    basePrice: getRandomPrice(),
+    dateFrom: getRandomDateFrom(),
+    dateTo: getRandomDateFromTo(),
   },
   {
     id: 2,
-    type: randomType(),
+    type: getRandomType(),
     offers: [1, 2],
     destination: 1,
-    basePrice: randomPrice(),
-    dateFrom: randomDateFrom(),
-    dateTo: randomDateFromTo()
+    basePrice: getRandomPrice(),
+    dateFrom: getRandomDateFrom(),
+    dateTo: getRandomDateFromTo()
   },
   {
     id: 3,
-    type: randomType(),
+    type: getRandomType(),
     offers: [0,2,3],
     destination: 1,
-    basePrice: randomPrice(),
-    dateFrom: randomDateFrom(),
-    dateTo: randomDateFromTo()
+    basePrice: getRandomPrice(),
+    dateFrom: getRandomDateFrom(),
+    dateTo: getRandomDateFromTo()
   },
   {
     id: 4,
-    type: randomType(),
+    type: getRandomType(),
     offers: [0, 3],
     destination: 2,
-    basePrice: randomPrice(),
-    dateFrom: randomDateFrom(),
-    dateTo: randomDateFromTo()
+    basePrice: getRandomPrice(),
+    dateFrom: getRandomDateFrom(),
+    dateTo: getRandomDateFromTo()
   },
   {
     id: 5,
-    type: randomType(),
+    type: getRandomType(),
     offers: [0,1],
     destination: 3,
-    basePrice: randomPrice(),
-    dateFrom: randomDateFrom(),
-    dateTo: randomDateFromTo()
+    basePrice: getRandomPrice(),
+    dateFrom: getRandomDateFrom(),
+    dateTo: getRandomDateFromTo()
   },
   {
     id: 6,
-    type: randomType(),
+    type: getRandomType(),
     offers: [1],
     destination: 1,
-    basePrice: randomPrice(),
-    dateFrom: randomDateFrom(),
-    dateTo: randomDateFromTo()
+    basePrice: getRandomPrice(),
+    dateFrom: getRandomDateFrom(),
+    dateTo: getRandomDateFromTo()
   },
   {
     id: 7,
-    type: randomType(),
+    type: getRandomType(),
     offers: [],
     destination: 3,
-    basePrice: randomPrice(),
-    dateFrom: randomDateFrom(),
-    dateTo: randomDateFromTo()
+    basePrice: getRandomPrice(),
+    dateFrom: getRandomDateFrom(),
+    dateTo: getRandomDateFromTo()
   },
   {
     id: 8,
-    type: randomType(),
+    type: getRandomType(),
     offers: [0,1],
     destination: 2,
-    basePrice: randomPrice(),
-    dateFrom: randomDateFrom(),
-    dateTo: randomDateFromTo()
+    basePrice: getRandomPrice(),
+    dateFrom: getRandomDateFrom(),
+    dateTo: getRandomDateFromTo()
   },
   {
     id: 9,
-    type: randomType(),
+    type: getRandomType(),
     offers: [],
     destination: 1,
-    basePrice: randomPrice(),
-    dateFrom: randomDateFrom(),
-    dateTo: randomDateFromTo()
+    basePrice: getRandomPrice(),
+    dateFrom: getRandomDateFrom(),
+    dateTo: getRandomDateFromTo()
   },
   {
     id: 10,
-    type: randomType(),
+    type: getRandomType(),
     offers: [1, 2, 3],
     destination: 1,
-    basePrice: randomPrice(),
-    dateFrom: randomDateFrom(),
-    dateTo: randomDateFromTo()
+    basePrice: getRandomPrice(),
+    dateFrom: getRandomDateFrom(),
+    dateTo: getRandomDateFromTo()
   }
 ];
