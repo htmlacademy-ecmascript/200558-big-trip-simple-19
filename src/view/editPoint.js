@@ -1,7 +1,10 @@
 import {createElement} from '../render.js';
 import {destinations} from '../model/model.js';
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 function editPointTemplate (options,data) {
+  console.log('options=',options,'data=',data);
+  let startTime = dayjs(options.dateFrom).format('hh:mm'),
+      endTime = dayjs(options.dateTo).format('hh:mm');
   let markup = `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
@@ -78,10 +81,10 @@ function editPointTemplate (options,data) {
 
                   <div class="event__field-group  event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${options.dateFrom.substr(11,2)}">
+                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startTime}">
                     —
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${options.dateTo.substr(14,2)}">
+                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endTime}">
                   </div>
 
                   <div class="event__field-group  event__field-group--price">
@@ -146,7 +149,7 @@ function editPointTemplate (options,data) {
   markup = markup.replace('event__offer-selector',offersMarkup);
   return markup;
 }
-class editPoint extends AbstractView {
+class editPoint extends AbstractStatefulView {
   constructor(options,data) {
     super();
     this.options = options;

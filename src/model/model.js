@@ -1,12 +1,15 @@
 function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
+let array = ['taxi','bus','train','ship','drive','flight','sightseeing','restaurant'];
 function getRandomType() {
-  let array = ['taxi','bus','train','ship','drive','flight','sightseeing','restaurant'];
-  return array[getRandom(0, array.length - 1)];
+  let random = getRandom(0, array.length - 1);
+  let type = array[random];
+  array.splice(random,1);
+  return type;
 }
 function getRandomPrice() {
-  return getRandom(1,1000);
+  return getRandom(10,1000);
 }
 let fromHour,
     fromMin,
@@ -17,7 +20,8 @@ let fromHour,
 function  numberFormat(number) {
   if(number < 10) {
       return '0' + number;
-  } else {
+  } 
+  else {
     return number;
   }
 }
@@ -55,7 +59,7 @@ function getRandomDateFromTo() {
 }
 export const data = [
   {
-    type: getRandomType(),
+    type: 'taxi',
     offers:[
       {
         id: 1,
@@ -75,7 +79,7 @@ export const data = [
     ]
   },
   {
-    type: getRandomType(),
+    type: 'bus',
     offers:[
       {
         id: 1,
@@ -101,7 +105,7 @@ export const data = [
     ]
   },
   {
-    type: getRandomType(),
+    type: 'train',
     offers:[
       {
         id: 1,
@@ -126,7 +130,7 @@ export const data = [
     ]
   },
   {
-    type: getRandomType(),
+    type: 'ship',
     offers:[
       {
         id: 1,
@@ -151,7 +155,7 @@ export const data = [
     ]
   },
   {
-    type: getRandomType(),
+    type: 'drive',
     offers:[
       {
         id: 1,
@@ -166,7 +170,7 @@ export const data = [
     ]
   },
   {
-    type: getRandomType(),
+    type: 'flight',
     offers:[
       {
         id: 1,
@@ -176,7 +180,7 @@ export const data = [
     ]
   },
   {
-    type: getRandomType(),
+    type: 'sightseeing',
     offers:[
       {
         id: 1,
@@ -186,7 +190,7 @@ export const data = [
     ]
   },
   {
-    type: getRandomType(),
+    type: 'restaurant',
     offers:[
       {
         id: 1,
@@ -203,21 +207,6 @@ export const data = [
         title: 'Add meal 7.3',
         price: getRandomPrice()
       }
-    ]
-  },
-  {
-    type: getRandomType(),
-    offers:[
-      {
-        id: 1,
-        title: 'Upgrade to a business class 8.1',
-        price: getRandomPrice()
-      },
-      {
-        id: 2,
-        title: 'Add luggage 8.2',
-        price: getRandomPrice()
-      },
     ]
   },
 ];
@@ -348,3 +337,9 @@ export const mockPoints = [
     dateTo: getRandomDateFromTo()
   }
 ];
+// for(let i = 0; i < mockPoints.length; i++) {
+//   mockPoints[i].basePrice = getRandomPrice();
+//   mockPoints[i].dateFrom = getRandomDateFrom();
+//   mockPoints[i].dateTo = getRandomDateFromTo();
+// }
+// console.log('mockPoints=',mockPoints);

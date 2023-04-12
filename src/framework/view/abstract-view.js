@@ -1,4 +1,4 @@
-// import { createElement, remove, render, replace } from '../render.js';
+import {createElement} from '../render.js';
 import './abstract-view.css';
 
 /** @const {string} Класс, реализующий эффект "покачивания головой" */
@@ -30,7 +30,7 @@ export default class AbstractView {
    */
   get element() {
     if (!this.#element) {
-      this.#element = this.constructor.createElement(this.#template);
+      this.#element = createElement(this.#template);
     }
 
     return this.#element;
@@ -51,7 +51,9 @@ export default class AbstractView {
   removeElement() {
     this.#element = null;
   }
-
+  remove() {
+    this.element.remove();
+  }
   /**
    * Метод, реализующий эффект "покачивания головой"
    * @param {shakeCallback} [callback] Функция, которая будет вызвана после завершения анимации
@@ -63,82 +65,4 @@ export default class AbstractView {
       callback?.();
     }, SHAKE_ANIMATION_TIMEOUT);
   }
-
-  renderInto(container) {
-    this.constructor.render(this, container, this.constructor.RenderPosition.BEFOREEND);
-  }
-
-  renderFirstInto(element) {
-    this.constructor.render(this, element, this.constructor.RenderPosition.AFTERBEGIN);
-  }
-
-  replaceWith(newComponent) {
-    this.constructor.replace(newComponent, this);
-  }
-
-  remove() {
-    this.constructor.remove(this);
-  }
-
-  // Перенесено из render.js
-  static RenderPosition = {
-    BEFOREBEGIN: 'beforebegin',
-    AFTERBEGIN: 'afterbegin',
-    BEFOREEND: 'beforeend',
-    AFTEREND: 'afterend',
-  };
-
-  static render(component, container, place = this.RenderPosition.BEFOREEND) {
-    if (!(component instanceof AbstractView)) {
-      throw new Error('Can render only components');
-    }
-
-    if (container === null) {
-      throw new Error('Container element doesn\'t exist');
-    }
-
-    container.insertAdjacentElement(place, component.element);
-  }
-
-  static replace(newComponent, oldComponent) {
-    if (!(newComponent instanceof AbstractView && oldComponent instanceof AbstractView)) {
-      throw new Error('Can replace only components');
-    }
-
-    const newElement = newComponent.element;
-    const oldElement = oldComponent.element;
-
-    const parent = oldElement.parentElement;
-
-    if (parent === null) {
-      throw new Error('Parent element doesn\'t exist');
-    }
-
-    parent.replaceChild(newElement, oldElement);
-  }
-
-  static remove(component) {
-    if (component === null) {
-      return;
-    }
-
-    if (!(component instanceof AbstractView)) {
-      throw new Error('Can remove only components');
-    }
-
-    component.element.remove();
-    component.removeElement();
-  }
-
-  static createElement(template) {
-    const newElement = document.createElement('div');
-    newElement.innerHTML = template;
-
-    return newElement.firstElementChild;
-  }
 }
-
-/**
- * Функция, которая будет вызвана методом shake после завершения анимации
- * @callback shakeCallback
- */

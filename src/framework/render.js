@@ -13,7 +13,7 @@ const RenderPosition = {
  * @param {string} template Разметка в виде строки
  * @returns {HTMLElement} Созданный элемент
  */
-function createElement(template) {
+export function createElement(template) {
   const newElement = document.createElement('div');
   newElement.innerHTML = template;
 
@@ -26,7 +26,7 @@ function createElement(template) {
  * @param {HTMLElement} container Элемент в котором будет отрисован компонент
  * @param {string} place Позиция компонента относительно контейнера. По умолчанию - `beforeend`
  */
-function render(component, container, place = RenderPosition.BEFOREEND) {
+export function render(component, container, place = RenderPosition.BEFOREEND) {
   if (!(component instanceof AbstractView)) {
     throw new Error('Can render only components');
   }
@@ -76,5 +76,3 @@ function remove(component) {
   component.element.remove();
   component.removeElement();
 }
-
-export { RenderPosition, createElement, render, replace, remove };

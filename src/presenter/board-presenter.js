@@ -35,7 +35,7 @@ class BoardPresenter {
           replaceElement(this.waypointTag[i].element, editPointForm.element);
         });
         editPointForm.element.querySelector('.event__reset-btn').addEventListener('click', () => {
-          editPointForm.element.remove();
+          editPointForm.remove();
           amountPoints--;
           if(amountPoints === 0) {
             render(new Message(), this.tripEvents);

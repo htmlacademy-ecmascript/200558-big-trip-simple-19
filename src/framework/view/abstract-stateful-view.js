@@ -48,5 +48,5 @@ export default class AbstractStatefulView extends AbstractView {
     parent.replaceChild(newElement, prevElement);
 
     this._restoreHandlers();
-  }
+  } 
 }
