@@ -30,12 +30,13 @@ class BoardPresenter {
       this.waypointTag[i].addClickListener(() => {
         const editPointForm = new EditPoint(mockPoints[i],data);
         replaceElement(editPointForm.element,this.waypointTag[i].element);
-        editPointForm.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
+        editPointForm.addSubmitListener((evt) => {
           evt.preventDefault();
           replaceElement(this.waypointTag[i].element, editPointForm.element);
         });
-        editPointForm.element.querySelector('.event__reset-btn').addEventListener('click', () => {
+        editPointForm.addClickListener(() => {
           editPointForm.remove();
+          console.log('remove()');
           amountPoints--;
           if(amountPoints === 0) {
             render(new Message(), this.tripEvents);

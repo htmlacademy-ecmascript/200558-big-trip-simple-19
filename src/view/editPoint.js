@@ -1,6 +1,7 @@
 import {createElement} from '../render.js';
 import {destinations} from '../model/model.js';
-import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import AbstractView from '../framework/view/abstract-view.js';
+import dayjs from 'dayjs';
 function editPointTemplate (options,data) {
   console.log('options=',options,'data=',data);
   let startTime = dayjs(options.dateFrom).format('hh:mm'),
@@ -149,12 +150,19 @@ function editPointTemplate (options,data) {
   markup = markup.replace('event__offer-selector',offersMarkup);
   return markup;
 }
-class editPoint extends AbstractStatefulView {
+class editPoint extends AbstractView {
   constructor(options,data) {
     super();
     this.options = options;
     this.data = data;
     this.template = editPointTemplate(this.options,this.data);
+  }
+  addSubmitListener(callback) {
+    this.element.querySelector('.event--edit').addEventListener('submit', callback);
+
+  }
+  addClickListener(callback) {
+    this.element.querySelector('.event__reset-btn').addEventListener('click', callback);  
   }
 }
 export default editPoint;

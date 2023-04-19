@@ -1,5 +1,6 @@
 import {createElement} from '../render.js';
 import AbstractView from '../framework/view/abstract-view.js';
+import dayjs from 'dayjs';
 function getWaypointTemplate(destinations, mockPoints) {
   console.log('mockPoints.dateFrom=',mockPoints.dateFrom);
   console.log('mockPoints.dateTo=',mockPoints.dateTo);

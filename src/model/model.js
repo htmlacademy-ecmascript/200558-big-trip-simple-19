@@ -3,10 +3,7 @@ function getRandom(min, max) {
 }
 let array = ['taxi','bus','train','ship','drive','flight','sightseeing','restaurant'];
 function getRandomType() {
-  let random = getRandom(0, array.length - 1);
-  let type = array[random];
-  array.splice(random,1);
-  return type;
+  return array[getRandom(0, array.length - 1)];
 }
 function getRandomPrice() {
   return getRandom(10,1000);
