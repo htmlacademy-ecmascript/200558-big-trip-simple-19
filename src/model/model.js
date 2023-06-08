@@ -37,16 +37,10 @@ function getRandomDateFromTo() {
   toHour = fromHour + getRandom(1,10);
   toMin = fromMin + getRandom(5,60);
   toDay = fromDay + getRandom(1,2);
-  console.log('toMin=',toMin);
-  console.log('toHour=',toHour);
   let date = new Date(2023,3,toDay,toHour,toMin);
-  console.log('date=',date);
   toDay = date.getDate();
-  console.log('date.getDate()=',date.getDate());
-  console.log('toDay=',toDay);
   toHour = date.getHours(); 
   toMin = date.getMinutes();
-  console.log('toMin=',toMin);
   toDay = numberFormat(toDay);
   toHour = numberFormat(toHour);
   toMin = numberFormat(toMin);
@@ -207,6 +201,133 @@ export const data = [
     ]
   },
 ];
+// export const destinations = [
+//   {
+//     id: 1,
+//     description: 'Order Uber +€  ',
+//     name: 'Chamonix',
+//     pictures: [
+//       {
+//         src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+//         description: 'forest'
+//       }
+//     ]
+//   },
+//   {
+//     id: 2,
+//     description: 'Add luggage +€  50 Switch to comfort +€  ',
+//     name: 'Geneva',
+//     pictures: [
+//       {
+//         src: 'http://picsum.photos/300/200?r=0.0762563005163318',
+//         description: 'Hedgehog',
+//       }
+//     ]
+//   },
+//   {
+//     id: 3,
+//     description: 'Offers: Rent a car +€  ',
+//     name: 'Chamonix',
+//     pictures: [
+//       {
+//         src: 'http://picsum.photos/300/200?r=0.0762563005163319',
+//         description: 'mountain'
+//       }
+//     ]
+//   }
+// ];
+// export const mockPoints = [
+//   {
+//     id: 1,
+//     type: getRandomType(),
+//     offers: [0, 1],
+//     destination: 2,
+//     basePrice: getRandomPrice(),
+//     dateFrom: getRandomDateFrom(),
+//     dateTo: getRandomDateFromTo(),
+//   },
+//   {
+//     id: 2,
+//     type: getRandomType(),
+//     offers: [1, 2],
+//     destination: 1,
+//     basePrice: getRandomPrice(),
+//     dateFrom: getRandomDateFrom(),
+//     dateTo: getRandomDateFromTo()
+//   },
+//   {
+//     id: 3,
+//     type: getRandomType(),
+//     offers: [0,2,3],
+//     destination: 1,
+//     basePrice: getRandomPrice(),
+//     dateFrom: getRandomDateFrom(),
+//     dateTo: getRandomDateFromTo()
+//   },
+//   {
+//     id: 4,
+//     type: getRandomType(),
+//     offers: [0, 3],
+//     destination: 2,
+//     basePrice: getRandomPrice(),
+//     dateFrom: getRandomDateFrom(),
+//     dateTo: getRandomDateFromTo()
+//   },
+//   {
+//     id: 5,
+//     type: getRandomType(),
+//     offers: [0,1],
+//     destination: 3,
+//     basePrice: getRandomPrice(),
+//     dateFrom: getRandomDateFrom(),
+//     dateTo: getRandomDateFromTo()
+//   },
+//   {
+//     id: 6,
+//     type: getRandomType(),
+//     offers: [1],
+//     destination: 1,
+//     basePrice: getRandomPrice(),
+//     dateFrom: getRandomDateFrom(),
+//     dateTo: getRandomDateFromTo()
+//   },
+//   {
+//     id: 7,
+//     type: getRandomType(),
+//     offers: [],
+//     destination: 3,
+//     basePrice: getRandomPrice(),
+//     dateFrom: getRandomDateFrom(),
+//     dateTo: getRandomDateFromTo()
+//   },
+//   {
+//     id: 8,
+//     type: getRandomType(),
+//     offers: [0,1],
+//     destination: 2,
+//     basePrice: getRandomPrice(),
+//     dateFrom: getRandomDateFrom(),
+//     dateTo: getRandomDateFromTo()
+//   },
+//   {
+//     id: 9,
+//     type: getRandomType(),
+//     offers: [],
+//     destination: 1,
+//     basePrice: getRandomPrice(),
+//     dateFrom: getRandomDateFrom(),
+//     dateTo: getRandomDateFromTo()
+//   },
+//   {
+//     id: 10,
+//     type: getRandomType(),
+//     offers: [1, 2, 3],
+//     destination: 1,
+//     basePrice: getRandomPrice(),
+//     dateFrom: getRandomDateFrom(),
+//     dateTo: getRandomDateFromTo()
+//   }
+// ];
 export const destinations = [
   {
     id: 1,
@@ -245,98 +366,58 @@ export const destinations = [
 export const mockPoints = [
   {
     id: 1,
-    type: getRandomType(),
     offers: [0, 1],
     destination: 2,
-    basePrice: getRandomPrice(),
-    dateFrom: getRandomDateFrom(),
-    dateTo: getRandomDateFromTo(),
   },
   {
     id: 2,
-    type: getRandomType(),
     offers: [1, 2],
     destination: 1,
-    basePrice: getRandomPrice(),
-    dateFrom: getRandomDateFrom(),
-    dateTo: getRandomDateFromTo()
   },
   {
     id: 3,
-    type: getRandomType(),
     offers: [0,2,3],
     destination: 1,
-    basePrice: getRandomPrice(),
-    dateFrom: getRandomDateFrom(),
-    dateTo: getRandomDateFromTo()
   },
   {
     id: 4,
-    type: getRandomType(),
     offers: [0, 3],
     destination: 2,
-    basePrice: getRandomPrice(),
-    dateFrom: getRandomDateFrom(),
-    dateTo: getRandomDateFromTo()
   },
   {
     id: 5,
-    type: getRandomType(),
     offers: [0,1],
     destination: 3,
-    basePrice: getRandomPrice(),
-    dateFrom: getRandomDateFrom(),
-    dateTo: getRandomDateFromTo()
   },
   {
     id: 6,
-    type: getRandomType(),
     offers: [1],
     destination: 1,
-    basePrice: getRandomPrice(),
-    dateFrom: getRandomDateFrom(),
-    dateTo: getRandomDateFromTo()
   },
   {
     id: 7,
-    type: getRandomType(),
     offers: [],
     destination: 3,
-    basePrice: getRandomPrice(),
-    dateFrom: getRandomDateFrom(),
-    dateTo: getRandomDateFromTo()
   },
   {
     id: 8,
-    type: getRandomType(),
     offers: [0,1],
     destination: 2,
-    basePrice: getRandomPrice(),
-    dateFrom: getRandomDateFrom(),
-    dateTo: getRandomDateFromTo()
   },
   {
     id: 9,
-    type: getRandomType(),
     offers: [],
     destination: 1,
-    basePrice: getRandomPrice(),
-    dateFrom: getRandomDateFrom(),
-    dateTo: getRandomDateFromTo()
   },
   {
     id: 10,
-    type: getRandomType(),
     offers: [1, 2, 3],
     destination: 1,
-    basePrice: getRandomPrice(),
-    dateFrom: getRandomDateFrom(),
-    dateTo: getRandomDateFromTo()
   }
 ];
-// for(let i = 0; i < mockPoints.length; i++) {
-//   mockPoints[i].basePrice = getRandomPrice();
-//   mockPoints[i].dateFrom = getRandomDateFrom();
-//   mockPoints[i].dateTo = getRandomDateFromTo();
-// }
-// console.log('mockPoints=',mockPoints);
+for(let el of mockPoints) {
+  el.type = getRandomType();
+  el.basePrice = getRandomPrice();
+  el.dateFrom = getRandomDateFrom();
+  el.dateTo = getRandomDateFromTo();
+}

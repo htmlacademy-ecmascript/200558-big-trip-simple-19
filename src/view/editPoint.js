@@ -2,12 +2,11 @@ import {createElement} from '../render.js';
 import {destinations} from '../model/model.js';
 import AbstractView from '../framework/view/abstract-view.js';
 import dayjs from 'dayjs';
-function editPointTemplate (options,data) {
-  console.log('options=',options,'data=',data);
+function editPointTemplate (options,data,i) {
   let startTime = dayjs(options.dateFrom).format('hh:mm'),
       endTime = dayjs(options.dateTo).format('hh:mm');
-  let markup = `<li class="trip-events__item">
-              <form class="event event--edit" action="#" method="post">
+  let markup = `<li class="trip-events__item"> 
+              <form class="event event--edit" action="#" method="post"  data-index='${i}'>
                 <header class="event__header">
                   <div class="event__type-wrapper">
                     <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -136,26 +135,15 @@ function editPointTemplate (options,data) {
                   </label>
                 </div>
                 `);}).join('');
-  // for(let i in data.offers) {
-    // offers += `<div class="event__offear-selector">
-    //               <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-${i}" type="checkbox" name="event-offer-comfort" checked="">
-    //               <label class="event__offer-label" for="event-offer-comfort-${i}">
-    //                 <span class="event__offer-title">${data.offers[i].title}</span>
-    //                 +€&nbsp;
-    //                 <span class="event__offer-price">${data.offers[i].price}</span>
-    //               </label>
-    //             </div>
-    //             `;
-  // }
   markup = markup.replace('event__offer-selector',offersMarkup);
   return markup;
 }
 class editPoint extends AbstractView {
-  constructor(options,data) {
+  constructor(options,data,i) {
     super();
     this.options = options;
     this.data = data;
-    this.template = editPointTemplate(this.options,this.data);
+    this.template = editPointTemplate(this.options,this.data,i+1);
   }
   addSubmitListener(callback) {
     this.element.querySelector('.event--edit').addEventListener('submit', callback);

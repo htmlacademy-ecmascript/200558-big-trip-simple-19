@@ -52,7 +52,8 @@ export default class AbstractView {
     this.#element = null;
   }
   remove() {
-    this.element.remove();
+    console.log('this.element=',this.element);
+    this.element.parentNode.removeChild(this.element);
   }
   /**
    * Метод, реализующий эффект "покачивания головой"

@@ -1,14 +1,18 @@
 import {createElement} from '../render.js';
 import AbstractView from '../framework/view/abstract-view.js';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 function getWaypointTemplate(destinations, mockPoints) {
   console.log('mockPoints.dateFrom=',mockPoints.dateFrom);
   console.log('mockPoints.dateTo=',mockPoints.dateTo);
-  let startTime = dayjs(mockPoints.dateFrom).format('hh:mm');
-  let endTime = dayjs(mockPoints.dateTo).format('hh:mm');
-  return `<li class="trip-events__item">
+  let startTime = dayjs(mockPoints.dateFrom).utc().format('HH:mm');
+  let endTime = dayjs(mockPoints.dateTo).utc().format('HH:mm');
+  console.log('startTime=',startTime);
+  console.log('endTime=',endTime);
+  return `<li class="trip-events__item" data-id="${mockPoints.id}">
               <div class="event">
-                <time class="event__date" datetime="2019-03-18">MAR ${mockPoints.dateFrom.substr(8,2)}</time>
+                <time class="event__date" datetime="${mockPoints.dateFrom.substr(0,10)}">MAR ${mockPoints.dateFrom.substr(8,2)}</time>
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${mockPoints.type}.png" alt="${destinations.find((element) => element.id === mockPoints.destination).pictures[0].src}">
                 </div>
