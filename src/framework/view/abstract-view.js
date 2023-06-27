@@ -44,17 +44,20 @@ export default class AbstractView {
   get template() {
     throw new Error('Abstract method not implemented: get template');
   }
+
   set template(string) {
     this.#template = string;
   }
+
   /** Метод для удаления элемента */
   removeElement() {
     this.#element = null;
   }
+
   remove() {
-    console.log('this.element=',this.element);
     this.element.parentNode.removeChild(this.element);
   }
+
   /**
    * Метод, реализующий эффект "покачивания головой"
    * @param {shakeCallback} [callback] Функция, которая будет вызвана после завершения анимации
@@ -66,4 +69,5 @@ export default class AbstractView {
       callback?.();
     }, SHAKE_ANIMATION_TIMEOUT);
   }
+
 }

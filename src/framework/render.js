@@ -34,7 +34,6 @@ export function render(component, container, place = RenderPosition.BEFOREEND) {
   if (container === null) {
     throw new Error('Container element doesn\'t exist');
   }
-  console.log('component=',component);
   container.insertAdjacentElement(place, component.element);
 }
 
@@ -43,36 +42,7 @@ export function render(component, container, place = RenderPosition.BEFOREEND) {
  * @param {AbstractView} newComponent Компонент, который нужно показать
  * @param {AbstractView} oldComponent Компонент, который нужно скрыть
  */
-function replace(newComponent, oldComponent) {
-  if (!(newComponent instanceof AbstractView && oldComponent instanceof AbstractView)) {
-    throw new Error('Can replace only components');
-  }
-
-  const newElement = newComponent.element;
-  const oldElement = oldComponent.element;
-
-  const parent = oldElement.parentElement;
-
-  if (parent === null) {
-    throw new Error('Parent element doesn\'t exist');
-  }
-
-  parent.replaceChild(newElement, oldElement);
-}
-
 /**
  * Функция для удаления компонента
  * @param {AbstractView} component Компонент, который нужно удалить
  */
-function remove(component) {
-  if (component === null) {
-    return;
-  }
-
-  if (!(component instanceof AbstractView)) {
-    throw new Error('Can remove only components');
-  }
-
-  component.element.remove();
-  component.removeElement();
-}

@@ -1,3 +1,3 @@
 export function randomArray(array) {
-  return array[Math.floor(Math.random() * max)];	
+  return array[Math.floor(Math.random() * array.length)];
 }

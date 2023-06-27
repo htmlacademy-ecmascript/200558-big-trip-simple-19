@@ -3,6 +3,5 @@ const containerFilters = document.querySelector('.trip-controls__filters');
 const tripFilters = document.createElement('form');
 tripFilters.className = 'trip-filters';
 containerFilters.appendChild(tripFilters);
-console.log('tripFilters=',tripFilters);
-let boardPresenter = new BoardPresenter({boardContainer:tripFilters});
+const boardPresenter = new BoardPresenter({boardContainer:tripFilters});
 boardPresenter.init();

@@ -1,31 +1,26 @@
-import {createElement} from '../render.js';
 import AbstractView from '../framework/view/abstract-view.js';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
-function getWaypointTemplate(destinations, mockPoints) {
-  console.log('mockPoints.dateFrom=',mockPoints.dateFrom);
-  console.log('mockPoints.dateTo=',mockPoints.dateTo);
-  let startTime = dayjs(mockPoints.dateFrom).utc().format('HH:mm');
-  let endTime = dayjs(mockPoints.dateTo).utc().format('HH:mm');
-  console.log('startTime=',startTime);
-  console.log('endTime=',endTime);
-  return `<li class="trip-events__item" data-id="${mockPoints.id}">
+function getWaypointTemplate(destinations, mockPoint) {
+  const startTime = dayjs(mockPoint.dateFrom).utc().format('HH:mm');
+  const endTime = dayjs(mockPoint.dateTo).utc().format('HH:mm');
+  return `<li class="trip-events__item" data-id="${mockPoint.id}">
               <div class="event">
-                <time class="event__date" datetime="${mockPoints.dateFrom.substr(0,10)}">MAR ${mockPoints.dateFrom.substr(8,2)}</time>
+                <time class="event__date" datetime="2019-07-${dayjs(mockPoint.dateFrom).format('DD')}">MAR ${mockPoint.dateFrom.substr(8,2)}</time>
                 <div class="event__type">
-                  <img class="event__type-icon" width="42" height="42" src="img/icons/${mockPoints.type}.png" alt="${destinations.find((element) => element.id === mockPoints.destination).pictures[0].src}">
+                  <img class="event__type-icon" width="42" height="42" src="img/icons/${mockPoint.type}.png" alt="${destinations.find((element) => element.id === mockPoint.destination).pictures[0].src}">
                 </div>
-                <h3 class="event__title">${mockPoints.type} ${destinations.find((element) => element.id === mockPoints.destination).name}</h3>
+                <h3 class="event__title">${mockPoint.type} ${destinations.find((element) => element.id === mockPoint.destination).name}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
-                    <time class="event__start-time" datetime="${mockPoints.dateFrom}">${startTime}</time>
+                    <time class="event__start-time" datetime="${mockPoint.dateFrom}">${startTime}</time>
                     —
-                    <time class="event__end-time" datetime="${mockPoints.dateTo}">${endTime}</time>
+                    <time class="event__end-time" datetime="${mockPoint.dateTo}">${endTime}</time>
                   </p>
                 </div>
                 <p class="event__price">
-                  €&nbsp;<span class="event__price-value">${mockPoints.basePrice}</span>
+                  €&nbsp;<span class="event__price-value">${mockPoint.basePrice}</span>
                 </p>
                 <h4 class="visually-hidden">Offers:</h4>
                   <ul class="event__selected-offers">
@@ -41,13 +36,14 @@ function getWaypointTemplate(destinations, mockPoints) {
               </div>
             </li>`;
 }
-class Waypoint extends AbstractView { 
-  constructor(destinations,mockPoints) {
+class Waypoint extends AbstractView {
+  constructor(destinations,mockPoint) {
     super();
     this.destinations = destinations;
-    this.mockPoints = mockPoints;
-    this.template = getWaypointTemplate(this.destinations,this.mockPoints);
+    this.mockPoint = mockPoint;
+    this.template = getWaypointTemplate(this.destinations,this.mockPoint);
   }
+
   addClickListener(callback) {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', callback);
   }

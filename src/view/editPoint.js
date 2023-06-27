@@ -1,10 +1,9 @@
-import {createElement} from '../render.js';
 import {destinations} from '../model/model.js';
 import AbstractView from '../framework/view/abstract-view.js';
 import dayjs from 'dayjs';
-function editPointTemplate (options,data,i) {
-  let startTime = dayjs(options.dateFrom).format('hh:mm'),
-      endTime = dayjs(options.dateTo).format('hh:mm');
+function editPointTemplate(options,data,i) {
+  const startTime = dayjs(options.dateFrom).format('hh:mm'),
+    endTime = dayjs(options.dateTo).format('hh:mm');
   let markup = `<li class="trip-events__item"> 
               <form class="event event--edit" action="#" method="post"  data-index='${i}'>
                 <header class="event__header">
@@ -143,14 +142,17 @@ class editPoint extends AbstractView {
     super();
     this.options = options;
     this.data = data;
-    this.template = editPointTemplate(this.options,this.data,i+1);
+    this.template = editPointTemplate(this.options,this.data,i + 1);
   }
+
   addSubmitListener(callback) {
     this.element.querySelector('.event--edit').addEventListener('submit', callback);
 
   }
+
   addClickListener(callback) {
-    this.element.querySelector('.event__reset-btn').addEventListener('click', callback);  
+
+    this.element.querySelector('.event__reset-btn').addEventListener('click', callback);
   }
 }
 export default editPoint;
