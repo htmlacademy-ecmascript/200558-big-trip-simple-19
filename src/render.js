@@ -8,11 +8,11 @@ const RenderPosition = {
 export function createElement(template) {
   const newElement = document.createElement('div');
   newElement.innerHTML = template;
-
   return newElement.firstElementChild;
 }
-
 export function render(component, container, place = RenderPosition.BEFOREEND) {
-  container.insertAdjacentElement(place, component.getElement());
+  container.insertAdjacentElement(place, component.element);
 }
-
+export function replaceElement(newElement,oldElement) {
+  oldElement.parentNode.replaceChild(newElement,oldElement);
+}

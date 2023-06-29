@@ -1,28 +1,33 @@
-import {createElement} from '../render.js';
-function WaypointTemplate() {
-  return `<li class="trip-events__item">
+import AbstractView from '../framework/view/abstract-view.js';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
+function getWaypointTemplate(destinations, mockPoint) {
+  const startTime = dayjs(mockPoint.dateFrom).utc().format('HH:mm');
+  const endTime = dayjs(mockPoint.dateTo).utc().format('HH:mm');
+  return `<li class="trip-events__item" data-id="${mockPoint.id}">
               <div class="event">
-                <time class="event__date" datetime="2019-03-18">MAR 18</time>
+                <time class="event__date" datetime="2019-07-${dayjs(mockPoint.dateFrom).format('DD')}">MAR ${mockPoint.dateFrom.substr(8,2)}</time>
                 <div class="event__type">
-                  <img class="event__type-icon" width="42" height="42" src="img/icons/check-in.png" alt="Event type icon">
+                  <img class="event__type-icon" width="42" height="42" src="img/icons/${mockPoint.type}.png" alt="${destinations.find((element) => element.id === mockPoint.destination).pictures[0].src}">
                 </div>
-                <h3 class="event__title">Check-in Chamonix</h3>
+                <h3 class="event__title">${mockPoint.type} ${destinations.find((element) => element.id === mockPoint.destination).name}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
-                    <time class="event__start-time" datetime="2019-03-18T12:25">16:20</time>
+                    <time class="event__start-time" datetime="${mockPoint.dateFrom}">${startTime}</time>
                     —
-                    <time class="event__end-time" datetime="2019-03-18T13:35">17:00</time>
+                    <time class="event__end-time" datetime="${mockPoint.dateTo}">${endTime}</time>
                   </p>
                 </div>
                 <p class="event__price">
-                  €&nbsp;<span class="event__price-value">600</span>
+                  €&nbsp;<span class="event__price-value">${mockPoint.basePrice}</span>
                 </p>
                 <h4 class="visually-hidden">Offers:</h4>
-                <ul class="event__selected-offers">
+                  <ul class="event__selected-offers">
                   <li class="event__offer">
                     <span class="event__offer-title">Add breakfast</span>
                     +€&nbsp;
-                    <span class="event__offer-price">50</span>
+                    <span class="event__offer-price">500</span>
                   </li>
                 </ul>
                 <button class="event__rollup-btn" type="button">
@@ -31,21 +36,16 @@ function WaypointTemplate() {
               </div>
             </li>`;
 }
-class Waypoint {
-  getTemplate() {
-    return WaypointTemplate();
+class Waypoint extends AbstractView {
+  constructor(destinations,mockPoint) {
+    super();
+    this.destinations = destinations;
+    this.mockPoint = mockPoint;
+    this.template = getWaypointTemplate(this.destinations,this.mockPoint);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  addClickListener(callback) {
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', callback);
   }
 }
 export default Waypoint;

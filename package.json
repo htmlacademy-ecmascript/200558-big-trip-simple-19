@@ -20,6 +20,7 @@
     "@babel/preset-env": "7.20.2",
     "babel-loader": "9.1.0",
     "copy-webpack-plugin": "11.0.0",
+    "css-loader": "^6.7.3",
     "eslint": "8.28.0",
     "eslint-config-htmlacademy": "8.0.0",
     "webpack": "5.75.0",
@@ -28,5 +29,8 @@
   },
   "engines": {
     "node": "18"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.7"
   }
 }
