@@ -1,3 +1,47 @@
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+const array = ['taxi','bus','train','ship','drive','flight','sightseeing','restaurant'];
+function getRandomType() {
+  return array[getRandom(0, array.length - 1)];
+}
+function getRandomPrice() {
+  return getRandom(10,1000);
+}
+let fromHour,
+  fromMin,
+  toHour,
+  toMin,
+  fromDay,
+  toDay;
+function numberFormat(number) {
+  return number < 10 ? '0' + number : number;
+}
+function getRandomDateFrom() {
+  fromDay = getRandom(1,31);
+  fromHour = getRandom(10,15);
+  fromMin = getRandom(0,60);
+  const stringDay = numberFormat(fromDay),
+    stringHour = numberFormat(fromHour),
+    stringMin = numberFormat(fromMin);
+  return `2019-07-${stringDay}T${stringHour}:${stringMin}:56.845Z`;
+}
+function getRandomDateFromTo() {
+  //((((fromDay * 24 + fromHour) * 60 + fromMin)*60) + getRandom(1000000, 10000000))
+  toHour = fromHour + getRandom(1,10);
+  toMin = fromMin + getRandom(5,60);
+  toDay = fromDay + getRandom(1,2);
+  const date = new Date(2023,3,toDay,toHour,toMin);
+  toDay = date.getDate();
+  toHour = date.getHours();
+  toMin = date.getMinutes();
+  toDay = numberFormat(toDay);
+  toHour = numberFormat(toHour);
+  toMin = numberFormat(toMin);
+  //console.log(`2019-07-${toDay}T${toHour}:${toMin}:56.845Z`);
+
+  return `2019-07-${toDay}T${toHour}:${toMin}:56.845Z`;
+}
 export const data = [
   {
     type: 'taxi',
@@ -5,17 +49,14 @@ export const data = [
       {
         id: 1,
         title: 'Add luggage 1.1',
-        price: 30
       },
       {
         id: 2,
         title: 'Switch to comfort class 1.2',
-        price: 100
       },
       {
         id: 3,
         title: 'Add meal 1.3',
-        price: 15
       }
     ]
   },
@@ -25,22 +66,18 @@ export const data = [
       {
         id: 1,
         title: 'Upgrade to a business class 2.1',
-        price: 344
       },
       {
         id: 2,
         title: 'Add luggage 2.2',
-        price: 15
       },
       {
         id: 3,
         title: 'Add meal 2.3',
-        price: 90
       },
       {
         id: 4,
         title: 'Add meal 2.4',
-        price: 16
       }
 
     ]
@@ -51,22 +88,18 @@ export const data = [
       {
         id: 1,
         title: 'Upgrade to a business class 3.1',
-        price: 56
       },
       {
         id: 2,
         title: 'Add luggage 3.2',
-        price: 76
       },
       {
         id: 3,
         title: 'Add meal 3.3',
-        price: 1
       },
       {
         id: 3,
         title: 'Add meal 3.4',
-        price: 9
       }
     ]
   },
@@ -76,22 +109,18 @@ export const data = [
       {
         id: 1,
         title: 'Upgrade to a business class 4.1',
-        price: 678
       },
       {
         id: 2,
         title: 'Add luggage 4.2',
-        price: 111
       },
       {
         id: 3,
         title: 'Add meal 4.3',
-        price: 909
       },
       {
         id: 3,
         title: 'Add meal 4.4',
-        price: 965
       }
     ]
   },
@@ -101,12 +130,11 @@ export const data = [
       {
         id: 1,
         title: 'Upgrade to a business class 5.1',
-        price: 569
+
       },
       {
         id: 2,
         title: 'Add luggage 5.2',
-        price: 55
       },
     ]
   },
@@ -116,17 +144,6 @@ export const data = [
       {
         id: 1,
         title: 'Upgrade to a business class 6.1',
-        price: 66
-      },
-    ]
-  },
-  {
-    type: 'check-in',
-    offers:[
-      {
-        id: 1,
-        title: 'Upgrade to a business class 6.2',
-        price: 135
       },
     ]
   },
@@ -135,19 +152,8 @@ export const data = [
     offers:[
       {
         id: 1,
-        title: 'Upgrade to a business class 7.1',
-        price: 886
+        title: 'Upgrade to a business class 6.2',
       },
-      {
-        id: 2,
-        title: 'Add luggage 7.2',
-        price: 351
-      },
-      {
-        id: 3,
-        title: 'Add meal 7.3',
-        price: 531
-      }
     ]
   },
   {
@@ -155,14 +161,16 @@ export const data = [
     offers:[
       {
         id: 1,
-        title: 'Upgrade to a business class 8.1',
-        price: 321
+        title: 'Upgrade to a business class 7.1',
       },
       {
         id: 2,
-        title: 'Add luggage 8.2',
-        price: 21
+        title: 'Add luggage 7.2',
       },
+      {
+        id: 3,
+        title: 'Add meal 7.3',
+      }
     ]
   },
 ];
@@ -204,92 +212,63 @@ export const destinations = [
 export const mockPoints = [
   {
     id: 1,
-    type: 'bus',
     offers: [0, 1],
     destination: 2,
-    basePrice: 100,
-    dateFrom: '2019-07-18T10:23:56.845Z',
-    dateTo: '2019-07-11T15:32:13.375Z'
   },
   {
     id: 2,
-    type: 'train',
     offers: [1, 2],
     destination: 1,
-    basePrice: 999,
-    dateFrom: '2019-07-18T19:45:56.845Z',
-    dateTo: '2019-07-11T11:54:14.375Z'
   },
   {
     id: 3,
-    type: 'ship',
     offers: [0,2,3],
     destination: 1,
-    basePrice: 666,
-    dateFrom: '2019-07-18T12:44:56.845Z',
-    dateTo: '2019-07-11T13:12:08.375Z'
   },
   {
     id: 4,
-    type: 'drive',
     offers: [0, 3],
     destination: 2,
-    basePrice: 323,
-    dateFrom: '2019-07-18T14:09:56.845Z',
-    dateTo: '2019-07-11T15:01:13.375Z'
   },
   {
     id: 5,
-    type: 'flight',
     offers: [0,1],
     destination: 3,
-    basePrice: 232,
-    dateFrom: '2019-07-19T16:58:56.845Z',
-    dateTo: '2019-07-11T17:41:13.375Z'
   },
   {
     id: 6,
-    type: 'check-in',
     offers: [1],
     destination: 1,
-    basePrice: 101,
-    dateFrom: '2019-07-19T18:34:56.845Z',
-    dateTo: '2019-07-11T19:10:13.375Z'
   },
   {
     id: 7,
-    type: 'sightseeing',
     offers: [],
     destination: 3,
-    basePrice: 202,
-    dateFrom: '2019-07-19T13:06:56.845Z',
-    dateTo: '2019-07-11T12:12:12.375Z'
   },
   {
     id: 8,
-    type: 'restaurant',
     offers: [0,1],
     destination: 2,
-    basePrice: 631,
-    dateFrom: '2019-07-20T10:11:56.845Z',
-    dateTo: '2019-07-11T12:13:13.375Z'
   },
   {
     id: 9,
-    type: 'taxi',
     offers: [],
     destination: 1,
-    basePrice: 291,
-    dateFrom: '2019-07-20T19:10:56.845Z',
-    dateTo: '2019-07-11T21:20:00.375Z'
   },
   {
     id: 10,
-    type: 'taxi',
     offers: [1, 2, 3],
     destination: 1,
-    basePrice: 291,
-    dateFrom: '2019-07-20T19:10:56.845Z',
-    dateTo: '2019-07-11T21:20:00.375Z'
   }
 ];
+for(const el of mockPoints) {
+  el.type = getRandomType();
+  el.basePrice = getRandomPrice();
+  el.dateFrom = getRandomDateFrom();
+  el.dateTo = getRandomDateFromTo();
+}
+for(const da of data) {
+  for(const offers of da.offers) {
+    offers.price = getRandomPrice();
+  }
+}
