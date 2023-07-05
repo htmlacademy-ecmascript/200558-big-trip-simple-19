@@ -15,7 +15,7 @@ let fromHour,
   fromDay,
   toDay;
 function numberFormat(number) {
-  return number < 10 ? '0' + number : number;
+  return number < 10 ? `0${number}` : number;
 }
 function getRandomDateFrom() {
   fromDay = getRandom(1,31);
