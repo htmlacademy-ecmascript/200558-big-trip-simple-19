@@ -1,12 +1,17 @@
-import AppPresenter from './bord-presenter.js';
-class sortPresenter {
-  constructor(boardContainer) {
+
+import FiltersWapoint from '../view/filters.js';
+import SortingWaypoint from '../view/sorting.js';
+import {render} from '../render.js';
+
+class SortPresenter {
+  constructor(boardContainer,tripEvents) {
     this.boardContainer = boardContainer;
+    this.tripEvents = tripEvents;
   }
 
   init() {
-    const appPresenter = new AppPresenter({ boardContainer: this.boardContainer });
-    appPresenter.init();
+    render(new FiltersWapoint(), this.boardContainer);
+    render(new SortingWaypoint(), this.tripEvents,'afterbegin');
   }
 
   change(order) {
@@ -24,8 +29,9 @@ class sortPresenter {
   set onChange(callBack) {
     const sortInput = document.querySelectorAll('.trip-sort__input');
     for (const el of sortInput) {
-      el.addEventListener('input', () => callBack(el));
+      el.addEventListener('input', () => callBack(el.value));
     }
   }
 }
-export default sortPresenter;
+
+export default SortPresenter;
