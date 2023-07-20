@@ -1,4 +1,4 @@
-import { render, replaceElement } from '../render.js';
+import { render, replaceElement } from '../utils.js';
 import Waypoint from '../view/waypoint.js';
 import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/editPoint.js';
@@ -17,7 +17,6 @@ export default class BoardPresenter {
   }
 
   init(waypoints) {
-    // добавить удаление поинтов
     this.waypoints = waypoints;
 
     if (this.waypoints.length === 0) {
@@ -33,13 +32,11 @@ export default class BoardPresenter {
   }
 
   replaceFormToPoint(evt, i) {
-    //evt.preventDefault(); // перенести
     replaceElement(this.waypointTag[i].element, this.editPointForm.element);
     this.#isFormOpen = false;
   }
 
-  #renderPoints(waypoints) {//task на point
-    //const waypointTag = [];
+  #renderPoints(waypoints) {
     this.#isFormOpen = false;
     this.containerWaypoint.element.innerHTML = null;
     this.waypointTag = [];
@@ -53,7 +50,6 @@ export default class BoardPresenter {
 
   onWaypointClick(i) {
     if (this.#isFormOpen) {
-      // debugger;
       this.replaceFormToPoint(null, this.openFormIndex);
     }
     this.editPointForm = new EditPoint(this.waypoints[i], data, i);
@@ -65,11 +61,11 @@ export default class BoardPresenter {
       this.#isFormOpen = false;
       this.waypointTag[i] = undefined;
     });
-    document.onkeydown = (evt) => {
+    document.addEventListener('onkeydown', (evt) => {
       if (evt.key === 'Escape') {
         replaceElement(this.waypointTag[i].element, this.editPointForm.element);
       }
-    };
+    });
     this.#isFormOpen = true;
   }
 

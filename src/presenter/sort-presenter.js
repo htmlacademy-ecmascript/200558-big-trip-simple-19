@@ -1,29 +1,17 @@
 
 import FiltersWapoint from '../view/filters.js';
 import SortingWaypoint from '../view/sorting.js';
-import {render} from '../render.js';
+import { render } from '../utils.js';
 
 class SortPresenter {
-  constructor(boardContainer,tripEvents) {
+  constructor(boardContainer, tripEvents) {
     this.boardContainer = boardContainer;
     this.tripEvents = tripEvents;
   }
 
   init() {
     render(new FiltersWapoint(), this.boardContainer);
-    render(new SortingWaypoint(), this.tripEvents,'afterbegin');
-  }
-
-  change(order) {
-
-    for (const point of order) {
-      let tripEventsItem = document.querySelectorAll('.trip-events__item');
-      tripEventsItem = Array.from(tripEventsItem);
-      const index = tripEventsItem.findIndex((el) => +el.dataset.id === point.id);
-      const tripEventsList = document.querySelector('.trip-events__list');
-      tripEventsItem[index].remove();
-      tripEventsList.appendChild(tripEventsItem[index]);
-    }
+    render(new SortingWaypoint(), this.tripEvents, 'afterbegin');
   }
 
   set onChange(callBack) {

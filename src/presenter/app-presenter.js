@@ -1,8 +1,8 @@
 import { mockPoints } from '../model/model.js';
-import { Sort } from '../view/sorting.js';
+import { SortType } from '../view/sorting.js';
 import BoardPresenter from './board-presenter.js';
 import SortPresenter from './sort-presenter.js';
-
+import { sort } from '../utils.js';
 class AppPresenter {
   constructor({ appContainer }) {
     this.appContainer = appContainer;
@@ -15,25 +15,22 @@ class AppPresenter {
   init() {
     this.sortPresenter.init();
     this.boardPresenter.init(this.waypoints);
-    this.sortPresenter.onChange = (sortType) => this.onSortTypeChange(sortType, this.boardPresenter);
+    this.sortPresenter.onChange = (sortType) => this.onSortTypeChange(sortType);
   }
 
   onSortTypeChange(sortType) {
     let waypointsCopy = [...this.waypoints];
     //вынести в утилита
-    const sort = {
-      min: (object, property) => object.sort((a, b) => a[property] - b[property]),
-    };
     switch (sortType) {
-      case Sort.PRICE:
+      case SortType.PRICE:
         sort.min(mockPoints, 'basePrice');
         break;
 
-      case Sort.DAY:
+      case SortType.DAY:
         mockPoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
         break;
 
-      case Sort.TIME:
+      case SortType.TIME:
         for (const el of mockPoints) {
           const date = new Date(el.dateFrom);
           el.startTime = date.getHours() * 60 + date.getMinutes();
@@ -50,8 +47,6 @@ class AppPresenter {
     }
     waypointsCopy = [...mockPoints];
     if (flag) {
-      // this.sortPresenter.change(mockPoints);
-      // вместо этого boardPresenter.init();
       this.boardPresenter.init(mockPoints);
     }
   }
