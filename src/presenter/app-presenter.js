@@ -20,7 +20,6 @@ class AppPresenter {
 
   onSortTypeChange(sortType) {
     let waypointsCopy = [...this.waypoints];
-    //вынести в утилита
     switch (sortType) {
       case SortType.PRICE:
         sort.min(mockPoints, 'basePrice');
