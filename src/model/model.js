@@ -1,12 +1,12 @@
 function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
-const array = ['taxi','bus','train','ship','drive','flight','sightseeing','restaurant'];
+const array = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'sightseeing', 'restaurant'];
 function getRandomType() {
   return array[getRandom(0, array.length - 1)];
 }
 function getRandomPrice() {
-  return getRandom(10,1000);
+  return getRandom(10, 1000);
 }
 let fromHour,
   fromMin,
@@ -15,37 +15,35 @@ let fromHour,
   fromDay,
   toDay;
 function numberFormat(number) {
-  return number < 10 ? '0' + number : number;
+  return number < 10 ? `0${number}` : number;
 }
 function getRandomDateFrom() {
-  fromDay = getRandom(1,31);
-  fromHour = getRandom(10,15);
-  fromMin = getRandom(0,60);
+  fromDay = getRandom(1, 31);
+  fromHour = getRandom(10, 15);
+  fromMin = getRandom(0, 60);
   const stringDay = numberFormat(fromDay),
     stringHour = numberFormat(fromHour),
     stringMin = numberFormat(fromMin);
   return `2019-07-${stringDay}T${stringHour}:${stringMin}:56.845Z`;
 }
 function getRandomDateFromTo() {
-  //((((fromDay * 24 + fromHour) * 60 + fromMin)*60) + getRandom(1000000, 10000000))
-  toHour = fromHour + getRandom(1,10);
-  toMin = fromMin + getRandom(5,60);
-  toDay = fromDay + getRandom(1,2);
-  const date = new Date(2023,3,toDay,toHour,toMin);
+  toHour = fromHour + getRandom(1, 10);
+  toMin = fromMin + getRandom(5, 60);
+  toDay = fromDay + getRandom(1, 2);
+  const date = new Date(2023, 3, toDay, toHour, toMin);
   toDay = date.getDate();
   toHour = date.getHours();
   toMin = date.getMinutes();
   toDay = numberFormat(toDay);
   toHour = numberFormat(toHour);
   toMin = numberFormat(toMin);
-  //console.log(`2019-07-${toDay}T${toHour}:${toMin}:56.845Z`);
 
   return `2019-07-${toDay}T${toHour}:${toMin}:56.845Z`;
 }
 export const data = [
   {
     type: 'taxi',
-    offers:[
+    offers: [
       {
         id: 1,
         title: 'Add luggage 1.1',
@@ -62,7 +60,7 @@ export const data = [
   },
   {
     type: 'bus',
-    offers:[
+    offers: [
       {
         id: 1,
         title: 'Upgrade to a business class 2.1',
@@ -84,7 +82,7 @@ export const data = [
   },
   {
     type: 'train',
-    offers:[
+    offers: [
       {
         id: 1,
         title: 'Upgrade to a business class 3.1',
@@ -105,7 +103,7 @@ export const data = [
   },
   {
     type: 'ship',
-    offers:[
+    offers: [
       {
         id: 1,
         title: 'Upgrade to a business class 4.1',
@@ -126,7 +124,7 @@ export const data = [
   },
   {
     type: 'drive',
-    offers:[
+    offers: [
       {
         id: 1,
         title: 'Upgrade to a business class 5.1',
@@ -140,7 +138,7 @@ export const data = [
   },
   {
     type: 'flight',
-    offers:[
+    offers: [
       {
         id: 1,
         title: 'Upgrade to a business class 6.1',
@@ -149,7 +147,7 @@ export const data = [
   },
   {
     type: 'sightseeing',
-    offers:[
+    offers: [
       {
         id: 1,
         title: 'Upgrade to a business class 6.2',
@@ -158,7 +156,7 @@ export const data = [
   },
   {
     type: 'restaurant',
-    offers:[
+    offers: [
       {
         id: 1,
         title: 'Upgrade to a business class 7.1',
@@ -222,7 +220,7 @@ export const mockPoints = [
   },
   {
     id: 3,
-    offers: [0,2,3],
+    offers: [0, 2, 3],
     destination: 1,
   },
   {
@@ -232,7 +230,7 @@ export const mockPoints = [
   },
   {
     id: 5,
-    offers: [0,1],
+    offers: [0, 1],
     destination: 3,
   },
   {
@@ -247,7 +245,7 @@ export const mockPoints = [
   },
   {
     id: 8,
-    offers: [0,1],
+    offers: [0, 1],
     destination: 2,
   },
   {
@@ -261,14 +259,14 @@ export const mockPoints = [
     destination: 1,
   }
 ];
-for(const el of mockPoints) {
+for (const el of mockPoints) {
   el.type = getRandomType();
   el.basePrice = getRandomPrice();
   el.dateFrom = getRandomDateFrom();
   el.dateTo = getRandomDateFromTo();
 }
-for(const da of data) {
-  for(const offers of da.offers) {
+for (const da of data) {
+  for (const offers of da.offers) {
     offers.price = getRandomPrice();
   }
 }

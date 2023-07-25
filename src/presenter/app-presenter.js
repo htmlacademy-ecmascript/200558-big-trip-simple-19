@@ -1,84 +1,54 @@
-import {render,replaceElement} from '../render.js';
-import FiltersWapoint from '../view/filters.js';
-import Waypoint from '../view/waypoint.js';
-import SortingWaypoint from '../view/sorting.js';
-import ContainerWaypoint from '../view/waypoint-container.js';
-import EditPoint from '../view/editPoint.js';
-import {data,destinations,mockPoints} from '../model/model.js';
-import Message from '../view/message.js';
+import { mockPoints } from '../model/model.js';
+import { SortType } from '../view/sorting.js';
+import BoardPresenter from './board-presenter.js';
+import SortPresenter from './sort-presenter.js';
+import { sort } from '../utils.js';
 class AppPresenter {
-  constructor({boardContainer}) {
-    this.boardContainer = boardContainer;
+  constructor({ appContainer }) {
+    this.appContainer = appContainer;
     this.tripEvents = document.querySelector('.trip-events');
-    this.containerWaypoint = new ContainerWaypoint();
-    this.waypointTag = [];
+    this.sortPresenter = new SortPresenter(this.appContainer, this.tripEvents);
+    this.boardPresenter = new BoardPresenter(this.tripEvents);
+    this.waypoints = mockPoints;
   }
 
   init() {
-
-    render(new FiltersWapoint(), this.boardContainer);
-    render(new SortingWaypoint(), this.tripEvents);
-    render(this.containerWaypoint,this.tripEvents);
-    this.#renderTask();
-    document.querySelector('body').onkeydown = (evt) => {
-      if(evt.key === 'k') {
-        this.resetPoints();
-      }
-    };
+    this.sortPresenter.init();
+    this.boardPresenter.init(this.waypoints);
+    this.sortPresenter.onChange = (sortType) => this.onSortTypeChange(sortType);
   }
 
-  #renderTask() {
-    const waypointTag = [];
-    let flag = false;
-    for(let i = 0; i < mockPoints.length; i++) {
-      for(const el of mockPoints) {
-        el.days = new Date(el.dateFrom).getDate();
-      }
-      mockPoints.sort((a,b) => a.days - b.days);
-      this.waypointTag[i] = new Waypoint(destinations,mockPoints[i]);
-      waypointTag[i] = this.waypointTag[i];
-      let amountPoints = waypointTag.length;
-      const editPointForm = [];
-      waypointTag[i].addClickListener(() => {
-        if(flag) {
-          const form = document.querySelector('.event--edit');
-          replaceElement(waypointTag[Number(form.dataset.index) - 1].element,form);
+  onSortTypeChange(sortType) {
+    let waypointsCopy = [...this.waypoints];
+    switch (sortType) {
+      case SortType.PRICE:
+        sort.min(mockPoints, 'basePrice');
+        break;
+
+      case SortType.DAY:
+        mockPoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
+        break;
+
+      case SortType.TIME:
+        for (const el of mockPoints) {
+          const date = new Date(el.dateFrom);
+          el.startTime = date.getHours() * 60 + date.getMinutes();
         }
-        editPointForm[i] = new EditPoint(mockPoints[i],data,i);
-        replaceElement(editPointForm[i].element,waypointTag[i].element);
-        editPointForm[i].addSubmitListener((evt) => {
-          evt.preventDefault();
-          replaceElement(waypointTag[i].element, editPointForm[i].element);
-          flag = false;
-        });
-        editPointForm[i].addClickListener(() => {
-          editPointForm[i].remove();
-          flag = false;
-          waypointTag[i] = undefined;
-          amountPoints = 0;
-          for(const i2 in waypointTag) {
-            if(waypointTag[i2] !== undefined) {
-              amountPoints++;
-            }
-          }
-          if(amountPoints === 0) {
-            render(new Message(), this.tripEvents);
-          }
-        });
-        document.onkeydown = (evt) => {
-          if(evt.key === 'Escape') {
-            replaceElement(this.waypointTag[i].element, editPointForm.element);
-          }
-        };
+        sort.min(mockPoints, 'startTime');
+        break;
+    }
+    let flag = false;
+    for (let i in mockPoints) {
+      i = +i;
+      if (mockPoints[i].id !== waypointsCopy[i].id) {
         flag = true;
-      });
-      render(this.waypointTag[i], this.containerWaypoint.element);
+      }
+    }
+    waypointsCopy = [...mockPoints];
+    if (flag) {
+      this.boardPresenter.init(mockPoints);
     }
   }
-
-  resetPoints() {
-    const form = document.querySelector('.event--edit');
-    replaceElement(this.waypointTag[Number(form.dataset.index) - 1].element,form);
-  }
 }
+
 export default AppPresenter;

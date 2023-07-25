@@ -1,3 +1,3 @@
-export function randomArray(array) {
+export function getRandomArrayElement(array) {
   return array[Math.floor(Math.random() * array.length)];
 }

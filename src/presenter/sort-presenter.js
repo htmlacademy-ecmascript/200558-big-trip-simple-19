@@ -1,32 +1,26 @@
-import AppPresenter from './app-presenter.js';
-class sortPresenter {
-  constructor(boardContainer) {
+
+import FiltersWapoint from '../view/filters.js';
+import SortingWaypoint from '../view/sorting.js';
+import { render } from '../utils.js';
+
+class SortPresenter {
+  constructor(boardContainer, tripEvents) {
     this.boardContainer = boardContainer;
+    this.tripEvents = tripEvents;
   }
 
   init() {
-    const appPresenter = new AppPresenter({boardContainer:this.boardContainer});
-    appPresenter.init();
+    render(new FiltersWapoint(), this.boardContainer);
+    render(new SortingWaypoint(), this.tripEvents, 'afterbegin');
   }
 
-  change(order) {
-
-    for(let i in order) {
-      i = +i;
-      let tripEventsItem = document.querySelectorAll('.trip-events__item');
-      tripEventsItem = Array.from(tripEventsItem);
-      const index = tripEventsItem.findIndex((el) => +el.dataset.id === order[i].id);
-      const tripEventsList = document.querySelector('.trip-events__list');
-      tripEventsItem[index].remove();
-      tripEventsList.appendChild(tripEventsItem[index]);
-    }
-  }
+  // eslint-disable-next-line accessor-pairs
   set onChange(callBack) {
-
     const sortInput = document.querySelectorAll('.trip-sort__input');
-    for(const el of sortInput) {
-      el.addEventListener('input', () => callBack(el));
+    for (const el of sortInput) {
+      el.addEventListener('input', () => callBack(el.value));
     }
   }
 }
-export default sortPresenter;
+
+export default SortPresenter;
