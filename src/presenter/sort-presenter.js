@@ -14,6 +14,7 @@ class SortPresenter {
     render(new SortingWaypoint(), this.tripEvents, 'afterbegin');
   }
 
+  // eslint-disable-next-line accessor-pairs
   set onChange(callBack) {
     const sortInput = document.querySelectorAll('.trip-sort__input');
     for (const el of sortInput) {
