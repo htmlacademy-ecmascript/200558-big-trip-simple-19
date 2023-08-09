@@ -24,14 +24,17 @@ export default class BoardPresenter {
     } else {
       this.#renderPoints(this.waypoints, this.editPointForm);
     }
-    document.querySelector('body').onkeydown = (evt) => {
-      if (evt.key === 'k') {
-        this.resetPoints();
-      }
-    };
+    // document.querySelector('body').onkeydown = (evt) => {
+    //   if (evt.key === 'k') {
+    //     this.resetPoints();
+    //   }
+    // };
   }
 
-  replaceFormToPoint(evt, i) {
+  replaceFormToPoint(evt, i, settings) {
+    evt.preventDefault();
+    console.log('settings=', settings);
+    this.waypointTag[i].element.querySelector('.event__title').textContent = settings.type;
     replaceElement(this.waypointTag[i].element, this.editPointForm.element);
     this.#isFormOpen = false;
   }
@@ -55,17 +58,17 @@ export default class BoardPresenter {
     this.editPointForm = new EditPoint(this.waypoints[i], data, i);
     this.openFormIndex = i;
     replaceElement(this.editPointForm.element, this.waypointTag[i].element);
-    this.editPointForm.addSubmitListener((evt) => this.replaceFormToPoint(evt, i));
+    this.editPointForm.addSubmitListener((evt, settings) => { console.log('settingsa=', settings); this.replaceFormToPoint(evt, i, settings) });
     this.editPointForm.addClickListener(() => {
       this.editPointForm.remove();
       this.#isFormOpen = false;
       this.waypointTag[i] = undefined;
     });
-    document.addEventListener('onkeydown', (evt) => {
-      if (evt.key === 'Escape') {
-        replaceElement(this.waypointTag[i].element, this.editPointForm.element);
-      }
-    });
+    // document.addEventListener('keydown', (evt) => {
+    //   if (evt.key === 'Escape') {
+    //     replaceElement(this.waypointTag[i].element, this.editPointForm.element);
+    //   }
+    // });
     this.#isFormOpen = true;
   }
 

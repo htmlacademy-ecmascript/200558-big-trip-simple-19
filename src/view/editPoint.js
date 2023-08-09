@@ -1,7 +1,8 @@
-import {destinations} from '../model/model.js';
-import AbstractView from '../framework/view/abstract-view.js';
+import { destinations } from '../model/model.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
-function editPointTemplate(options,data,i) {
+let settings;
+function editPointTemplate(options, data, i) {
   const startTime = dayjs(options.dateFrom).format('hh:mm'),
     endTime = dayjs(options.dateTo).format('hh:mm');
   let markup = `<li class="trip-events__item"> 
@@ -118,10 +119,10 @@ function editPointTemplate(options,data,i) {
             </li>`;
   let offers = '';
   offers = data.find((el) => el.type === options.type).offers;
-  const offersMarkup = offers.map((offer,index) => {
+  const offersMarkup = offers.map((offer, index) => {
     let checked = '';
-    for(const el of options.offers) {
-      if(el === index) {
+    for (const el of options.offers) {
+      if (el === index) {
         checked = 'checked';
       }
     }
@@ -133,20 +134,48 @@ function editPointTemplate(options,data,i) {
                     <span class="event__offer-price">${offer.price}</span>
                   </label>
                 </div>
-                `);}).join('');
-  markup = markup.replace('event__offer-selector',offersMarkup);
+                `);
+  }).join('');
+  markup = markup.replace('event__offer-selector', offersMarkup);
   return markup;
 }
-class editPoint extends AbstractView {
-  constructor(options,data,i) {
+class editPoint extends AbstractStatefulView {
+  constructor(options, data, i) {
     super();
     this.options = options;
     this.data = data;
-    this.template = editPointTemplate(this.options,this.data,i + 1);
+    this.template = editPointTemplate(this.options, this.data, i + 1);
+    let element = this.element;
+    console.log('this.element=', this.element.querySelector('.event__type-toggle'));
+    this.element.querySelector('.event__type-toggle').onchange = function () {
+      if (this.checked) {
+        let inputs = element.querySelectorAll('.event__type-input');
+        for (let input of inputs) {
+          input.onclick = function (evt) {
+            settings = {
+              type: evt.target.value,
+            }
+            console.log('settingssss=', settings);
+            console.log('evt.target.value=', evt.target.value);
+            element.querySelector('.event__type-icon').src = 'img/icons/' + evt.target.value + '.png';
+            element.querySelector('.event__type-output').textContent = settings.type + ' to';
+          }
+        }
+      }
+    }
+    element.querySelector('.event__input--destination').oninput = function () {
+      //settings.address = this.value;
+      console.log('element.querySelector(.event__input--destination)=', element.querySelector('.event__input--destination'));
+    };
+    console.log('element.querySelector(.event__input--destination)=', element.querySelector('.event__input--destination'));
   }
 
   addSubmitListener(callback) {
-    this.element.querySelector('.event--edit').addEventListener('submit', callback);
+    this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
+      evt.preventDefault();
+      console.log('wi.settings=', settings);
+      callback(evt, settings);
+    });
 
   }
 
