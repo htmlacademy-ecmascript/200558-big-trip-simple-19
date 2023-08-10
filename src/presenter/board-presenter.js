@@ -7,7 +7,6 @@ import Message from '../view/message.js';
 
 export default class BoardPresenter {
   #isFormOpen = false;
-
   constructor(tripEvents) {
     this.tripEvents = tripEvents;
     this.containerWaypoint = new ContainerWaypoint();

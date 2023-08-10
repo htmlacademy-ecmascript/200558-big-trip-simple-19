@@ -142,6 +142,8 @@ function editPointTemplate(options, data, i) {
 class editPoint extends AbstractStatefulView {
   constructor(options, data, i) {
     super();
+    console.log('options=', options);
+    settings.type = options.type;
     this.options = options;
     this.data = data;
     this.template = editPointTemplate(this.options, this.data, i + 1);
