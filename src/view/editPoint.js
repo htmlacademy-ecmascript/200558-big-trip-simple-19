@@ -1,7 +1,7 @@
 import { destinations } from '../model/model.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
-let settings;
+let settings = {};
 function editPointTemplate(options, data, i) {
   const startTime = dayjs(options.dateFrom).format('hh:mm'),
     endTime = dayjs(options.dateTo).format('hh:mm');
@@ -142,7 +142,7 @@ function editPointTemplate(options, data, i) {
 class editPoint extends AbstractStatefulView {
   constructor(options, data, i) {
     super();
-    console.log('options=', options);
+    console.log('settings=', settings);
     settings.type = options.type;
     this.options = options;
     this.data = data;
@@ -157,6 +157,7 @@ class editPoint extends AbstractStatefulView {
             settings = {
               type: evt.target.value,
             }
+            data.find((el) => { el.type === settings.type })
             console.log('settingssss=', settings);
             console.log('evt.target.value=', evt.target.value);
             element.querySelector('.event__type-icon').src = 'img/icons/' + evt.target.value + '.png';
@@ -165,17 +166,13 @@ class editPoint extends AbstractStatefulView {
         }
       }
     }
-    element.querySelector('.event__input--destination').oninput = function () {
-      //settings.address = this.value;
-      console.log('element.querySelector(.event__input--destination)=', element.querySelector('.event__input--destination'));
-    };
-    console.log('element.querySelector(.event__input--destination)=', element.querySelector('.event__input--destination'));
   }
 
   addSubmitListener(callback) {
     this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
       evt.preventDefault();
       console.log('wi.settings=', settings);
+      destinations.find((el) => el.id === this.options.destination).name = document.querySelector('.event__input--destination').value;
       callback(evt, settings);
     });
 

@@ -31,9 +31,10 @@ export default class BoardPresenter {
   }
 
   replaceFormToPoint(evt, i, settings) {
+    console.log('evt=', evt)
     evt.preventDefault();
     console.log('settings=', settings);
-    this.waypointTag[i].element.querySelector('.event__title').textContent = settings.type;
+    this.waypointTag[i].element.querySelector('.event__title').textContent = settings.type + ' ' + settings.address;
     replaceElement(this.waypointTag[i].element, this.editPointForm.element);
     this.#isFormOpen = false;
   }
@@ -52,7 +53,7 @@ export default class BoardPresenter {
 
   onWaypointClick(i) {
     if (this.#isFormOpen) {
-      this.replaceFormToPoint(null, this.openFormIndex);
+      this.replaceFormToPoint({ preventDefault: () => { } }, this.openFormIndex);
     }
     this.editPointForm = new EditPoint(this.waypoints[i], data, i);
     this.openFormIndex = i;

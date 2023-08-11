@@ -259,11 +259,11 @@ export const mockPoints = [
     destination: 1,
   }
 ];
-for (const el of mockPoints) {
-  el.type = getRandomType();
-  el.basePrice = getRandomPrice();
-  el.dateFrom = getRandomDateFrom();
-  el.dateTo = getRandomDateFromTo();
+for (const mockPoint of mockPoints) {
+  mockPoint.type = getRandomType();
+  mockPoint.basePrice = getRandomPrice();
+  mockPoint.dateFrom = getRandomDateFrom();
+  mockPoint.dateTo = getRandomDateFromTo();
 }
 for (const da of data) {
   for (const offers of da.offers) {
