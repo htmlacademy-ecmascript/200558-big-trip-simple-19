@@ -1,7 +1,6 @@
 import { destinations } from '../model/model.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
-let settings = {};
 function editPointTemplate(options, data, i) {
   const startTime = dayjs(options.dateFrom).format('hh:mm'),
     endTime = dayjs(options.dateTo).format('hh:mm');
@@ -140,10 +139,11 @@ function editPointTemplate(options, data, i) {
   return markup;
 }
 class editPoint extends AbstractStatefulView {
+  static settings = {};
   constructor(options, data, i) {
     super();
-    console.log('settings=', settings);
-    settings.type = options.type;
+    console.log('editPoint.settings=',editPoint.settings);
+    editPoint.settings.type = options.type;
     this.options = options;
     this.data = data;
     this.template = editPointTemplate(this.options, this.data, i + 1);
@@ -154,14 +154,13 @@ class editPoint extends AbstractStatefulView {
         let inputs = element.querySelectorAll('.event__type-input');
         for (let input of inputs) {
           input.onclick = function (evt) {
-            settings = {
+            editPoint.settings = {
               type: evt.target.value,
             }
-            data.find((el) => { el.type === settings.type })
-            console.log('settingssss=', settings);
-            console.log('evt.target.value=', evt.target.value);
+            console.log('settings stert=',editPoint.settings);
+            data.find((el) => { el.type === editPoint.settings.type })
             element.querySelector('.event__type-icon').src = 'img/icons/' + evt.target.value + '.png';
-            element.querySelector('.event__type-output').textContent = settings.type + ' to';
+            element.querySelector('.event__type-output').textContent = editPoint.settings.type + ' to';
           }
         }
       }
@@ -171,16 +170,15 @@ class editPoint extends AbstractStatefulView {
   addSubmitListener(callback) {
     this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
       evt.preventDefault();
-      console.log('wi.settings=', settings);
       destinations.find((el) => el.id === this.options.destination).name = document.querySelector('.event__input--destination').value;
-      callback(evt, settings);
+      callback(evt);
     });
 
   }
 
   addClickListener(callback) {
 
-    this.element.querySelector('.event__reset-btn').addEventListener('click', callback);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', (evt) => { console.log('settings start=', settings); callback(evt, settings) });
   }
 }
 export default editPoint;

@@ -2,7 +2,7 @@ import { render, replaceElement } from '../utils.js';
 import Waypoint from '../view/waypoint.js';
 import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/editPoint.js';
-import { data, destinations } from '../model/model.js';
+import { data, destinations, mockPoints } from '../model/model.js';
 import Message from '../view/message.js';
 
 export default class BoardPresenter {
@@ -13,6 +13,7 @@ export default class BoardPresenter {
     this.waypointTag = [];
     render(this.containerWaypoint, this.tripEvents);
     this.waypointEditForm = null;
+    console.log('editPoint.settings=',EditPoint.settings);
   }
 
   init(waypoints) {
@@ -30,12 +31,13 @@ export default class BoardPresenter {
     // };
   }
 
-  replaceFormToPoint(evt, i, settings) {
-    console.log('evt=', evt)
+  replaceFormToPoint(evt, i) {
+    i = +i;
+    console.log('i=', i)
     evt.preventDefault();
-    console.log('settings=', settings);
-    this.waypointTag[i].element.querySelector('.event__title').textContent = settings.type + ' ' + settings.address;
-    replaceElement(this.waypointTag[i].element, this.editPointForm.element);
+    let value = destinations.find((el) => el.id === mockPoints[i].destination).name;
+    this.waypointTag[i].element.querySelector('.event__title').textContent = mockPoints[i].type + ' ' + value;
+    replaceElement(this.waypointTag[i].element, document.querySelector('.event--edit').parentNode);
     this.#isFormOpen = false;
   }
 
@@ -51,14 +53,22 @@ export default class BoardPresenter {
     }
   }
 
-  onWaypointClick(i) {
+  onWaypointClick(i, settings) {
     if (this.#isFormOpen) {
-      this.replaceFormToPoint({ preventDefault: () => { } }, this.openFormIndex);
+      let eventEdit = document.querySelector('.event--edit');
+      let inputs = eventEdit.querySelectorAll('.event__type-input');
+      console.log('eventEdit.dataset=', eventEdit.dataset);
+      console.log('mockPoint=', mockPoint, 'mockPoints=', mockPoint);
+      let mockPoint = mockPoints.find((el) => { el.id == eventEdit.dataset.index });
+      console.log('EditPoint.settings.type=',EditPoint.settings.type);
+      mockPoint.type = EditPoint.settings.type;
+      this.replaceFormToPoint({ preventDefault: () => { } }, eventEdit.dataset.index)
     }
     this.editPointForm = new EditPoint(this.waypoints[i], data, i);
+    console.log('this.editPointForm=', this.editPointForm);
     this.openFormIndex = i;
     replaceElement(this.editPointForm.element, this.waypointTag[i].element);
-    this.editPointForm.addSubmitListener((evt, settings) => { console.log('settingsa=', settings); this.replaceFormToPoint(evt, i, settings) });
+    this.editPointForm.addSubmitListener((evt) => { this.replaceFormToPoint(evt, i) });
     this.editPointForm.addClickListener(() => {
       this.editPointForm.remove();
       this.#isFormOpen = false;

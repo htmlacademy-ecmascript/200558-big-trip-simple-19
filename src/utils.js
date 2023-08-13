@@ -18,4 +18,5 @@ export function render(component, container, place = RenderPosition.BEFOREEND) {
 }
 export function replaceElement(newElement, oldElement) {
   oldElement.parentNode.replaceChild(newElement, oldElement);
+  console.log('newElement=',newElement);
 }
