@@ -32,11 +32,15 @@ export default class BoardPresenter {
   }
 
   replaceFormToPoint(evt, i) {
-    i = +i;
-    console.log('i=', i)
+    i = (+i)-1;
+    console.log('i=',i);
+    console.log('waypointsTag=',this.waypointTag);
+    this.waypointTag[i].element.style.backgroundColor='blue';
     evt.preventDefault();
-    let value = destinations.find((el) => el.id === mockPoints[i].destination).name;
-    this.waypointTag[i].element.querySelector('.event__title').textContent = mockPoints[i].type + ' ' + value;
+    let destination = destinations.find(el => el.id == mockPoints[i].destination);
+    let input = this.waypointsTag[i].element.querySelector('.event__input--destination');
+    destination.name = input.value;
+    this.waypointTag[i].element.querySelector('.event__title').textContent = mockPoints[i].type + ' ' + destination.name;
     replaceElement(this.waypointTag[i].element, document.querySelector('.event--edit').parentNode);
     this.#isFormOpen = false;
   }
@@ -57,18 +61,14 @@ export default class BoardPresenter {
     if (this.#isFormOpen) {
       let eventEdit = document.querySelector('.event--edit');
       let inputs = eventEdit.querySelectorAll('.event__type-input');
-      console.log('eventEdit.dataset=', eventEdit.dataset);
-      console.log('mockPoint=', mockPoint, 'mockPoints=', mockPoint);
-      let mockPoint = mockPoints.find((el) => { el.id == eventEdit.dataset.index });
-      console.log('EditPoint.settings.type=',EditPoint.settings.type);
+      let mockPoint = mockPoints.find(el =>  el.id == eventEdit.dataset.index );
       mockPoint.type = EditPoint.settings.type;
       this.replaceFormToPoint({ preventDefault: () => { } }, eventEdit.dataset.index)
     }
     this.editPointForm = new EditPoint(this.waypoints[i], data, i);
-    console.log('this.editPointForm=', this.editPointForm);
     this.openFormIndex = i;
     replaceElement(this.editPointForm.element, this.waypointTag[i].element);
-    this.editPointForm.addSubmitListener((evt) => { this.replaceFormToPoint(evt, i) });
+    this.editPointForm.addSubmitListener(this.replaceFormToPoint.bind(this));
     this.editPointForm.addClickListener(() => {
       this.editPointForm.remove();
       this.#isFormOpen = false;
