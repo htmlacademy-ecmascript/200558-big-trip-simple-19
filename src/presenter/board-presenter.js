@@ -34,15 +34,17 @@ export default class BoardPresenter {
   replaceFormToPoint(evt, i) {
     i = (+i)-1;
     console.log('i=',i);
-    console.log('waypointsTag=',this.waypointTag);
-    this.waypointTag[i].element.style.backgroundColor='blue';
+    console.log('waypointsTag['+i+'].element=',this.waypointTag[i].element);
     evt.preventDefault();
     let destination = destinations.find(el => el.id == mockPoints[i].destination);
-    let input = this.waypointsTag[i].element.querySelector('.event__input--destination');
+    let input = document.querySelector('.event__input--destination');
     destination.name = input.value;
     this.waypointTag[i].element.querySelector('.event__title').textContent = mockPoints[i].type + ' ' + destination.name;
+    this.waypointTag[i].element.querySelector('.event__type-icon').src= 'img/icons/'+ mockPoints[i].type +'.png';
     replaceElement(this.waypointTag[i].element, document.querySelector('.event--edit').parentNode);
     this.#isFormOpen = false;
+    console.log('mockPoints=',mockPoints);
+    console.log('dedestinations=',destinations);
   }
 
   #renderPoints(waypoints) {
@@ -69,10 +71,11 @@ export default class BoardPresenter {
     this.openFormIndex = i;
     replaceElement(this.editPointForm.element, this.waypointTag[i].element);
     this.editPointForm.addSubmitListener(this.replaceFormToPoint.bind(this));
-    this.editPointForm.addClickListener(() => {
+    this.editPointForm.addDeleteListener((el) => {
       this.editPointForm.remove();
       this.#isFormOpen = false;
       this.waypointTag[i] = undefined;
+
     });
     // document.addEventListener('keydown', (evt) => {
     //   if (evt.key === 'Escape') {

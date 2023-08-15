@@ -142,7 +142,7 @@ class editPoint extends AbstractStatefulView {
   static settings = {};
   constructor(options, data, i) {
     super();
-    console.log('editPoint.settings=',editPoint.settings);
+    console.log('editPoint.settings=', editPoint.settings);
     editPoint.settings.type = options.type;
     this.options = options;
     this.data = data;
@@ -157,7 +157,8 @@ class editPoint extends AbstractStatefulView {
             editPoint.settings = {
               type: evt.target.value,
             }
-            console.log('settings stert=',editPoint.settings);
+            options.type = evt.target.value;
+            console.log('settings stert=', editPoint.settings);
             data.find((el) => { el.type === editPoint.settings.type })
             element.querySelector('.event__type-icon').src = 'img/icons/' + evt.target.value + '.png';
             element.querySelector('.event__type-output').textContent = editPoint.settings.type + ' to';
@@ -172,14 +173,14 @@ class editPoint extends AbstractStatefulView {
       evt.preventDefault();
       destinations.find((el) => el.id === this.options.destination).name = document.querySelector('.event__input--destination').value;
       let i = this.element.querySelector('.event--edit').dataset.index;
-      callback(evt,i);
+      callback(evt, i);
     });
 
   }
 
-  addClickListener(callback) {
+  addDeleteListener(callback) {
 
-    this.element.querySelector('.event__reset-btn').addEventListener('click', (evt) => { console.log('settings start=', settings); callback(evt, settings) });
+    this.element.querySelector('.event__reset-btn').addEventListener('click',() => {callback(this.element.querySelector('.event__reset-btn').parentElement.parentElement.dataset.index)});
   }
 }
 export default editPoint;
