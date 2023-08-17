@@ -13,7 +13,7 @@ export default class BoardPresenter {
     this.waypointTag = [];
     render(this.containerWaypoint, this.tripEvents);
     this.waypointEditForm = null;
-    console.log('editPoint.settings=',EditPoint.settings);
+    console.log('editPoint.settings=', EditPoint.settings);
   }
 
   init(waypoints) {
@@ -24,27 +24,20 @@ export default class BoardPresenter {
     } else {
       this.#renderPoints(this.waypoints, this.editPointForm);
     }
-    // document.querySelector('body').onkeydown = (evt) => {
-    //   if (evt.key === 'k') {
-    //     this.resetPoints();
-    //   }
-    // };
   }
 
   replaceFormToPoint(evt, i) {
-    i = (+i)-1;
-    console.log('i=',i);
-    console.log('waypointsTag['+i+'].element=',this.waypointTag[i].element);
+    i = (+i) - 1;
+    console.log('i=', i);
+    console.log('waypointsTag[' + i + '].element=', this.waypointTag[i].element);
     evt.preventDefault();
     let destination = destinations.find(el => el.id == mockPoints[i].destination);
     let input = document.querySelector('.event__input--destination');
     destination.name = input.value;
     this.waypointTag[i].element.querySelector('.event__title').textContent = mockPoints[i].type + ' ' + destination.name;
-    this.waypointTag[i].element.querySelector('.event__type-icon').src= 'img/icons/'+ mockPoints[i].type +'.png';
+    this.waypointTag[i].element.querySelector('.event__type-icon').src = 'img/icons/' + mockPoints[i].type + '.png';
     replaceElement(this.waypointTag[i].element, document.querySelector('.event--edit').parentNode);
     this.#isFormOpen = false;
-    console.log('mockPoints=',mockPoints);
-    console.log('dedestinations=',destinations);
   }
 
   #renderPoints(waypoints) {
@@ -52,7 +45,7 @@ export default class BoardPresenter {
     this.containerWaypoint.element.innerHTML = null;
     this.waypointTag = [];
     for (let i = 0; i < waypoints.length; i++) {
-      const waypointTag = new Waypoint(destinations, waypoints[i]);
+      const waypointTag = new Waypoint(destinations, waypoints[i], i);
       this.waypointTag[i] = waypointTag;
       waypointTag.addClickListener(() => this.onWaypointClick(i));
       render(this.waypointTag[i], this.containerWaypoint.element);
@@ -63,7 +56,7 @@ export default class BoardPresenter {
     if (this.#isFormOpen) {
       let eventEdit = document.querySelector('.event--edit');
       let inputs = eventEdit.querySelectorAll('.event__type-input');
-      let mockPoint = mockPoints.find(el =>  el.id == eventEdit.dataset.index );
+      let mockPoint = mockPoints.find(el => el.id == eventEdit.dataset.index);
       mockPoint.type = EditPoint.settings.type;
       this.replaceFormToPoint({ preventDefault: () => { } }, eventEdit.dataset.index)
     }
