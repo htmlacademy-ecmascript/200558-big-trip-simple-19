@@ -1,9 +1,15 @@
-import { destinations } from '../model/model.js';
+import { destinations, mockPoints } from '../model/model.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 function editPointTemplate(options, data, i) {
   const startTime = dayjs(options.dateFrom).format('hh:mm'),
     endTime = dayjs(options.dateTo).format('hh:mm');
+  let tagOptions = ``;
+  for (let destination of destinations) {
+    tagOptions += `<option value="${destination.name}">${destination.name}</option>`;
+  }
+  let destination = destinations.find((el) => { return el.name === options.type; });
+  console.log('destination=', destination);
   let markup = `<li class="trip-events__item"> 
               <form class="event event--edit" action="#" method="post"  data-index='${i}'>
                 <header class="event__header">
@@ -70,11 +76,9 @@ function editPointTemplate(options, data, i) {
                     <label class="event__label  event__type-output" for="event-destination-1">
                       ${options.type} to
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinations.find((el) => el.id === options.destination).name}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinations.find((el) => el.id === options.destination).name}" list="destination-list-1" autocomplete="off">
                     <datalist id="destination-list-1">
-                      <option value="Amsterdam"></option>
-                      <option value="Geneva"></option>
-                      <option value="Chamonix"></option>
+                    ${tagOptions}
                     </datalist>
                   </div>
 
@@ -112,6 +116,8 @@ function editPointTemplate(options, data, i) {
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${destinations.find((el) => el.id === options.destination).description}</p>
+                    <div class="event__photos-container">
+                    </div>
                   </section>
                 </section>
               </form>
@@ -148,7 +154,8 @@ class editPoint extends AbstractStatefulView {
     this.data = data;
     this.template = editPointTemplate(this.options, this.data, i + 1);
     let element = this.element;
-    console.log('this.element=', this.element.querySelector('.event__type-toggle'));
+    let destinationList1 = this.element.querySelector('#destination-list-1');
+    console.log('destinationList1.innerHTML,=', destinationList1.innerHTML);
     this.element.querySelector('.event__type-toggle').onchange = function () {
       if (this.checked) {
         let inputs = element.querySelectorAll('.event__type-input');
@@ -171,16 +178,20 @@ class editPoint extends AbstractStatefulView {
   addSubmitListener(callback) {
     this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
       evt.preventDefault();
-      destinations.find((el) => el.id === this.options.destination).name = document.querySelector('.event__input--destination').value;
+      let name = document.querySelector('.event__input--destination').value;
       let i = this.element.querySelector('.event--edit').dataset.index;
-      callback(evt, i);
+      for (let destination of destinations) {
+        if (name === destination.name) {
+          callback(evt, i);
+        }
+      }
     });
 
   }
 
   addDeleteListener(callback) {
 
-    this.element.querySelector('.event__reset-btn').addEventListener('click',() => {callback(this.element.querySelector('.event__reset-btn').parentElement.parentElement.dataset.index)});
+    this.element.querySelector('.event__reset-btn').addEventListener('click', () => { callback(this.element.querySelector('.event__reset-btn').parentElement.parentElement.dataset.index) });
   }
 }
 export default editPoint;

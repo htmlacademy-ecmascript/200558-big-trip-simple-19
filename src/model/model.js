@@ -198,7 +198,7 @@ export const destinations = [
   {
     id: 3,
     description: 'Offers: Rent a car +€  ',
-    name: 'Chamonix',
+    name: 'astadam',
     pictures: [
       {
         src: 'http://picsum.photos/300/200?r=0.0762563005163319',

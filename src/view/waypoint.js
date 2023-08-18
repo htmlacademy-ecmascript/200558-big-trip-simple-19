@@ -2,8 +2,7 @@ import AbstractView from '../framework/view/abstract-view.js';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
-function getWaypointTemplate(destinations, mockPoin, i) {
-  console.log('getWaypointTemplate mockPoin=', mockPoin);
+function getWaypointTemplate(destinations, mockPoint, i) {
   const startTime = dayjs(mockPoint.dateFrom).utc().format('HH:mm');
   const endTime = dayjs(mockPoint.dateTo).utc().format('HH:mm');
   return `<li class="trip-events__item" data-index="${i}">
@@ -42,7 +41,6 @@ class Waypoint extends AbstractView {
     super();
     this.destinations = destinations;
     this.mockPoint = mockPoint;
-    console.log('this.mockPoint=', this.mockPoint);
     this.template = getWaypointTemplate(this.destinations, this.mockPoint, i);
   }
 
