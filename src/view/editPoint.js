@@ -8,7 +8,8 @@ function editPointTemplate(options, data, i) {
   for (let destination of destinations) {
     tagOptions += `<option value="${destination.name}">${destination.name}</option>`;
   }
-  let destination = destinations.find((el) => { return el.name === options.type; });
+  console.log('options=', options);
+  let destination = destinations.find((el) => { return el.id == options.destination; });
   console.log('destination=', destination);
   let markup = `<li class="trip-events__item"> 
               <form class="event event--edit" action="#" method="post"  data-index='${i}'>
