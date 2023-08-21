@@ -10,6 +10,10 @@ function editPointTemplate(options, data, i) {
   }
   console.log('options=', options);
   let destination = destinations.find((el) => { return el.id == options.destination; });
+  let imgs = '';
+  for (let picture of destination.pictures) {
+    imgs += `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`;
+  }
   console.log('destination=', destination);
   let markup = `<li class="trip-events__item"> 
               <form class="event event--edit" action="#" method="post"  data-index='${i}'>
@@ -118,6 +122,9 @@ function editPointTemplate(options, data, i) {
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${destinations.find((el) => el.id === options.destination).description}</p>
                     <div class="event__photos-container">
+                      <div class="event__photos-tape">
+                        ${imgs}
+                      </div>
                     </div>
                   </section>
                 </section>
