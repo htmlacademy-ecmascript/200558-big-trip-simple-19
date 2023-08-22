@@ -156,7 +156,6 @@ class editPoint extends AbstractStatefulView {
   static settings = {};
   constructor(options, data, i) {
     super();
-    console.log('editPoint.settings=', editPoint.settings);
     editPoint.settings.type = options.type;
     this.options = options;
     this.data = data;
@@ -168,13 +167,12 @@ class editPoint extends AbstractStatefulView {
       if (this.checked) {
         let inputs = element.querySelectorAll('.event__type-input');
         for (let input of inputs) {
-          input.onclick = function (evt) {
-            editPoint.settings = {
+          input.addEventListener('click', function (evt) {
+            this.updateElement({
               type: evt.target.value,
-            }
+            });
             options.type = evt.target.value;
-            console.log('settings stert=', editPoint.settings);
-            data.find((el) => { el.type === editPoint.settings.type })
+            data.find((el) => { el.type === editPoint.state.type })
             element.querySelector('.event__type-icon').src = 'img/icons/' + evt.target.value + '.png';
             element.querySelector('.event__type-output').textContent = editPoint.settings.type + ' to';
           }
