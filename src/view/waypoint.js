@@ -39,13 +39,17 @@ function getWaypointTemplate(destinations, mockPoint, i) {
 class Waypoint extends AbstractView {
   constructor(destinations, mockPoint, i) {
     super();
+    this.i = i;
     this.destinations = destinations;
     this.mockPoint = mockPoint;
-    this.template = getWaypointTemplate(this.destinations, this.mockPoint, i);
+    //this.template = getWaypointTemplate(this.destinations, this.mockPoint, this.i);
   }
 
   addClickListener(callback) {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', callback);
+  }
+  get template() {
+    return getWaypointTemplate(this.destinations, this.mockPoint, this.i);
   }
 }
 export default Waypoint;

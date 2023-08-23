@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import { createElement } from '../render.js';
 import './abstract-view.css';
 
 /** @const {string} Класс, реализующий эффект "покачивания головой" */
@@ -30,7 +30,8 @@ export default class AbstractView {
    */
   get element() {
     if (!this.#element) {
-      this.#element = createElement(this.#template);
+      this.#element = createElement(this.template);
+      console.log('lol ' + 'this.element=', this.#element);
     }
 
     return this.#element;

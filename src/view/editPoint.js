@@ -1,7 +1,9 @@
-import { destinations, mockPoints } from '../model/model.js';
+import { destinations, data as EventTypes } from '../model/model.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
+
 function editPointTemplate(options, data, i) {
+  console.log('options=', options);
   const startTime = dayjs(options.dateFrom).format('hh:mm'),
     endTime = dayjs(options.dateTo).format('hh:mm');
   let tagOptions = ``;
@@ -15,6 +17,10 @@ function editPointTemplate(options, data, i) {
     imgs += `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`;
   }
   console.log('destination=', destination);
+  const eventTypes = EventTypes.map(({ type }) => `<div class="event__type-item">
+  <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${type === options.type ? 'checked' : ''}>
+  <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
+</div>`).join('');
   let markup = `<li class="trip-events__item"> 
               <form class="event event--edit" action="#" method="post"  data-index='${i}'>
                 <header class="event__header">
@@ -28,51 +34,7 @@ function editPointTemplate(options, data, i) {
                     <div class="event__type-list">
                       <fieldset class="event__type-group">
                         <legend class="visually-hidden">Event type</legend>
-
-                        <div class="event__type-item">
-                          <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-                          <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
-                          <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train">
-                          <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship">
-                          <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
-                          <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" checked="">
-                          <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
-                          <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing">
-                          <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
-                        </div>
-
-                        <div class="event__type-item">
-                          <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
-                          <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
-                        </div>
+                        ${eventTypes}
                       </fieldset>
                     </div>
                   </div>
@@ -153,34 +115,21 @@ function editPointTemplate(options, data, i) {
   return markup;
 }
 class editPoint extends AbstractStatefulView {
-  static settings = {};
   constructor(options, data, i) {
     super();
-    editPoint.settings.type = options.type;
     this.options = options;
     this.data = data;
-    this.template = editPointTemplate(this.options, this.data, i + 1);
+    this.i = i;
+    this._setState(options);
     let element = this.element;
-    let destinationList1 = this.element.querySelector('#destination-list-1');
-    console.log('destinationList1.innerHTML,=', destinationList1.innerHTML);
-    this.element.querySelector('.event__type-toggle').onchange = function () {
-      if (this.checked) {
-        let inputs = element.querySelectorAll('.event__type-input');
-        for (let input of inputs) {
-          input.addEventListener('click', function (evt) {
-            this.updateElement({
-              type: evt.target.value,
-            });
-            options.type = evt.target.value;
-            data.find((el) => { el.type === editPoint.state.type })
-            element.querySelector('.event__type-icon').src = 'img/icons/' + evt.target.value + '.png';
-            element.querySelector('.event__type-output').textContent = editPoint.settings.type + ' to';
-          }
-        }
-      }
-    }
+    console.log('this.element=', this.element);
+    this._restoreHandlers();
+
   }
 
+  static li() {
+    return document.querySelector('.event--edit').parentNode;
+  }
   addSubmitListener(callback) {
     this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
       evt.preventDefault();
@@ -197,7 +146,26 @@ class editPoint extends AbstractStatefulView {
 
   addDeleteListener(callback) {
 
-    this.element.querySelector('.event__reset-btn').addEventListener('click', () => { callback(this.element.querySelector('.event__reset-btn').parentElement.parentElement.dataset.index) });
+    this.element.querySelector('.event__reset-btn').addEventListener('click', () => { callback(i) });
+  }
+  _restoreHandlers() {
+    this.element.querySelector('.event__type-toggle').onchange = (evt) => {
+
+
+
+      if (evt.target.checked) {
+        let inputs = this.element.querySelectorAll('.event__type-input');
+        for (let input of inputs) {
+          input.addEventListener('click', (evt) => {
+            this.updateElement({ type: evt.target.value });
+            console.log('editPoint=', this.data);
+          });
+        }
+      }
+    }
+  }
+  get template() {
+    return editPointTemplate(this._state, this.data, this.i + 1);
   }
 }
 export default editPoint;

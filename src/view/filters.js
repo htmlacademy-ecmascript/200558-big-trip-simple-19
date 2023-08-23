@@ -17,7 +17,10 @@ function getFiltersTemplate() {
 class Filters extends AbstractView {
   constructor() {
     super();
-    this.template = getFiltersTemplate();
+    // this.template = getFiltersTemplate();
+  }
+  get template() {
+    return getFiltersTemplate();
   }
 }
 export default Filters;

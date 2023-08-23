@@ -4,6 +4,7 @@ import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/editPoint.js';
 import { data, destinations, mockPoints } from '../model/model.js';
 import Message from '../view/message.js';
+import editPoint from '../view/editPoint.js';
 
 export default class BoardPresenter {
   #isFormOpen = false;
@@ -13,7 +14,6 @@ export default class BoardPresenter {
     this.waypointTag = [];
     render(this.containerWaypoint, this.tripEvents);
     this.waypointEditForm = null;
-    console.log('editPoint.settings=', EditPoint.settings);
   }
 
   init(waypoints) {
@@ -28,15 +28,13 @@ export default class BoardPresenter {
 
   replaceFormToPoint(evt, i) {
     i = (+i) - 1;
-    console.log('i=', i);
-    console.log('waypointsTag[' + i + '].element=', this.waypointTag[i].element);
     evt.preventDefault();
-    let destination = destinations.find(el => el.id == mockPoints[i].destination);
+    const destination = destinations.find(el => el.id == mockPoints[i].destination);
     let input = document.querySelector('.event__input--destination');
     destination.name = input.value;
     this.waypointTag[i].element.querySelector('.event__title').textContent = mockPoints[i].type + ' ' + destination.name;
     this.waypointTag[i].element.querySelector('.event__type-icon').src = 'img/icons/' + mockPoints[i].type + '.png';
-    replaceElement(this.waypointTag[i].element, document.querySelector('.event--edit').parentNode);
+    replaceElement(this.waypointTag[i].element, new editPoint.li);
     this.#isFormOpen = false;
   }
 
@@ -52,12 +50,12 @@ export default class BoardPresenter {
     }
   }
 
-  onWaypointClick(i, settings) {
+  onWaypointClick(i, state) {
     if (this.#isFormOpen) {
       let eventEdit = document.querySelector('.event--edit');
       let inputs = eventEdit.querySelectorAll('.event__type-input');
       let mockPoint = mockPoints.find(el => el.id == eventEdit.dataset.index);
-      mockPoint.type = EditPoint.settings.type;
+      mockPoint.type = EditPoint.state.type;
       this.replaceFormToPoint({ preventDefault: () => { } }, eventEdit.dataset.index)
     }
     this.editPointForm = new EditPoint(this.waypoints[i], data, i);
@@ -70,11 +68,6 @@ export default class BoardPresenter {
       this.waypointTag[i] = undefined;
 
     });
-    // document.addEventListener('keydown', (evt) => {
-    //   if (evt.key === 'Escape') {
-    //     replaceElement(this.waypointTag[i].element, this.editPointForm.element);
-    //   }
-    // });
     this.#isFormOpen = true;
   }
 
