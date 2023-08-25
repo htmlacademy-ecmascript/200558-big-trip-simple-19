@@ -127,17 +127,22 @@ class editPoint extends AbstractStatefulView {
 
   }
 
-  static li() {
+  li() {
     return document.querySelector('.event--edit').parentNode;
   }
   addSubmitListener(callback) {
+    this.callbackSubmit = callback;
     this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
+      console.log('evt=', evt);
       evt.preventDefault();
       let name = document.querySelector('.event__input--destination').value;
       let i = this.element.querySelector('.event--edit').dataset.index;
+      // нужен ли цикл?
       for (let destination of destinations) {
         if (name === destination.name) {
-          callback(evt, i);
+          console.log('callback=', callback);
+
+          callback(i, this._state);
         }
       }
     });
@@ -163,6 +168,7 @@ class editPoint extends AbstractStatefulView {
         }
       }
     }
+    this.addSubmitListener(this.callbackSubmit);
   }
   get template() {
     return editPointTemplate(this._state, this.data, this.i + 1);

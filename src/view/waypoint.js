@@ -5,6 +5,7 @@ dayjs.extend(utc);
 function getWaypointTemplate(destinations, mockPoint, i) {
   const startTime = dayjs(mockPoint.dateFrom).utc().format('HH:mm');
   const endTime = dayjs(mockPoint.dateTo).utc().format('HH:mm');
+  console.log('mockPoint.dateFrom=', mockPoint.dateFrom);
   return `<li class="trip-events__item" data-index="${i}">
               <div class="event">
                 <time class="event__date" datetime="2019-07-${dayjs(mockPoint.dateFrom).format('DD')}">MAR ${mockPoint.dateFrom.substr(8, 2)}</time>
@@ -49,6 +50,7 @@ class Waypoint extends AbstractView {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', callback);
   }
   get template() {
+    console.log('template mockPoint=', this.mockPoint);
     return getWaypointTemplate(this.destinations, this.mockPoint, this.i);
   }
 }

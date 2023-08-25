@@ -26,15 +26,15 @@ export default class BoardPresenter {
     }
   }
 
-  replaceFormToPoint(evt, i) {
+  replaceFormToPoint(i, update) {
+    // this.waypoints = update;
+    console.log('update=', update);
+    console.log('this.waypoints', this.waypoints[0]);
     i = (+i) - 1;
-    evt.preventDefault();
-    const destination = destinations.find(el => el.id == mockPoints[i].destination);
-    let input = document.querySelector('.event__input--destination');
-    destination.name = input.value;
-    this.waypointTag[i].element.querySelector('.event__title').textContent = mockPoints[i].type + ' ' + destination.name;
-    this.waypointTag[i].element.querySelector('.event__type-icon').src = 'img/icons/' + mockPoints[i].type + '.png';
-    replaceElement(this.waypointTag[i].element, new editPoint.li);
+    console.log('mockPoints=', mockPoints);
+    this.waypointTag[i] = new Waypoint(destinations, mockPoints[i], i);
+    this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
+    replaceElement(this.waypointTag[i].element, this.editPointForm.element);
     this.#isFormOpen = false;
   }
 
@@ -55,8 +55,7 @@ export default class BoardPresenter {
       let eventEdit = document.querySelector('.event--edit');
       let inputs = eventEdit.querySelectorAll('.event__type-input');
       let mockPoint = mockPoints.find(el => el.id == eventEdit.dataset.index);
-      mockPoint.type = EditPoint.state.type;
-      this.replaceFormToPoint({ preventDefault: () => { } }, eventEdit.dataset.index)
+      this.replaceFormToPoint(eventEdit.dataset.index, mockPoint);
     }
     this.editPointForm = new EditPoint(this.waypoints[i], data, i);
     this.openFormIndex = i;
