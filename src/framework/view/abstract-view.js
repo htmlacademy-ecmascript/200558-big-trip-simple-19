@@ -31,7 +31,6 @@ export default class AbstractView {
   get element() {
     if (!this.#element) {
       this.#element = createElement(this.template);
-      console.log('lol ' + 'this.element=', this.#element);
     }
 
     return this.#element;

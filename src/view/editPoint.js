@@ -3,24 +3,40 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 
 function editPointTemplate(options, data, i) {
-  console.log('options=', options);
   const startTime = dayjs(options.dateFrom).format('hh:mm'),
     endTime = dayjs(options.dateTo).format('hh:mm');
   let tagOptions = ``;
   for (let destination of destinations) {
     tagOptions += `<option value="${destination.name}">${destination.name}</option>`;
   }
-  console.log('options=', options);
   let destination = destinations.find((el) => { return el.id == options.destination; });
   let imgs = '';
   for (let picture of destination.pictures) {
     imgs += `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`;
   }
-  console.log('destination=', destination);
   const eventTypes = EventTypes.map(({ type }) => `<div class="event__type-item">
   <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${type === options.type ? 'checked' : ''}>
   <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
 </div>`).join('');
+  let offers = '';
+  offers = data.find((el) => el.type === options.type).offers;
+  const offersMarkup = offers.map((offer, index) => {
+    let checked = '';
+    for (const el of options.offers) {
+      if (el === index) {
+        checked = 'checked';
+      }
+    }
+    return (`<div class="event__offear-selector">
+                <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-${offer.id}" type="checkbox" name="event-offer-comfort" ${checked}>
+                <label class="event__offer-label" for="event-offer-comfort-${offer.id}">
+                  <span class="event__offer-title">${offer.title}</span>
+                  +€&nbsp;
+                  <span class="event__offer-price">${offer.price}</span>
+                </label>
+              </div>
+              `);
+  }).join('');
   let markup = `<li class="trip-events__item"> 
               <form class="event event--edit" action="#" method="post"  data-index='${i}'>
                 <header class="event__header">
@@ -76,7 +92,7 @@ function editPointTemplate(options, data, i) {
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                     <div class="event__available-offers">
-                    event__offer-selector
+                    ${offersMarkup}
                     </div>
                   </section>
 
@@ -92,26 +108,6 @@ function editPointTemplate(options, data, i) {
                 </section>
               </form>
             </li>`;
-  let offers = '';
-  offers = data.find((el) => el.type === options.type).offers;
-  const offersMarkup = offers.map((offer, index) => {
-    let checked = '';
-    for (const el of options.offers) {
-      if (el === index) {
-        checked = 'checked';
-      }
-    }
-    return (`<div class="event__offear-selector">
-                  <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-${offer.id}" type="checkbox" name="event-offer-comfort" ${checked}>
-                  <label class="event__offer-label" for="event-offer-comfort-${offer.id}">
-                    <span class="event__offer-title">${offer.title}</span>
-                    +€&nbsp;
-                    <span class="event__offer-price">${offer.price}</span>
-                  </label>
-                </div>
-                `);
-  }).join('');
-  markup = markup.replace('event__offer-selector', offersMarkup);
   return markup;
 }
 class editPoint extends AbstractStatefulView {
@@ -122,7 +118,6 @@ class editPoint extends AbstractStatefulView {
     this.i = i;
     this._setState(options);
     let element = this.element;
-    console.log('this.element=', this.element);
     this._restoreHandlers();
 
   }
@@ -133,25 +128,20 @@ class editPoint extends AbstractStatefulView {
   addSubmitListener(callback) {
     this.callbackSubmit = callback;
     this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
-      console.log('evt=', evt);
       evt.preventDefault();
       let name = document.querySelector('.event__input--destination').value;
       let i = this.element.querySelector('.event--edit').dataset.index;
-      // нужен ли цикл?
-      for (let destination of destinations) {
-        if (name === destination.name) {
-          console.log('callback=', callback);
+      let eventTypeInputs = [...document.querySelectorAll('.event__type-input')];
+      this._state.type = eventTypeInputs.find((el) => { return el.checked == true; }).value;
+      console.log('this._state=', this._state);
 
-          callback(i, this._state);
-        }
-      }
+      callback(i, this._state);
     });
-
   }
 
   addDeleteListener(callback) {
 
-    this.element.querySelector('.event__reset-btn').addEventListener('click', () => { callback(i) });
+    this.element.querySelector('.event__reset-btn').addEventListener('click', () => { callback(this.i) });
   }
   _restoreHandlers() {
     this.element.querySelector('.event__type-toggle').onchange = (evt) => {
@@ -163,7 +153,6 @@ class editPoint extends AbstractStatefulView {
         for (let input of inputs) {
           input.addEventListener('click', (evt) => {
             this.updateElement({ type: evt.target.value });
-            console.log('editPoint=', this.data);
           });
         }
       }
