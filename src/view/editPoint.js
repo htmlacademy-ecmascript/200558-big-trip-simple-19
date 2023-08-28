@@ -2,16 +2,16 @@ import { destinations, data as EventTypes } from '../model/model.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 
-function editPointTemplate(options, data, i) {
-  const startTime = dayjs(options.dateFrom).format('hh:mm'),
-    endTime = dayjs(options.dateTo).format('hh:mm');
-  let tagOptions = ``;
-  for (let destination of destinations) {
-    tagOptions += `<option value="${destination.name}">${destination.name}</option>`;
+function editPointTemplate(waypoint, data, i) {
+  const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
+    endTime = dayjs(waypoint.dateTo).format('hh:mm');
+  let options = '';
+  for (const { name } of destinations) {
+    options += `<option value="${name}"></option>`;
   }
-  let destination = destinations.find((el) => { return el.id == options.destination; });
+  const destination = destinations.find((el) => el.id === waypoint.destination);
   let imgs = '';
-  for (let picture of destination.pictures) {
+  for (const picture of destination.pictures) {
     imgs += `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`;
   }
   const eventTypes = EventTypes.map(({ type }) => `<div class="event__type-item">
@@ -19,10 +19,10 @@ function editPointTemplate(options, data, i) {
   <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
 </div>`).join('');
   let offers = '';
-  offers = data.find((el) => el.type === options.type).offers;
-  const offersMarkup = offers.map((offer, index) => {
+  offers = data.find((el) => el.type === waypoint.type).offers;
+  offers = offers.map((offer, index) => {
     let checked = '';
-    for (const el of options.offers) {
+    for (const el of waypoint.offers) {
       if (el === index) {
         checked = 'checked';
       }
@@ -37,13 +37,13 @@ function editPointTemplate(options, data, i) {
               </div>
               `);
   }).join('');
-  let markup = `<li class="trip-events__item"> 
+  return `<li class="trip-events__item"> 
               <form class="event event--edit" action="#" method="post"  data-index='${i}'>
                 <header class="event__header">
                   <div class="event__type-wrapper">
                     <label class="event__type  event__type-btn" for="event-type-toggle-1">
                       <span class="visually-hidden">Choose event type</span>
-                      <img class="event__type-icon" width="17" height="17" src="img/icons/${options.type}.png" alt="Event type icon">
+                      <img class="event__type-icon" width="17" height="17" src="img/icons/${waypoint.type}.png" alt="Event type icon">
                     </label>
                     <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -57,11 +57,11 @@ function editPointTemplate(options, data, i) {
 
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
-                      ${options.type} to
+                      ${waypoint.type} to
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinations.find((el) => el.id === options.destination).name}" list="destination-list-1" autocomplete="off">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinations.find((el) => el.id === waypoint.destination).name}" list="destination-list-1">
                     <datalist id="destination-list-1">
-                    ${tagOptions}
+                    ${options}
                     </datalist>
                   </div>
 
@@ -78,7 +78,7 @@ function editPointTemplate(options, data, i) {
                       <span class="visually-hidden">Price</span>
                       €
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${options.basePrice}">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${waypoint.basePrice}">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -92,13 +92,13 @@ function editPointTemplate(options, data, i) {
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                     <div class="event__available-offers">
-                    ${offersMarkup}
+                    ${offers}
                     </div>
                   </section>
 
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">${destinations.find((el) => el.id === options.destination).description}</p>
+                    <p class="event__destination-description">${destinations.find((el) => el.id === waypoint.destination).description}</p>
                     <div class="event__photos-container">
                       <div class="event__photos-tape">
                         ${imgs}
@@ -108,16 +108,14 @@ function editPointTemplate(options, data, i) {
                 </section>
               </form>
             </li>`;
-  return markup;
 }
 class editPoint extends AbstractStatefulView {
-  constructor(options, data, i) {
+  constructor(waypoint, data, i) {
     super();
-    this.options = options;
+    this.waypoint = waypoint;
     this.data = data;
     this.i = i;
-    this._setState(options);
-    let element = this.element;
+    this._setState(waypoint);
     this._restoreHandlers();
 
   }
@@ -125,40 +123,29 @@ class editPoint extends AbstractStatefulView {
   li() {
     return document.querySelector('.event--edit').parentNode;
   }
-  addSubmitListener(callback) {
-    this.callbackSubmit = callback;
-    this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      let name = document.querySelector('.event__input--destination').value;
-      let i = this.element.querySelector('.event--edit').dataset.index;
-      let eventTypeInputs = [...document.querySelectorAll('.event__type-input')];
-      this._state.type = eventTypeInputs.find((el) => { return el.checked == true; }).value;
-      console.log('this._state=', this._state);
 
-      callback(i, this._state);
-    });
+  addSubmitListener(callback) {
+    if (callback) {
+      this.callbackSubmit = callback;
+      this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
+        evt.preventDefault();
+        const i = this.element.querySelector('.event--edit').dataset.index;
+        callback(i, this._state);
+      });
+    }
   }
 
   addDeleteListener(callback) {
-
-    this.element.querySelector('.event__reset-btn').addEventListener('click', () => { callback(this.i) });
+    this.element.querySelector('.event__reset-btn').addEventListener('click', () => callback(this.i));
   }
+
   _restoreHandlers() {
-    this.element.querySelector('.event__type-toggle').onchange = (evt) => {
-
-
-
-      if (evt.target.checked) {
-        let inputs = this.element.querySelectorAll('.event__type-input');
-        for (let input of inputs) {
-          input.addEventListener('click', (evt) => {
-            this.updateElement({ type: evt.target.value });
-          });
-        }
-      }
-    }
+    this.element.querySelector('.event__type-group').addEventListener('change', (evt) => {
+      this.updateElement({ type: evt.target.value });
+    });
     this.addSubmitListener(this.callbackSubmit);
   }
+
   get template() {
     return editPointTemplate(this._state, this.data, this.i + 1);
   }

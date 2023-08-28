@@ -4,7 +4,6 @@ import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/editPoint.js';
 import { data, destinations, mockPoints } from '../model/model.js';
 import Message from '../view/message.js';
-import editPoint from '../view/editPoint.js';
 
 export default class BoardPresenter {
   #isFormOpen = false;
@@ -14,6 +13,7 @@ export default class BoardPresenter {
     this.waypointTag = [];
     render(this.containerWaypoint, this.tripEvents);
     this.waypointEditForm = null;
+    this.replaceFormToPoint = this.replaceFormToPoint.bind(this);
   }
 
   init(waypoints) {
@@ -22,17 +22,16 @@ export default class BoardPresenter {
     if (this.waypoints.length === 0) {
       render(new Message(), this.tripEvents);
     } else {
-      this.#renderPoints(this.waypoints, this.editPointForm);
+      this.#renderPoints(this.waypoints, this.editPoint);
     }
   }
 
   replaceFormToPoint(i, update) {
     i = (+i) - 1;
-    console.log('update=', update);
     mockPoints[i].type = update.type;
     this.waypointTag[i] = new Waypoint(destinations, mockPoints[i], i);
     this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
-    replaceElement(this.waypointTag[i].element, this.editPointForm.element);
+    replaceElement(this.waypointTag[i].element, this.editPoint.element);
     this.#isFormOpen = false;
   }
 
@@ -51,15 +50,15 @@ export default class BoardPresenter {
   onWaypointClick(i) {
     if (this.#isFormOpen) {
       const eventEdit = document.querySelector('.event--edit');
-      const mockPoint = mockPoints.find(el => el.id === eventEdit.dataset.index);
+      const mockPoint = mockPoints[eventEdit.dataset.index];
       this.replaceFormToPoint(eventEdit.dataset.index, mockPoint);
     }
-    this.editPointForm = new EditPoint(this.waypoints[i], data, i);
+    this.editPoint = new EditPoint(this.waypoints[i], data, i);
     this.openFormIndex = i;
-    replaceElement(this.editPointForm.element, this.waypointTag[i].element);
-    this.editPointForm.addSubmitListener(this.replaceFormToPoint.bind(this));
-    this.editPointForm.addDeleteListener(() => {
-      this.editPointForm.remove();
+    replaceElement(this.editPoint.element, this.waypointTag[i].element);
+    this.editPoint.addSubmitListener(this.replaceFormToPoint);
+    this.editPoint.addDeleteListener(() => {
+      this.editPoint.remove();
       this.#isFormOpen = false;
       this.waypointTag[i] = undefined;
 

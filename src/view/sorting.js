@@ -36,6 +36,7 @@ class Sorting extends AbstractView {
   constructor() {
     super();
   }
+
   get template() {
     return getSortingTemplate();
   }

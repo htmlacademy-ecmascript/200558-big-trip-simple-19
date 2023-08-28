@@ -47,6 +47,7 @@ class Waypoint extends AbstractView {
   addClickListener(callback) {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', callback);
   }
+
   get template() {
     return getWaypointTemplate(this.destinations, this.mockPoint, this.i);
   }

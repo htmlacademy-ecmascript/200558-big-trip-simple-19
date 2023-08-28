@@ -9,6 +9,7 @@ class Message extends AbstractView {
   constructor() {
     super();
   }
+
   get template() {
     return getMessageTemplate();
   }

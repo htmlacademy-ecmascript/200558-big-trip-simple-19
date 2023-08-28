@@ -7,6 +7,7 @@ class WaypointContainer extends AbstractView {
   constructor() {
     super();
   }
+
   get template() {
     return getContainerWaypointTemplate();
   }
