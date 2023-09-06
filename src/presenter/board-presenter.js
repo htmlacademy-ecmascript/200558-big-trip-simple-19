@@ -4,7 +4,7 @@ import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/editPoint.js';
 import { data, destinations, mockPoints } from '../model/model.js';
 import Message from '../view/message.js';
-
+import flatpickr from 'flatpickr';
 export default class BoardPresenter {
   #isFormOpen = false;
   constructor(tripEvents) {
@@ -56,12 +56,22 @@ export default class BoardPresenter {
     this.editPoint = new EditPoint(this.waypoints[i], data, i);
     this.openFormIndex = i;
     replaceElement(this.editPoint.element, this.waypointTag[i].element);
+    const flatpickrObject = {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i",
+      time_24hr: true
+    };
+    console.log('#event-start-time-1=', document.querySelector('#event-start-time-1'));
+    console.log('#event-end-time-1=', document.querySelector('#event-end-time-1'));
+    flatpickr('#event-start-time-1', flatpickrObject);
+    flatpickr('#event-end-time-1', flatpickrObject);
+    console.log('lololo');
     this.editPoint.addSubmitListener(this.replaceFormToPoint);
     this.editPoint.addDeleteListener(() => {
       this.editPoint.remove();
       this.#isFormOpen = false;
       this.waypointTag[i] = undefined;
-
     });
     this.#isFormOpen = true;
   }
