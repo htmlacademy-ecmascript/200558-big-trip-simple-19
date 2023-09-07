@@ -132,7 +132,26 @@ class editPoint extends AbstractStatefulView {
       });
     }
   }
-
+  time() {
+    const flatpickrObject = {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i",
+      time_24hr: true
+    };
+    flatpickr('#event-start-time-1', {
+      altInput: true,
+      defaultDate: Date.now(),
+      altFormat: "F j, Y",
+      dateFormat: "Y-m-d",
+    });
+    flatpickr('#event-end-time-1', {
+      altInput: true,
+      defaultDate: Date.now(),
+      altFormat: "F j, Y",
+      dateFormat: "Y-m-d",
+    });
+  }
   addDeleteListener(callback) {
     this.element.querySelector('.event__reset-btn').addEventListener('click', () => callback(this.i));
   }
