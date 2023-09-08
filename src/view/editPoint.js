@@ -144,13 +144,19 @@ class editPoint extends AbstractStatefulView {
       defaultDate: Date.now(),
       altFormat: "F j, Y",
       dateFormat: "Y-m-d",
+      onClose: (data) => {
+        console.log('new Date(data).getDate()=', new Date(data).getDate());
+        flatpickrEnd.set('minDate', new Date(data));
+      }
     });
-    flatpickr('#event-end-time-1', {
+    const flatpickrEnd = flatpickr('#event-end-time-1', {
       altInput: true,
       defaultDate: Date.now(),
-      altFormat: "F j, Y",
+      // altFormat: "F j, Y",
       dateFormat: "Y-m-d",
+      minDate: '2023-5-10'
     });
+    console.log('flatpickrEnd=', flatpickrEnd);
   }
   addDeleteListener(callback) {
     this.element.querySelector('.event__reset-btn').addEventListener('click', () => callback(this.i));
