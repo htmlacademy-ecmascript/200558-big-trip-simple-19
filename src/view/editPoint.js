@@ -1,6 +1,7 @@
 import { destinations, data as EventTypes } from '../model/model.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
+import flatpickr from 'flatpickr';
 function editPointTemplate(waypoint, data, i) {
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
@@ -132,32 +133,26 @@ class editPoint extends AbstractStatefulView {
       });
     }
   }
+
   time() {
-    const flatpickrObject = {
-      enableTime: true,
-      noCalendar: true,
-      dateFormat: "H:i",
-      time_24hr: true
-    };
-    flatpickr('#event-start-time-1', {
-      altInput: true,
+    const flatpickrStart = flatpickr('#event-start-time-1', {
       defaultDate: Date.now(),
-      altFormat: "F j, Y",
-      dateFormat: "Y-m-d",
+      //altFormat: "F j, Y",
+      dateFormat: 'y.m.d',
       onClose: (data) => {
-        console.log('new Date(data).getDate()=', new Date(data).getDate());
         flatpickrEnd.set('minDate', new Date(data));
       }
     });
     const flatpickrEnd = flatpickr('#event-end-time-1', {
-      altInput: true,
       defaultDate: Date.now(),
       // altFormat: "F j, Y",
-      dateFormat: "Y-m-d",
-      minDate: '2023-5-10'
+      dateFormat: 'y.m.d',
+      onClose: (data) => {
+        flatpickrStart.set('maxDate', new Date(data));
+      }
     });
-    console.log('flatpickrEnd=', flatpickrEnd);
   }
+
   addDeleteListener(callback) {
     this.element.querySelector('.event__reset-btn').addEventListener('click', () => callback(this.i));
   }
