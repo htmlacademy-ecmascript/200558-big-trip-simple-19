@@ -119,10 +119,6 @@ class editPoint extends AbstractStatefulView {
     this._restoreHandlers();
   }
 
-  li() {
-    return document.querySelector('.event--edit').parentNode;
-  }
-
   addSubmitListener(callback) {
     if (callback) {
       this.callbackSubmit = callback;
