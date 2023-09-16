@@ -7,7 +7,7 @@ function getWaypointTemplate(destinations, mockPoint, i) {
   const endTime = dayjs(mockPoint.dateTo).utc().format('HH:mm');
   return `<li class="trip-events__item" data-index="${i}">
               <div class="event">
-                <time class="event__date" datetime="2019-07-${dayjs(mockPoint.dateFrom).format('DD')}">MAR ${mockPoint.dateFrom.substr(8, 2)}</time>
+                <time class="event__date" datetime="2019-07-${dayjs(mockPoint.dateFrom).format('DD')}">MAR ${dayjs(mockPoint.dateFrom).format('DD')}</time>
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${mockPoint.type}.png" alt="${destinations.find((element) => element.id === mockPoint.destination).pictures[0].src}">
                 </div>

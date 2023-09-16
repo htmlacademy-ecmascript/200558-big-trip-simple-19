@@ -116,7 +116,7 @@ class editPoint extends AbstractStatefulView {
     this.data = data;
     this.i = i;
     this._setState(waypoint);
-    this._restoreHandlers();
+    this._restoreHandlers()
   }
 
   addSubmitListener(callback) {
@@ -131,14 +131,14 @@ class editPoint extends AbstractStatefulView {
   }
 
   time() {
-    this.flatpickrStart = flatpickr('#event-start-time-1', {
+    this.flatpickrStart = flatpickr(document.querySelector('#event-start-time-1'), {
       defaultDate: Date.now(),
       dateFormat: 'y.m.d',
       onClose: (data) => {
         this.flatpickrEnd.set('minDate', new Date(data));
       }
     });
-    this.flatpickrEnd = flatpickr('#event-end-time-1', {
+    this.flatpickrEnd = flatpickr(document.querySelector('#event-end-time-1'), {
       defaultDate: Date.now(),
       dateFormat: 'y.m.d',
       onClose: (data) => {
@@ -155,7 +155,7 @@ class editPoint extends AbstractStatefulView {
     this.element.querySelector('.event__type-group').addEventListener('change', (evt) => {
       this.updateElement({ type: evt.target.value });
     });
-    this.addSubmitListener(this.callbackSubmit);
+    this.addSubmitListener(() => { this.callbackSubmit(); this.time(); });
   }
 
   get template() {
