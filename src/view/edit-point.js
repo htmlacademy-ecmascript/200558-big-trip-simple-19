@@ -1,8 +1,8 @@
-import { destinations, data as EventTypes } from '../model/model.js';
+import { destinations, data as eventTypes } from '../model/model.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
-function editPointTemplate(waypoint, data, i) {
+const getEditPointTemplate = (waypoint, data, i) => {
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
   let options = '';
@@ -14,7 +14,7 @@ function editPointTemplate(waypoint, data, i) {
   for (const picture of destination.pictures) {
     imgs += `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`;
   }
-  const eventTypes = EventTypes.map(({ type }) => `<div class="event__type-item">
+  const transports = eventTypes.map(({ type }) => `<div class="event__type-item">
   <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${type === options.type ? 'checked' : ''}>
   <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
 </div>`).join('');
@@ -50,7 +50,7 @@ function editPointTemplate(waypoint, data, i) {
                     <div class="event__type-list">
                       <fieldset class="event__type-group">
                         <legend class="visually-hidden">Event type</legend>
-                        ${eventTypes}
+                        ${transports}
                       </fieldset>
                     </div>
                   </div>
@@ -108,13 +108,15 @@ function editPointTemplate(waypoint, data, i) {
                 </section>
               </form>
             </li>`;
-}
+};
 class editPoint extends AbstractStatefulView {
   constructor(waypoint, data, i) {
     super();
     this.waypoint = waypoint;
     this.data = data;
     this.i = i;
+    this.flatpickrEnd = {};
+    this.flatpick = {};
     this._setState(waypoint);
     this._restoreHandlers();
   }
@@ -130,21 +132,29 @@ class editPoint extends AbstractStatefulView {
     }
   }
 
-  time() {
+  setTime() {
     this.flatpickrStart = flatpickr(this.element.querySelector('#event-start-time-1'), {
-      defaultDate: Date.now(),
-      dateFormat: 'y.m.d',
-      maxDate: new Date(),
+      defaultDate: this.waypoint.dateFrom,
+      enableTime: true,
+      dateFormat: 'Y-m-d H:i',
+      maxDate: this.waypoint.dateTo,
       onClose: (data) => {
-        this.flatpickrEnd.set('minDate', new Date(data));
+        if (data.length > 0) {
+          this.flatpickrEnd.set('minDate', data[0]);
+          this._state.dateFrom = data[0];
+        }
       }
     });
     this.flatpickrEnd = flatpickr(this.element.querySelector('#event-end-time-1'), {
-      defaultDate: Date.now(),
-      dateFormat: 'y.m.d',
-      minDate: new Date(),
+      defaultDate: this.waypoint.dateTo,
+      enableTime: true,
+      dateFormat: 'Y-m-d H:i',
+      minDate: this.waypoint.dateFrom,
       onClose: (data) => {
-        this.flatpickrStart.set('maxDate', new Date(data));
+        if (data.length > 0) {
+          this.flatpickrStart.set('maxDate', data[0]);
+          this._state.dateTo = data[0];
+        }
       }
     });
   }
@@ -157,12 +167,12 @@ class editPoint extends AbstractStatefulView {
     this.element.querySelector('.event__type-group').addEventListener('change', (evt) => {
       this.updateElement({ type: evt.target.value });
     });
-    this.time();
+    this.setTime();
     this.addSubmitListener(this.callbackSubmit);
   }
 
   get template() {
-    return editPointTemplate(this._state, this.data, this.i + 1);
+    return getEditPointTemplate(this._state, this.data, this.i + 1);
   }
 }
 export default editPoint;

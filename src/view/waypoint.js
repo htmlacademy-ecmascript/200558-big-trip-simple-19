@@ -2,9 +2,10 @@ import AbstractView from '../framework/view/abstract-view.js';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
+
 function getWaypointTemplate(destinations, mockPoint, i) {
-  const startTime = dayjs(mockPoint.dateFrom).utc().format('HH:mm');
-  const endTime = dayjs(mockPoint.dateTo).utc().format('HH:mm');
+  const startTime = dayjs(mockPoint.dateFrom).format('HH:mm');
+  const endTime = dayjs(mockPoint.dateTo).format('HH:mm');
   return `<li class="trip-events__item" data-index="${i}">
               <div class="event">
                 <time class="event__date" datetime="2019-07-${dayjs(mockPoint.dateFrom).format('DD')}">MAR ${dayjs(mockPoint.dateFrom).format('DD')}</time>

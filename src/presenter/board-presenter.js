@@ -28,6 +28,8 @@ export default class BoardPresenter {
   replaceFormToPoint(i, update) {
     i = (+i) - 1;
     mockPoints[i].type = update.type;
+    mockPoints[i].dateFrom = update.dateFrom;
+    mockPoints[i].dateTo = update.dateTo;
     this.waypointTag[i] = new Waypoint(destinations, mockPoints[i], i);
     this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
     replaceElement(this.waypointTag[i].element, this.editPoint.element);
