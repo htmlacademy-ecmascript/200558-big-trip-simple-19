@@ -14,6 +14,7 @@ class AppPresenter {
 
   init() {
     this.sortPresenter.init();
+    this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
     this.boardPresenter.init(this.waypoints);
     this.sortPresenter.onChange = (sortType) => this.onSortTypeChange(sortType);
   }

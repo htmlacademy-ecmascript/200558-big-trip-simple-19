@@ -1,19 +1,18 @@
 import { render, replaceElement } from '../utils.js';
 import Waypoint from '../view/waypoint.js';
 import ContainerWaypoint from '../view/waypoint-container.js';
-import EditPoint from '../view/editPoint.js';
-import { data, destinations } from '../model/model.js';
+import EditPoint from '../view/edit-point.js';
+import { data, destinations, mockPoints } from '../model/model.js';
 import Message from '../view/message.js';
-
 export default class BoardPresenter {
   #isFormOpen = false;
-
   constructor(tripEvents) {
     this.tripEvents = tripEvents;
     this.containerWaypoint = new ContainerWaypoint();
     this.waypointTag = [];
     render(this.containerWaypoint, this.tripEvents);
     this.waypointEditForm = null;
+    this.replaceFormToPoint = this.replaceFormToPoint.bind(this);
   }
 
   init(waypoints) {
@@ -22,17 +21,18 @@ export default class BoardPresenter {
     if (this.waypoints.length === 0) {
       render(new Message(), this.tripEvents);
     } else {
-      this.#renderPoints(this.waypoints, this.editPointForm);
+      this.#renderPoints(this.waypoints, this.editPoint);
     }
-    document.querySelector('body').onkeydown = (evt) => {
-      if (evt.key === 'k') {
-        this.resetPoints();
-      }
-    };
   }
 
-  replaceFormToPoint(evt, i) {
-    replaceElement(this.waypointTag[i].element, this.editPointForm.element);
+  replaceFormToPoint(i, update) {
+    i = (+i) - 1;
+    mockPoints[i].type = update.type;
+    mockPoints[i].dateFrom = update.dateFrom;
+    mockPoints[i].dateTo = update.dateTo;
+    this.waypointTag[i] = new Waypoint(destinations, mockPoints[i], i);
+    this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
+    replaceElement(this.waypointTag[i].element, this.editPoint.element);
     this.#isFormOpen = false;
   }
 
@@ -41,7 +41,7 @@ export default class BoardPresenter {
     this.containerWaypoint.element.innerHTML = null;
     this.waypointTag = [];
     for (let i = 0; i < waypoints.length; i++) {
-      const waypointTag = new Waypoint(destinations, waypoints[i]);
+      const waypointTag = new Waypoint(destinations, waypoints[i], i);
       this.waypointTag[i] = waypointTag;
       waypointTag.addClickListener(() => this.onWaypointClick(i));
       render(this.waypointTag[i], this.containerWaypoint.element);
@@ -50,21 +50,18 @@ export default class BoardPresenter {
 
   onWaypointClick(i) {
     if (this.#isFormOpen) {
-      this.replaceFormToPoint(null, this.openFormIndex);
+      const eventEdit = document.querySelector('.event--edit');
+      const mockPoint = mockPoints[eventEdit.dataset.index];
+      this.replaceFormToPoint(eventEdit.dataset.index, mockPoint);
     }
-    this.editPointForm = new EditPoint(this.waypoints[i], data, i);
+    this.editPoint = new EditPoint(this.waypoints[i], data, i);
     this.openFormIndex = i;
-    replaceElement(this.editPointForm.element, this.waypointTag[i].element);
-    this.editPointForm.addSubmitListener((evt) => this.replaceFormToPoint(evt, i));
-    this.editPointForm.addClickListener(() => {
-      this.editPointForm.remove();
+    replaceElement(this.editPoint.element, this.waypointTag[i].element);
+    this.editPoint.addSubmitListener(this.replaceFormToPoint);
+    this.editPoint.addDeleteListener(() => {
+      this.editPoint.remove();
       this.#isFormOpen = false;
       this.waypointTag[i] = undefined;
-    });
-    document.addEventListener('onkeydown', (evt) => {
-      if (evt.key === 'Escape') {
-        replaceElement(this.waypointTag[i].element, this.editPointForm.element);
-      }
     });
     this.#isFormOpen = true;
   }

@@ -179,7 +179,11 @@ export const destinations = [
     name: 'Chamonix',
     pictures: [
       {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        src: 'https://www.ejin.ru/wp-content/uploads/2017/09/7-667.jpg',
+        description: 'forest'
+      },
+      {
+        src: 'https://w.forfun.com/fetch/ca/ca3c70c3111dde977a73ebf659a9ccc2.jpeg',
         description: 'forest'
       }
     ]
@@ -190,18 +194,38 @@ export const destinations = [
     name: 'Geneva',
     pictures: [
       {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163318',
+        src: 'https://w.forfun.com/fetch/74/74739e1770f31cdbfdde99cc0b2925d3.jpeg',
         description: 'Hedgehog',
+      },
+      {
+        src: 'https://w.forfun.com/fetch/3e/3e6d5f96bb0a293b7eb3866e91f2fd32.jpeg',
+        description: 'forest'
+      },
+      {
+        src: 'https://imgfon.ru/Img/Crop/2560x2048/Animals/begut-skachut-tri-loshadi-koni.jpg?img.1',
+        description: 'forest'
+      },
+      {
+        src: 'https://w.forfun.com/fetch/a7/a70c2b75fc3c0f687a01be077434956d.jpeg',
+        description: 'forest'
+      },
+      {
+        src: 'http://s1.1zoom.ru/b5050/595/342546-svetik_2048x1152.jpg',
+        description: 'forest'
+      },
+      {
+        src: 'https://mobimg.b-cdn.net/v3/fetch/32/32270e41db5c3c8763937d843a9d1fc8.jpeg',
+        description: 'forest'
       }
     ]
   },
   {
     id: 3,
     description: 'Offers: Rent a car +€  ',
-    name: 'Chamonix',
+    name: 'astadam',
     pictures: [
       {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163319',
+        src: 'https://i.pinimg.com/originals/21/25/ee/2125ee74769913bb6793f249d4a8cded.jpg',
         description: 'mountain'
       }
     ]
@@ -259,11 +283,11 @@ export const mockPoints = [
     destination: 1,
   }
 ];
-for (const el of mockPoints) {
-  el.type = getRandomType();
-  el.basePrice = getRandomPrice();
-  el.dateFrom = getRandomDateFrom();
-  el.dateTo = getRandomDateFromTo();
+for (const mockPoint of mockPoints) {
+  mockPoint.type = getRandomType();
+  mockPoint.basePrice = getRandomPrice();
+  mockPoint.dateFrom = getRandomDateFrom();
+  mockPoint.dateTo = getRandomDateFromTo();
 }
 for (const da of data) {
   for (const offers of da.offers) {

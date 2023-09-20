@@ -8,7 +8,10 @@ function getMessageTemplate() {
 class Message extends AbstractView {
   constructor() {
     super();
-    this.template = getMessageTemplate();
+  }
+
+  get template() {
+    return getMessageTemplate();
   }
 }
 export default Message;
