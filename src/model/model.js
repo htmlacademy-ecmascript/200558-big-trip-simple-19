@@ -283,6 +283,15 @@ export const mockPoints = [
     destination: 1,
   }
 ];
+mockPoints.delete = function (i) {
+  console.log('this=', this);
+  this.splice(i, 1);
+  console.log('thuis=', this[9]);
+}
+console.log('mockPoints=', mockPoints[9]);
+
+mockPoints.delete(1);
+console.log('mockPoints=', mockPoints[9]);
 for (const mockPoint of mockPoints) {
   mockPoint.type = getRandomType();
   mockPoint.basePrice = getRandomPrice();
