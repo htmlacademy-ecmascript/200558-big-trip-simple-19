@@ -283,15 +283,28 @@ export const mockPoints = [
     destination: 1,
   }
 ];
-mockPoints.delete = function (i) {
-  console.log('this=', this);
-  this.splice(i, 1);
-  console.log('thuis=', this[9]);
+class Model {
+  constructor(el) {
+    this.el = el;
+  }
+  set add(value) {
+    this.el.push(value);
+  }
+  getPoint(i) {
+    return this.el[i];
+  }
+  change(i, value) {
+    this.el[i] = value;
+  }
+  changeAll(model) {
+    this.el = model;
+  }
+  set remove(i) {
+    this.el.splice(i, 1);
+  }
 }
-console.log('mockPoints=', mockPoints[9]);
+export let model = new Model(mockPoints);
 
-mockPoints.delete(1);
-console.log('mockPoints=', mockPoints[9]);
 for (const mockPoint of mockPoints) {
   mockPoint.type = getRandomType();
   mockPoint.basePrice = getRandomPrice();

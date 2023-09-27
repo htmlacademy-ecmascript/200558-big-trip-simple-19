@@ -1,4 +1,4 @@
-import { mockPoints } from '../model/model.js';
+import { mockPoints, model } from '../model/model.js';
 import { SortType } from '../view/sorting.js';
 import BoardPresenter from './board-presenter.js';
 import SortPresenter from './sort-presenter.js';
@@ -16,18 +16,19 @@ class AppPresenter {
     this.sortPresenter.init();
     this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
     this.boardPresenter.init(this.waypoints);
-    this.sortPresenter.onChange = (sortType) => this.onSortTypeChange(sortType);
+    this.sortPresenter.onChange = (sortType) => this.SortTypeChange(sortType);
   }
 
-  onSortTypeChange(sortType) {
+  SortTypeChange(sortType, callback = () => { }) {
     let waypointsCopy = [...this.waypoints];
+    console.log('sort mockPoints=', mockPoints);
     switch (sortType) {
       case SortType.PRICE:
-        sort.min(mockPoints, 'basePrice');
+        sort.min(this.waypoints, 'basePrice');
         break;
 
       case SortType.DAY:
-        mockPoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
+        this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
         break;
 
       case SortType.TIME:
@@ -35,19 +36,24 @@ class AppPresenter {
           const date = new Date(el.dateFrom);
           el.startTime = date.getHours() * 60 + date.getMinutes();
         }
-        sort.min(mockPoints, 'startTime');
+        sort.min(this.waypoints, 'startTime');
         break;
     }
+    console.log('sort mockPoints=', mockPoints);
+    callback(this.waypoints);
     let flag = false;
-    for (let i in mockPoints) {
+    for (let i in this.waypoints) {
       i = +i;
-      if (mockPoints[i].id !== waypointsCopy[i].id) {
+      if (this.waypoints[i].id !== waypointsCopy[i].id) {
         flag = true;
       }
     }
-    waypointsCopy = [...mockPoints];
+    waypointsCopy = [...this.waypoints];
     if (flag) {
-      this.boardPresenter.init(mockPoints);
+      this.boardPresenter.init(this.waypoints);
+      model.changeAll(this.waypoints);
+      console.log('mock=', mockPoints);
+
     }
   }
 }
