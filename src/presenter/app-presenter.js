@@ -3,6 +3,7 @@ import { SortType } from '../view/sorting.js';
 import BoardPresenter from './board-presenter.js';
 import SortPresenter from './sort-presenter.js';
 import { sort } from '../utils.js';
+let flag = false;
 class AppPresenter {
   constructor({ appContainer }) {
     this.appContainer = appContainer;
@@ -13,9 +14,25 @@ class AppPresenter {
   }
 
   init() {
-    this.sortPresenter.init();
-    this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
     this.boardPresenter.init(this.waypoints);
+    this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
+    this.sortPresenter.init();
+    document.onkeydown = (evt) => {
+      console.log('evt=', evt);
+      console.log('key c');
+      if (evt.key == 'c') {
+        flag = !flag;
+        console.log('flag=', flag);
+        if (flag == true) {
+          this.waypoints = [];
+          this.init();
+        } else {
+          this.waypoints = mockPoints;
+          this.init();
+        }
+
+      }
+    }
     this.sortPresenter.onChange = (sortType) => this.SortTypeChange(sortType);
   }
 

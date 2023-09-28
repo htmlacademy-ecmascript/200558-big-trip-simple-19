@@ -10,6 +10,7 @@ class SortPresenter {
   }
 
   init() {
+    this.boardContainer.innerHTML = '';
     render(new FiltersWapoint(), this.boardContainer);
     render(new SortingWaypoint(), this.tripEvents, 'afterbegin');
   }

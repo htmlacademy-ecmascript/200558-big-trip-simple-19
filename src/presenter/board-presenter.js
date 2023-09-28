@@ -4,23 +4,26 @@ import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/edit-point.js';
 import { data, destinations, mockPoints } from '../model/model.js';
 import Message from '../view/message.js';
+import Empty from '../view/empty.js';
 export default class BoardPresenter {
   #isFormOpen = false;
   constructor(tripEvents) {
     this.tripEvents = tripEvents;
     this.containerWaypoint = new ContainerWaypoint();
     this.waypointTag = [];
-    render(this.containerWaypoint, this.tripEvents);
     this.waypointEditForm = null;
     this.replaceFormToPoint = this.replaceFormToPoint.bind(this);
+    this.empty = new Empty();
   }
 
   init(waypoints) {
     this.waypoints = waypoints;
-
     if (this.waypoints.length === 0) {
-      render(new Message(), this.tripEvents);
+      this.tripEvents.innerHTML = '';
+      render(this.empty, this.tripEvents);
     } else {
+      this.tripEvents.innerHTML = '';
+      render(this.containerWaypoint, this.tripEvents);
       this.#renderPoints(this.waypoints, this.editPoint);
     }
   }
