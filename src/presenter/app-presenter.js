@@ -6,23 +6,32 @@ import { sort } from '../utils.js';
 let flag = false;
 class AppPresenter {
   constructor({ appContainer }) {
+    this.waypoints = mockPoints;
     this.appContainer = appContainer;
     this.tripEvents = document.querySelector('.trip-events');
-    this.sortPresenter = new SortPresenter(this.appContainer, this.tripEvents);
+    this.sortPresenter = new SortPresenter(this.appContainer, this.tripEvents, this.waypoints);
+    this.sortPresenter.init();
     this.boardPresenter = new BoardPresenter(this.tripEvents);
-    this.waypoints = mockPoints;
+    this.sortPresenter.onChange = (sortType) => this.SortTypeChange(sortType);
   }
 
   init() {
     this.boardPresenter.init(this.waypoints);
+    this.sortPresenter.setFilterChangeHandler((evt) => {
+      this.waypoints = model.getPointAll;
+      if (evt == 'future') {
+        this.waypoints = this.waypoints.filter((waypoint) => {
+          // console.log(`Date.now(${Date.now(waypoint.dateFrom)}) >= Date.now(${Date.now('2019-07-10T11:46:56.845Z')}))=${Date.now(waypoint.dateFrom) >= Date.now('2019-07-10T11:46:56.845Z')}`);
+
+          return new Date(waypoint.dateFrom) >= new Date('2019-07-10T11:46:56.845Z');
+        });
+      }
+      this.boardPresenter.init(this.waypoints);
+    });
     this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
-    this.sortPresenter.init();
     document.onkeydown = (evt) => {
-      console.log('evt=', evt);
-      console.log('key c');
       if (evt.key == 'c') {
         flag = !flag;
-        console.log('flag=', flag);
         if (flag == true) {
           this.waypoints = [];
           this.init();
@@ -33,12 +42,21 @@ class AppPresenter {
 
       }
     }
-    this.sortPresenter.onChange = (sortType) => this.SortTypeChange(sortType);
   }
+  onchange(action, options) {
+    if (action == 'delete') {
+      model.remove = option;
+    } else if (action == 'change') {
+      model.change(...options);
+    }
+    else if (action == 'changeAll') {
+      model.changeAll(options);
+    }
+    console.log('model=', model);
 
+  }
   SortTypeChange(sortType, callback = () => { }) {
     let waypointsCopy = [...this.waypoints];
-    console.log('sort mockPoints=', mockPoints);
     switch (sortType) {
       case SortType.PRICE:
         sort.min(this.waypoints, 'basePrice');
@@ -56,7 +74,6 @@ class AppPresenter {
         sort.min(this.waypoints, 'startTime');
         break;
     }
-    console.log('sort mockPoints=', mockPoints);
     callback(this.waypoints);
     let flag = false;
     for (let i in this.waypoints) {
@@ -67,10 +84,8 @@ class AppPresenter {
     }
     waypointsCopy = [...this.waypoints];
     if (flag) {
-      this.boardPresenter.init(this.waypoints);
-      model.changeAll(this.waypoints);
-      console.log('mock=', mockPoints);
-
+      this.init();
+      this.onchange('changeAll', this.waypoints);
     }
   }
 }

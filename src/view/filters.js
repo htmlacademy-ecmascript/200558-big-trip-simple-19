@@ -18,7 +18,15 @@ class Filters extends AbstractView {
   constructor() {
     super();
   }
+  set onchange(callBack) {
 
+    for (const filterSwitch of this.element.querySelectorAll('.trip-filters__filter-input')) {
+
+      filterSwitch.onchange = function () {
+        callBack(this.value);
+      }
+    }
+  }
   get template() {
     return getFiltersTemplate();
   }

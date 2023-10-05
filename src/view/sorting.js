@@ -35,10 +35,20 @@ function getSortingTemplate() {
 class Sorting extends AbstractView {
   constructor() {
     super();
+    this.callBack = [];
   }
 
   get template() {
     return getSortingTemplate();
+  }
+  set onChange(callBack) {
+    const sortInput = this.element.querySelectorAll('.trip-sort__input');
+    console.log('sortInput=', sortInput);
+
+    for (const el of sortInput) {
+      this.callBack.push(() => { callBack(el.value); });
+      el.addEventListener('input', this.callBack[this.callBack.length - 1]);
+    }
   }
 }
 export default Sorting;

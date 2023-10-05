@@ -290,6 +290,9 @@ class Model {
   set add(value) {
     this.el.push(value);
   }
+  get getPointAll() {
+    return this.el;
+  }
   getPoint(i) {
     return this.el[i];
   }
@@ -303,8 +306,9 @@ class Model {
     this.el.splice(i, 1);
   }
 }
-export let model = new Model(mockPoints);
 
+export const model = new Model(mockPoints);
+console.log('model.getPointAll=', model.getPointAll);
 for (const mockPoint of mockPoints) {
   mockPoint.type = getRandomType();
   mockPoint.basePrice = getRandomPrice();

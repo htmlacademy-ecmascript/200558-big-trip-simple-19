@@ -4,23 +4,28 @@ import SortingWaypoint from '../view/sorting.js';
 import { render } from '../utils.js';
 
 class SortPresenter {
-  constructor(boardContainer, tripEvents) {
+  constructor(boardContainer, tripEvents, waypoints) {
     this.boardContainer = boardContainer;
     this.tripEvents = tripEvents;
+    this.waypoints = waypoints;
   }
 
   init() {
     this.boardContainer.innerHTML = '';
-    render(new FiltersWapoint(), this.boardContainer);
-    render(new SortingWaypoint(), this.tripEvents, 'afterbegin');
-  }
+    this.filtersWapoint = new FiltersWapoint();
+    render(this.filtersWapoint, this.boardContainer);
+    this.sorting = new SortingWaypoint();
+    render(this.sorting, this.tripEvents, 'afterbegin');
 
+  }
+  setFilterChangeHandler(callBack) {
+    this.filtersWapoint.onchange = (evt) => {
+      callBack(evt);
+    }
+  }
   // eslint-disable-next-line accessor-pairs
   set onChange(callBack) {
-    const sortInput = document.querySelectorAll('.trip-sort__input');
-    for (const el of sortInput) {
-      el.addEventListener('input', () => callBack(el.value));
-    }
+    this.sorting.onChange = callBack;
   }
 }
 
