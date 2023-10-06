@@ -14,7 +14,6 @@ export function createElement(template) {
   return newElement.firstElementChild;
 }
 export function render(component, container, place = RenderPosition.BEFOREEND) {
-  debugger;
   container.insertAdjacentElement(place, component.element);
 }
 export function replaceElement(newElement, oldElement) {

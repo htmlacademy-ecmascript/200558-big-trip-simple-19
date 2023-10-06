@@ -32,8 +32,8 @@ export default class BoardPresenter {
       const newPoint = getNewPoint();
       this.waypoints.push(newPoint);
       this.editPoint = new EditPoint(newPoint, data, this.waypoints.length - 1);
-      console.log('RenderPosition=', RenderPosition);
-      render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTEREND);
+      console.log('RenderPosition.AFTEREND=', RenderPosition.AFTEREND);
+      render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
       this.editPoint.addSubmitListener((i, update) => {
         this.replaceFormToPoint(i, update);
         console.log('this.waypoints=', this.waypoints);
