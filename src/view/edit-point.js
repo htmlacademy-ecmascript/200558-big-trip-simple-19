@@ -2,6 +2,7 @@ import { destinations, data as eventTypes } from '../model/model.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
+
 const getEditPointTemplate = (waypoint, data, i) => {
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
@@ -137,6 +138,7 @@ class editPoint extends AbstractStatefulView {
       defaultDate: this.waypoint.dateFrom,
       enableTime: true,
       dateFormat: 'Y-m-d H:i',
+      time_24hr: true,
       maxDate: this.waypoint.dateTo,
       onClose: (data) => {
         if (data.length > 0) {
@@ -149,6 +151,7 @@ class editPoint extends AbstractStatefulView {
       defaultDate: this.waypoint.dateTo,
       enableTime: true,
       dateFormat: 'Y-m-d H:i',
+      time_24hr: true,
       minDate: this.waypoint.dateFrom,
       onClose: (data) => {
         if (data.length > 0) {

@@ -57,6 +57,8 @@ class AppPresenter {
   }
   SortTypeChange(sortType, callback = () => { }) {
     let waypointsCopy = [...this.waypoints];
+    console.log('this.waypoints=', this.waypoints);
+
     switch (sortType) {
       case SortType.PRICE:
         sort.min(this.waypoints, 'basePrice');

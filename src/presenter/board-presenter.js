@@ -1,9 +1,22 @@
-import { render, replaceElement } from '../utils.js';
+import { render, replaceElement, sort, RenderPosition } from '../utils.js';
 import Waypoint from '../view/waypoint.js';
 import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/edit-point.js';
 import { data, destinations, mockPoints, model } from '../model/model.js';
 import Empty from '../view/empty.js';
+import dayjs from 'dayjs';
+
+const getNewPoint = () => {
+  return {
+    id: '' + Math.random() + Date.now(),
+    offers: [],
+    destination: 1,
+    type: 'taxi',
+    basePrice: 176,
+    dateFrom: dayjs().toString(),
+    dateTo: dayjs().toString(),
+  };
+}
 export default class BoardPresenter {
   #isFormOpen = false;
   constructor(tripEvents) {
@@ -16,9 +29,27 @@ export default class BoardPresenter {
     this.empty = new Empty();
     let tripMainEventAddBtn = document.querySelector('.trip-main__event-add-btn');
     tripMainEventAddBtn.addEventListener('click', () => {
-      this.waypoints.push(this.waypoints[this.waypoints.length - 1]);
-      this.editPoint.push(new EditPoint(this.waypoints[this.waypoints.length - 1], data, this.waypoints.length - 1));
-      render(this.editPoint, this.containerWaypoint.element);
+      const newPoint = getNewPoint();
+      this.waypoints.push(newPoint);
+      this.editPoint = new EditPoint(newPoint, data, this.waypoints.length - 1);
+      console.log('RenderPosition=', RenderPosition);
+      render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTEREND);
+      this.editPoint.addSubmitListener((i, update) => {
+        this.replaceFormToPoint(i, update);
+        console.log('this.waypoints=', this.waypoints);
+
+        this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
+        this.init(this.waypoints);
+
+      });
+      this.editPoint.addDeleteListener(() => {
+        this.editPoint.remove();
+        this.#isFormOpen = false;
+        const index = mockPoints.findIndex((mockPoint) => mockPoint.id == this.waypointTag[i].mockPoint.id);
+        model.remove = index;
+
+        this.waypointTag[i] = undefined;
+      });
     });
   }
 
@@ -32,7 +63,6 @@ export default class BoardPresenter {
       for (const tripEventsItem of tripEventsItems) {
         tripEventsItem.remove();
       }
-
       this.#renderPoints(this.waypoints, this.editPoint);
     }
   }
@@ -46,6 +76,8 @@ export default class BoardPresenter {
     this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
     replaceElement(this.waypointTag[i].element, this.editPoint.element);
     this.#isFormOpen = false;
+    console.log('mockPoints=', mockPoints);
+
   }
 
   #renderPoints(waypoints) {
