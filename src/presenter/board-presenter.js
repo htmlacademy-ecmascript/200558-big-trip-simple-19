@@ -1,4 +1,4 @@
-import { render, replaceElement, sort, RenderPosition } from '../utils.js';
+import { render, replaceElement, RenderPosition } from '../utils.js';
 import Waypoint from '../view/waypoint.js';
 import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/edit-point.js';
@@ -6,17 +6,15 @@ import { data, destinations, mockPoints, model } from '../model/model.js';
 import Empty from '../view/empty.js';
 import dayjs from 'dayjs';
 
-const getNewPoint = () => {
-  return {
-    id: '' + Math.random() + Date.now(),
-    offers: [],
-    destination: 1,
-    type: 'taxi',
-    basePrice: 176,
-    dateFrom: dayjs().toString(),
-    dateTo: dayjs().toString(),
-  };
-}
+const getNewPoint = () => ({
+  id: `${Math.random()}${Date.now()}`,
+  offers: [],
+  destination: 1,
+  type: 'taxi',
+  basePrice: 176,
+  dateFrom: dayjs().toString(),
+  dateTo: dayjs().toString(),
+});
 export default class BoardPresenter {
   #isFormOpen = false;
   constructor(tripEvents) {
@@ -27,17 +25,14 @@ export default class BoardPresenter {
     this.waypointEditForm = null;
     this.replaceFormToPoint = this.replaceFormToPoint.bind(this);
     this.empty = new Empty();
-    let tripMainEventAddBtn = document.querySelector('.trip-main__event-add-btn');
+    const tripMainEventAddBtn = document.querySelector('.trip-main__event-add-btn');
     tripMainEventAddBtn.addEventListener('click', () => {
       const newPoint = getNewPoint();
       this.waypoints.push(newPoint);
       this.editPoint = new EditPoint(newPoint, data, this.waypoints.length - 1);
-      console.log('RenderPosition.AFTEREND=', RenderPosition.AFTEREND);
       render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
       this.editPoint.addSubmitListener((i, update) => {
         this.replaceFormToPoint(i, update);
-        console.log('this.waypoints=', this.waypoints);
-
         this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
         this.init(this.waypoints);
 
@@ -45,7 +40,7 @@ export default class BoardPresenter {
       this.editPoint.addDeleteListener(() => {
         this.editPoint.remove();
         this.#isFormOpen = false;
-        const index = mockPoints.findIndex((mockPoint) => mockPoint.id == this.waypointTag[i].mockPoint.id);
+        const index = mockPoints.findIndex((mockPoint) => mockPoint.id === this.waypointTag[i].mockPoint.id);
         model.remove = index;
 
         this.waypointTag[i] = undefined;
@@ -59,7 +54,7 @@ export default class BoardPresenter {
       this.tripEvents.innerHTML = '';
       render(this.empty, this.tripEvents);
     } else {
-      let tripEventsItems = this.tripEvents.querySelectorAll('.trip-events__item');
+      const tripEventsItems = this.tripEvents.querySelectorAll('.trip-events__item');
       for (const tripEventsItem of tripEventsItems) {
         tripEventsItem.remove();
       }
@@ -76,7 +71,6 @@ export default class BoardPresenter {
     this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
     replaceElement(this.waypointTag[i].element, this.editPoint.element);
     this.#isFormOpen = false;
-    console.log('mockPoints=', mockPoints);
 
   }
 
@@ -104,7 +98,7 @@ export default class BoardPresenter {
     this.editPoint.addDeleteListener(() => {
       this.editPoint.remove();
       this.#isFormOpen = false;
-      const index = mockPoints.findIndex((mockPoint) => mockPoint.id == this.waypointTag[i].mockPoint.id);
+      const index = mockPoints.findIndex((mockPoint) => mockPoint.id === this.waypointTag[i].mockPoint.id);
       model.remove = index;
 
       this.waypointTag[i] = undefined;

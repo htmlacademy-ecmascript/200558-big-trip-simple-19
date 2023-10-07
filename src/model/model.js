@@ -287,28 +287,33 @@ class Model {
   constructor(el) {
     this.el = el;
   }
+
   set add(value) {
     this.el.push(value);
   }
+
   get getPointAll() {
     return this.el;
   }
+
   getPoint(i) {
     return this.el[i];
   }
+
   change(i, value) {
     this.el[i] = value;
   }
+
   changeAll(model) {
     this.el = model;
   }
+
   set remove(i) {
     this.el.splice(i, 1);
   }
 }
 
 export const model = new Model(mockPoints);
-console.log('model.getPointAll=', model.getPointAll);
 for (const mockPoint of mockPoints) {
   mockPoint.type = getRandomType();
   mockPoint.basePrice = getRandomPrice();

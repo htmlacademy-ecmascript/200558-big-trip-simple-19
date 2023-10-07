@@ -3,7 +3,6 @@ import { SortType } from '../view/sorting.js';
 import BoardPresenter from './board-presenter.js';
 import SortPresenter from './sort-presenter.js';
 import { sort } from '../utils.js';
-let flag = false;
 class AppPresenter {
   constructor({ appContainer }) {
     this.waypoints = mockPoints;
@@ -19,20 +18,20 @@ class AppPresenter {
     this.boardPresenter.init(this.waypoints);
     this.sortPresenter.setFilterChangeHandler((evt) => {
       this.waypoints = model.getPointAll;
-      if (evt == 'future') {
-        this.waypoints = this.waypoints.filter((waypoint) => {
-          // console.log(`Date.now(${Date.now(waypoint.dateFrom)}) >= Date.now(${Date.now('2019-07-10T11:46:56.845Z')}))=${Date.now(waypoint.dateFrom) >= Date.now('2019-07-10T11:46:56.845Z')}`);
+      if (evt === 'future') {
+        this.waypoints = this.waypoints.filter((waypoint) =>
 
-          return new Date(waypoint.dateFrom) >= new Date('2019-07-10T11:46:56.845Z');
-        });
+          new Date(waypoint.dateFrom) >= new Date('2019-07-10T11:46:56.845Z')
+        );
       }
       this.boardPresenter.init(this.waypoints);
     });
     this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
+    let addPoint = false;
     document.onkeydown = (evt) => {
-      if (evt.key == 'c') {
-        flag = !flag;
-        if (flag == true) {
+      if (evt.key === 'c') {
+        addPoint = !addPoint;
+        if (addPoint === true) {
           this.waypoints = [];
           this.init();
         } else {
@@ -41,23 +40,23 @@ class AppPresenter {
         }
 
       }
-    }
+    };
   }
+
   onchange(action, options) {
-    if (action == 'delete') {
-      model.remove = option;
-    } else if (action == 'change') {
+    if (action === 'delete') {
+      model.remove = options;
+    } else if (action === 'change') {
       model.change(...options);
     }
-    else if (action == 'changeAll') {
+    else if (action === 'changeAll') {
       model.changeAll(options);
     }
-    console.log('model=', model);
 
   }
+
   SortTypeChange(sortType, callback = () => { }) {
     let waypointsCopy = [...this.waypoints];
-    console.log('this.waypoints=', this.waypoints);
 
     switch (sortType) {
       case SortType.PRICE:

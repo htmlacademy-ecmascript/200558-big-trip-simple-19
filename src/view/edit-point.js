@@ -138,7 +138,7 @@ class editPoint extends AbstractStatefulView {
       defaultDate: this.waypoint.dateFrom,
       enableTime: true,
       dateFormat: 'Y-m-d H:i',
-      time_24hr: true,
+      'time_24hr': true,
       maxDate: this.waypoint.dateTo,
       onClose: (data) => {
         if (data.length > 0) {
@@ -151,7 +151,7 @@ class editPoint extends AbstractStatefulView {
       defaultDate: this.waypoint.dateTo,
       enableTime: true,
       dateFormat: 'Y-m-d H:i',
-      time_24hr: true,
+      'time_24hr': true,
       minDate: this.waypoint.dateFrom,
       onClose: (data) => {
         if (data.length > 0) {

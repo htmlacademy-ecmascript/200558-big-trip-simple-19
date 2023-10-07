@@ -41,9 +41,9 @@ class Sorting extends AbstractView {
   get template() {
     return getSortingTemplate();
   }
+
   set onChange(callBack) {
     const sortInput = this.element.querySelectorAll('.trip-sort__input');
-    console.log('sortInput=', sortInput);
 
     for (const el of sortInput) {
       this.callBack.push(() => { callBack(el.value); });

@@ -18,11 +18,13 @@ class SortPresenter {
     render(this.sorting, this.tripEvents, 'afterbegin');
 
   }
+
   setFilterChangeHandler(callBack) {
     this.filtersWapoint.onchange = (evt) => {
       callBack(evt);
-    }
+    };
   }
+
   // eslint-disable-next-line accessor-pairs
   set onChange(callBack) {
     this.sorting.onChange = callBack;
