@@ -284,8 +284,8 @@ export const mockPoints = [
   // }
 ];
 class Model {
-  constructor(el) {
-    this.el = el;
+  constructor(points) {
+    this.el = points;
   }
 
   set add(value) {
@@ -300,16 +300,19 @@ class Model {
     return this.el[i];
   }
 
-  change(i, value) {
+  update(i, value) {
     this.el[i] = value;
   }
 
-  changeAll(model) {
-    this.el = model;
+  changeAll(points) {
+    this.el = points;
   }
 
-  set remove(i) {
-    this.el.splice(i, 1);
+  set remove(id) {
+    let index = findIndex((el) => {
+      el.id === id;
+    });
+    this.el.splice(index, 1);
   }
 }
 

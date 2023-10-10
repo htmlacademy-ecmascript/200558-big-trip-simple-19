@@ -37,7 +37,7 @@ export default class BoardPresenter {
         this.init(this.waypoints);
 
       });
-      this.editPoint.addDeleteListener(() => {
+      this.editPoint.addDeleteListener((i) => {
         this.editPoint.remove();
         this.#isFormOpen = false;
         const index = mockPoints.findIndex((mockPoint) => mockPoint.id === this.waypointTag[i].mockPoint.id);
