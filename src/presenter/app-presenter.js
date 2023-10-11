@@ -11,10 +11,13 @@ class AppPresenter {
     this.sortPresenter.init();
     this.boardPresenter = new BoardPresenter(this.tripEvents);
     this.sortPresenter.onChange = (sortType) => this.SortTypeChange(sortType);
+    this.addPoint = false;
   }
 
   init() {
-    this.boardPresenter.init(mockPoints);
+    console.log('init model.getPointAll=', model.getPointAll);
+
+    this.boardPresenter.init(model.getPointAll);
     this.sortPresenter.setFilterChangeHandler((type) => {
       if (type === 'future') {
         mockPoints = mockPoints.filter((mockPoint) =>
@@ -25,30 +28,28 @@ class AppPresenter {
       this.boardPresenter.init(mockPoints);
     });
     mockPoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
-    let addPoint = false;
     let mockPointsCopy = [...mockPoints];
     document.onkeydown = (evt) => {
       console.log('this=', this);
       if (evt.key === 'c') {
         console.log('key c');
 
-        addPoint = !addPoint;
-        console.log('mockPoints=', mockPoints);
+        this.addPoint = !this.addPoint;
+        console.log('addPoint=', this.addPoint);
 
-        if (addPoint === true) {
-          mockPoints = [];
-          console.log('mockPoints=', mockPoints);
-
+        if (this.addPoint === true) {
+          model.setPonts([]);
           this.init();
         } else {
-          mockPoints = mockPointsCopy;
+          console.log('mockPointsCopy=', mockPointsCopy);
+
+          model.setPoints(mockPointsCopy);
           this.init();
         }
 
       }
     };
   }
-
   onchange(action, options) {
     if (action === 'delete') {
       model.remove = options;

@@ -285,7 +285,7 @@ export const mockPoints = [
 ];
 class Model {
   constructor(points) {
-    this.el = points;
+    this.el = { ...points };
   }
 
   set add(value) {
@@ -300,12 +300,12 @@ class Model {
     return this.el[i];
   }
 
-  update(i, value) {
+  setPont(i, value) {
     this.el[i] = value;
   }
 
-  changeAll(points) {
-    this.el = points;
+  setPonts({ points }) {
+    this.el = { ...points };
   }
 
   set remove(id) {
