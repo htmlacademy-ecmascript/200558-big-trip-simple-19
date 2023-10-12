@@ -18,9 +18,9 @@ class AppPresenter {
     this.boardPresenter.init(model.points);
     this.filterPresenter.setFilterChangeHandler((type) => {
       if (type === 'future') {
-        mockPoints = model.points.filter((mockPoint) =>
+        model.points = model.points.filter((point) =>
 
-          new Date(mockPoint.dateFrom) >= new Date('2019-07-10T11:46:56.845Z')
+          new Date(point.dateFrom) >= new Date('2019-07-10T11:46:56.845Z')
         );
       }
       this.boardPresenter.init(model.points);
@@ -33,11 +33,11 @@ class AppPresenter {
         this.addPoint = !this.addPoint;
 
         if (this.addPoint === true) {
-          model.setPoints([]);
+          model.setPoints = [];
           this.init();
         } else {
 
-          model.setPoints(mockPoints);
+          model.setPoints = mockPoints;
           this.init();
         }
 
@@ -46,7 +46,7 @@ class AppPresenter {
   }
   onchange(action, options) {
     if (action === 'delete') {
-      model.remove = options;
+      model.remove(options);
     } else if (action === 'changeAll') {
       model.setPoints(options);
     }

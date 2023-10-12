@@ -44,7 +44,7 @@ export default class BoardPresenter {
         this.editPoint.remove();
         this.#isFormOpen = false;
         const index = model.points.findIndex((mockPoint) => mockPoint.id === this.waypointTag[i].mockPoint.id);
-        model.remove = index;
+        model.remove(index);
 
         this.waypointTag[i] = undefined;
       });
@@ -77,7 +77,7 @@ export default class BoardPresenter {
   }
 
   onSortTypeChange(sortType) {
-    modelCopy = [...model.points];
+    let pointCopy = [...model.points];
     switch (sortType) {
       case SortType.PRICE:
         sort.min(model.points, 'basePrice');
@@ -98,11 +98,11 @@ export default class BoardPresenter {
     let flag = false;
     for (let i in model.points) {
       i = +i;
-      if (model.points[i].id !== modelCopy[i].id) {
+      if (model.points[i].id !== pointCopy[i].id) {
         flag = true;
       }
     }
-    modelCopy = [...model.points];
+    pointCopy = [...model.points];
     if (flag) {
       this.init(model.points);
       // this.onchange('changeAll', mockPoints);
@@ -135,8 +135,8 @@ export default class BoardPresenter {
   onWaypointClick(i) {
     if (this.#isFormOpen) {
       const eventEdit = document.querySelector('.event--edit');
-      const mockPoint = mockPoints[eventEdit.dataset.index];
-      this.replaceFormToPoint(eventEdit.dataset.index, mockPoint);
+      const point = model.points[eventEdit.dataset.index];
+      this.replaceFormToPoint(eventEdit.dataset.index, point);
     }
     this.editPoint = new EditPoint(this.waypoints[i], data, i);
     this.openFormIndex = i;
@@ -145,8 +145,8 @@ export default class BoardPresenter {
     this.editPoint.addDeleteListener(() => {
       this.editPoint.remove();
       this.#isFormOpen = false;
-      const index = mockPoints.findIndex((mockPoint) => mockPoint.id === this.waypointTag[i].mockPoint.id);
-      model.remove = index;
+      const index = model.points.findIndex((point) => point.id === this.waypointTag[i].mockPoint.id);
+      model.remove(index);
 
       this.waypointTag[i] = undefined;
     });

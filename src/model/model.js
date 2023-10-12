@@ -285,34 +285,35 @@ export const mockPoints = [
 ];
 class Model {
   constructor(points) {
-    this.el = [...points];
+    console.log('[...points]=', [...points]);
+    this.points = [...points];
   }
 
   set add(value) {
-    this.el.push(value);
+    this.points.push(value);
   }
 
-  get points() {
-    return this.el;
+  get getPoints() {
+    return this.points;
   }
 
   getPoint(i) {
-    return this.el[i];
+    return this.points[i];
   }
 
   setPoint(i, value) {
-    this.el[i] = value;
+    this.points[i] = value;
   }
 
-  setPoints(points) {
-    this.el = [...points];
+  set setPoints(points) {
+    this.points = [...points];
   }
 
-  set remove(id) {
-    let index = findIndex((el) => {
-      el.id === id;
+  remove(id) {
+    let index = this.points.findIndex((point) => {
+      point.id === id;
     });
-    this.el.splice(index, 1);
+    this.point.splice(index, 1);
   }
 }
 
