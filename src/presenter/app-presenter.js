@@ -13,7 +13,6 @@ class AppPresenter {
   }
 
   init() {
-    console.log('init model.getPointAll=', model.points);
 
     this.boardPresenter.init(model.points);
     this.filterPresenter.setFilterChangeHandler((type) => {
@@ -28,8 +27,6 @@ class AppPresenter {
     // model.points.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
     document.onkeydown = (evt) => {
       if (evt.key === 'c') {
-        console.log('key c');
-
         this.addPoint = !this.addPoint;
 
         if (this.addPoint === true) {
@@ -44,6 +41,7 @@ class AppPresenter {
       }
     };
   }
+
   onchange(action, options) {
     if (action === 'delete') {
       model.remove(options);

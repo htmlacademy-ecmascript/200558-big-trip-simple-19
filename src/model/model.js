@@ -285,7 +285,6 @@ export const mockPoints = [
 ];
 class Model {
   constructor(points) {
-    console.log('[...points]=', [...points]);
     this.points = [...points];
   }
 
@@ -310,9 +309,7 @@ class Model {
   }
 
   remove(id) {
-    let index = this.points.findIndex((point) => {
-      point.id === id;
-    });
+    const index = this.points.findIndex((point) => point.id === id);
     this.point.splice(index, 1);
   }
 }

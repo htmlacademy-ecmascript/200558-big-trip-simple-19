@@ -54,12 +54,10 @@ export default class BoardPresenter {
 
   init(waypoints) {
     this.waypoints = waypoints;
-    console.log('waypoints=', this.waypoints);
     if (this.waypoints.length === 0) {
       this.tripEvents.innerHTML = '';
       render(this.empty, this.tripEvents);
     } else {
-      console.log('else');
 
       this.tripEvents.innerHTML = '';
       render(this.containerWaypoint, this.tripEvents);
