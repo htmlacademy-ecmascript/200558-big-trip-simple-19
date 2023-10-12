@@ -5,6 +5,9 @@ import EditPoint from '../view/edit-point.js';
 import { data, destinations, mockPoints, model } from '../model/model.js';
 import Empty from '../view/empty.js';
 import dayjs from 'dayjs';
+import SortingWaypoint from '../view/sorting.js';
+import { sort } from '../utils.js';
+import { SortType } from '../view/sorting.js';
 
 const getNewPoint = () => ({
   id: `${Math.random()}${Date.now()}`,
@@ -40,33 +43,77 @@ export default class BoardPresenter {
       this.editPoint.addDeleteListener((i) => {
         this.editPoint.remove();
         this.#isFormOpen = false;
-        const index = mockPoints.findIndex((mockPoint) => mockPoint.id === this.waypointTag[i].mockPoint.id);
+        const index = model.points.findIndex((mockPoint) => mockPoint.id === this.waypointTag[i].mockPoint.id);
         model.remove = index;
 
         this.waypointTag[i] = undefined;
       });
     });
+    this.sorting = new SortingWaypoint();
   }
 
   init(waypoints) {
     this.waypoints = waypoints;
+    console.log('waypoints=', this.waypoints);
     if (this.waypoints.length === 0) {
       this.tripEvents.innerHTML = '';
       render(this.empty, this.tripEvents);
     } else {
-      const tripEventsItems = this.tripEvents.querySelectorAll('.trip-events__item');
-      for (const tripEventsItem of tripEventsItems) {
-        tripEventsItem.remove();
+      console.log('else');
+
+      this.tripEvents.innerHTML = '';
+      render(this.containerWaypoint, this.tripEvents);
+      this.containerWaypoint.element.innerHTML = '';
+      this.renderSort();
+      this.#renderPoints(this.waypoints);
+    }
+  }
+
+  renderSort() {
+
+    render(this.sorting, this.tripEvents, 'afterbegin');
+    this.sorting.onChange = (sortType) => this.onSortTypeChange(sortType);
+
+  }
+
+  onSortTypeChange(sortType) {
+    modelCopy = [...model.points];
+    switch (sortType) {
+      case SortType.PRICE:
+        sort.min(model.points, 'basePrice');
+        break;
+
+      case SortType.DAY:
+        model.points.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
+        break;
+
+      case SortType.TIME:
+        for (const el of model.points) {
+          const date = new Date(el.dateFrom);
+          el.startTime = date.getHours() * 60 + date.getMinutes();
+        }
+        sort.min(model.points, 'startTime');
+        break;
+    }
+    let flag = false;
+    for (let i in model.points) {
+      i = +i;
+      if (model.points[i].id !== modelCopy[i].id) {
+        flag = true;
       }
-      this.#renderPoints(this.waypoints, this.editPoint);
+    }
+    modelCopy = [...model.points];
+    if (flag) {
+      this.init(model.points);
+      // this.onchange('changeAll', mockPoints);
     }
   }
 
   replaceFormToPoint(i, update) {
     i = (+i) - 1;
-    mockPoints[i].type = update.type;
-    mockPoints[i].dateFrom = update.dateFrom;
-    mockPoints[i].dateTo = update.dateTo;
+    model.point(i).type = update.type;
+    model.points(i).dateFrom = update.dateFrom;
+    model.points(i).dateTo = update.dateTo;
     this.waypointTag[i] = new Waypoint(destinations, mockPoints[i], i);
     this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
     replaceElement(this.waypointTag[i].element, this.editPoint.element);

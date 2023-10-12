@@ -285,14 +285,14 @@ export const mockPoints = [
 ];
 class Model {
   constructor(points) {
-    this.el = { ...points };
+    this.el = [...points];
   }
 
   set add(value) {
     this.el.push(value);
   }
 
-  get getPointAll() {
+  get points() {
     return this.el;
   }
 
@@ -300,12 +300,12 @@ class Model {
     return this.el[i];
   }
 
-  setPont(i, value) {
+  setPoint(i, value) {
     this.el[i] = value;
   }
 
-  setPonts({ points }) {
-    this.el = { ...points };
+  setPoints(points) {
+    this.el = [...points];
   }
 
   set remove(id) {
@@ -316,7 +316,6 @@ class Model {
   }
 }
 
-export const model = new Model(mockPoints);
 for (const mockPoint of mockPoints) {
   mockPoint.type = getRandomType();
   mockPoint.basePrice = getRandomPrice();
@@ -324,7 +323,7 @@ for (const mockPoint of mockPoints) {
   mockPoint.dateTo = getRandomDateFromTo();
 }
 mockPoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
-
+export const model = new Model(mockPoints);
 for (const da of data) {
   for (const offers of da.offers) {
     offers.price = getRandomPrice();
