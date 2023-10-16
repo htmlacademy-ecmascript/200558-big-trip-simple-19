@@ -19,7 +19,7 @@ class AppPresenter {
       if (type === 'future') {
         model.points = model.points.filter((point) =>
 
-          new Date(point.dateFrom) >= new Date('2019-07-10T11:46:56.845Z')
+          new Date(point.dateFrom) >= new Date()
         );
       }
       this.boardPresenter.init(model.points);
