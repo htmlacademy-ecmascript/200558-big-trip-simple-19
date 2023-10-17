@@ -1,4 +1,4 @@
-import { mockPoints, model } from '../model/model.js';
+import { model } from '../model/model.js';
 import BoardPresenter from './board-presenter.js';
 import FilterPresenter from './filter-presenter.js';
 class AppPresenter {
@@ -17,20 +17,17 @@ class AppPresenter {
     this.boardPresenter.init(model.points);
     this.filterPresenter.setFilterChangeHandler(this.onFilterChange.bind(this));
   }
+
   onFilterChange(type) {
-    console.log('type=', type);
-
+    let points;
     if (type === 'future') {
-      var points = model.points.filter((point) => {
-
-        new Date(point.dateFrom) >= new Date()
-      });
+      points = model.points.filter((point) => new Date(point.dateFrom) >= new Date());
     } else {
       points = model.points;
     }
-    console.log('this=', this);
     this.boardPresenter.init(points);
   }
+
   onchange(action, options) {
     if (action === 'delete') {
       model.remove(options);

@@ -20,7 +20,6 @@ class Filters extends AbstractView {
   }
 
   set onchange(callBack) {
-
     for (const filterSwitch of this.element.querySelectorAll('.trip-filters__filter-input')) {
 
       filterSwitch.onchange = function () {

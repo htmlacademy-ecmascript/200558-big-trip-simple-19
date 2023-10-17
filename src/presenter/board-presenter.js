@@ -2,7 +2,7 @@ import { render, replaceElement, RenderPosition } from '../utils.js';
 import Waypoint from '../view/waypoint.js';
 import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/edit-point.js';
-import { data, destinations, mockPoints, model } from '../model/model.js';
+import { data, destinations, model } from '../model/model.js';
 import Empty from '../view/empty.js';
 import dayjs from 'dayjs';
 import SortingWaypoint from '../view/sorting.js';
