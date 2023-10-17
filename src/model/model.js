@@ -247,41 +247,41 @@ export const mockPoints = [
     offers: [0, 2, 3],
     destination: 1,
   },
-  // {
-  //   id: 4,
-  //   offers: [0, 3],
-  //   destination: 2,
-  // },
-  // {
-  //   id: 5,
-  //   offers: [0, 1],
-  //   destination: 3,
-  // },
-  // {
-  //   id: 6,
-  //   offers: [1],
-  //   destination: 1,
-  // },
-  // {
-  //   id: 7,
-  //   offers: [],
-  //   destination: 3,
-  // },
-  // {
-  //   id: 8,
-  //   offers: [0, 1],
-  //   destination: 2,
-  // },
-  // {
-  //   id: 9,
-  //   offers: [],
-  //   destination: 1,
-  // },
-  // {
-  //   id: 10,
-  //   offers: [1, 2, 3],
-  //   destination: 1,
-  // }
+  {
+    id: 4,
+    offers: [0, 3],
+    destination: 2,
+  },
+  {
+    id: 5,
+    offers: [0, 1],
+    destination: 3,
+  },
+  {
+    id: 6,
+    offers: [1],
+    destination: 1,
+  },
+  {
+    id: 7,
+    offers: [],
+    destination: 3,
+  },
+  {
+    id: 8,
+    offers: [0, 1],
+    destination: 2,
+  },
+  {
+    id: 9,
+    offers: [],
+    destination: 1,
+  },
+  {
+    id: 10,
+    offers: [1, 2, 3],
+    destination: 1,
+  }
 ];
 class Model {
   constructor(points) {

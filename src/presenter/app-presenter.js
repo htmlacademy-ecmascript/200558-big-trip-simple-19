@@ -15,33 +15,22 @@ class AppPresenter {
   init() {
 
     this.boardPresenter.init(model.points);
-    this.filterPresenter.setFilterChangeHandler((type) => {
-      if (type === 'future') {
-        model.points = model.points.filter((point) =>
-
-          new Date(point.dateFrom) >= new Date()
-        );
-      }
-      this.boardPresenter.init(model.points);
-    });
-    // model.points.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
-    document.onkeydown = (evt) => {
-      if (evt.key === 'c') {
-        this.addPoint = !this.addPoint;
-
-        if (this.addPoint === true) {
-          model.setPoints = [];
-          this.init();
-        } else {
-
-          model.setPoints = mockPoints;
-          this.init();
-        }
-
-      }
-    };
+    this.filterPresenter.setFilterChangeHandler(this.onFilterChange.bind(this));
   }
+  onFilterChange(type) {
+    console.log('type=', type);
 
+    if (type === 'future') {
+      var points = model.points.filter((point) => {
+
+        new Date(point.dateFrom) >= new Date()
+      });
+    } else {
+      points = model.points;
+    }
+    console.log('this=', this);
+    this.boardPresenter.init(points);
+  }
   onchange(action, options) {
     if (action === 'delete') {
       model.remove(options);

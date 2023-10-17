@@ -43,8 +43,7 @@ export default class BoardPresenter {
       this.editPoint.addDeleteListener((i) => {
         this.editPoint.remove();
         this.#isFormOpen = false;
-        const index = model.points.findIndex((mockPoint) => mockPoint.id === this.waypointTag[i].mockPoint.id);
-        model.remove(index);
+        model.remove(this.waypointTag[i].mockPoint.id);
 
         this.waypointTag[i] = undefined;
       });
@@ -54,12 +53,10 @@ export default class BoardPresenter {
 
   init(waypoints) {
     this.waypoints = waypoints;
+    this.tripEvents.innerHTML = '';
     if (this.waypoints.length === 0) {
-      this.tripEvents.innerHTML = '';
       render(this.empty, this.tripEvents);
     } else {
-
-      this.tripEvents.innerHTML = '';
       render(this.containerWaypoint, this.tripEvents);
       this.containerWaypoint.element.innerHTML = '';
       this.renderSort();
@@ -109,10 +106,10 @@ export default class BoardPresenter {
 
   replaceFormToPoint(i, update) {
     i = (+i) - 1;
-    model.point(i).type = update.type;
-    model.points(i).dateFrom = update.dateFrom;
-    model.points(i).dateTo = update.dateTo;
-    this.waypointTag[i] = new Waypoint(destinations, mockPoints[i], i);
+    model.point[i].type = update.type;
+    model.points[i].dateFrom = update.dateFrom;
+    model.points[i].dateTo = update.dateTo;
+    this.waypointTag[i] = new Waypoint(destinations, model.getPoints(i), i);
     this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
     replaceElement(this.waypointTag[i].element, this.editPoint.element);
     this.#isFormOpen = false;

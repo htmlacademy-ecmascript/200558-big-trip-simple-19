@@ -7,7 +7,7 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
     clean: true,
   },
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   plugins: [
     new CopyPlugin({
       patterns: [{ from: 'public' }],
@@ -15,15 +15,15 @@ module.exports = {
   ],
   module: {
     rules: [
-        {
-          test: /\.css$/i,
-          use: ["css-loader"],
-        },
-        {
-          test: /\.js$/,
-          exclude: /(node_modules)/,
-          use: ['babel-loader']
-        }
+      {
+        test: /\.css$/i,
+        use: ["css-loader"],
+      },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: ['babel-loader']
+      }
     ]
   }
 };

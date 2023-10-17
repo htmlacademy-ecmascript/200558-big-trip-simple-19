@@ -15,8 +15,8 @@ class FilterPresenter {
   }
 
   setFilterChangeHandler(callBack) {
-    this.filtersWapoint.onchange = (evt) => {
-      callBack(evt);
+    this.filtersWapoint.onchange = (type) => {
+      callBack(type);
     };
   }
 }
