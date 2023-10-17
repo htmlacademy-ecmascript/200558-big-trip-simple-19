@@ -109,7 +109,7 @@ export default class BoardPresenter {
     model.point[i].type = update.type;
     model.points[i].dateFrom = update.dateFrom;
     model.points[i].dateTo = update.dateTo;
-    this.waypointTag[i] = new Waypoint(destinations, model.getPoints(i), i);
+    this.waypointTag[i] = new Waypoint(destinations, model.getPoints(), i);
     this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
     replaceElement(this.waypointTag[i].element, this.editPoint.element);
     this.#isFormOpen = false;

@@ -288,11 +288,11 @@ class Model {
     this.points = [...points];
   }
 
-  set add(value) {
+  add(value) {
     this.points.push(value);
   }
 
-  get getPoints() {
+  getPoints() {
     return this.points;
   }
 
@@ -304,7 +304,7 @@ class Model {
     this.points[i] = value;
   }
 
-  set setPoints(points) {
+  setPoints(points) {
     this.points = [...points];
   }
 
