@@ -135,11 +135,11 @@ class editPoint extends AbstractStatefulView {
 
   setTime() {
     this.flatpickrStart = flatpickr(this.element.querySelector('#event-start-time-1'), {
-      defaultDate: this.waypoint.dateFrom,
+      defaultDate: this._state.dateFrom,
       enableTime: true,
       dateFormat: 'Y-m-d H:i',
       'time_24hr': true,
-      maxDate: this.waypoint.dateTo,
+      maxDate: this._state.dateTo,
       onClose: (data) => {
         if (data.length > 0) {
           this.flatpickrEnd.set('minDate', data[0]);
@@ -148,11 +148,11 @@ class editPoint extends AbstractStatefulView {
       }
     });
     this.flatpickrEnd = flatpickr(this.element.querySelector('#event-end-time-1'), {
-      defaultDate: this.waypoint.dateTo,
+      defaultDate: this._state.dateTo,
       enableTime: true,
       dateFormat: 'Y-m-d H:i',
       'time_24hr': true,
-      minDate: this.waypoint.dateFrom,
+      minDate: this._state.dateFrom,
       onClose: (data) => {
         if (data.length > 0) {
           this.flatpickrStart.set('maxDate', data[0]);
@@ -167,6 +167,9 @@ class editPoint extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
+    this.element.querySelector('.event__input--price').addEventListener('change', (evt) => {
+      this._setState({ basePrice: evt.target.value });
+    });
     this.element.querySelector('.event__type-group').addEventListener('change', (evt) => {
       this.updateElement({ type: evt.target.value });
     });

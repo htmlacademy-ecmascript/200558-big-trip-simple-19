@@ -288,7 +288,7 @@ class Model {
     this.points = [...points];
   }
 
-  add(value) {
+  addPoint(value) {
     this.points.push(value);
   }
 
@@ -308,7 +308,7 @@ class Model {
     this.points = [...points];
   }
 
-  remove(id) {
+  removePoint(id) {
     const index = this.points.findIndex((point) => point.id === id);
     this.point.splice(index, 1);
   }

@@ -12,21 +12,17 @@ function getFiltersTemplate() {
                 </div>
 
                 <button class="visually-hidden" type="submit">Accept filter</button>
-              </form>`;
+          </form>`;
 }
 class Filters extends AbstractView {
   constructor() {
     super();
   }
 
-  set onchange(callBack) {
-    let tripFiltersFilterInput = this.element.querySelectorAll('.trip-filters__filter-input');
-    for (const filterSwitch of tripFiltersFilterInput) {
-
-      filterSwitch.onchange = function () {
-        callBack(this.value);
-      };
-    }
+  set onСhange(callBack) {
+    this.element.addEventListener('change', (evt) => {
+      callBack(evt.target.value);
+    });
   }
 
   get template() {

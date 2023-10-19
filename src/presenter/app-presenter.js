@@ -30,7 +30,7 @@ class AppPresenter {
 
   onchange(action, options) {
     if (action === 'delete') {
-      model.remove(options);
+      model.removePoint(options);
     } else if (action === 'changeAll') {
       model.setPoints(options);
     }

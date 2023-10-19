@@ -19,7 +19,6 @@ const getNewPoint = () => ({
   dateTo: dayjs().toString(),
 });
 const tripMainEventAddBtn = document.querySelector('.trip-main__event-add-btn');
-
 export default class BoardPresenter {
   #isFormOpen = false;
   constructor(tripEvents) {
@@ -41,17 +40,17 @@ export default class BoardPresenter {
         this.init(this.waypoints);
 
       });
-      let onEditPointDelete = (i) => {
-        this.editPoint.remove();
-        this.#isFormOpen = false;
-        model.remove(this.waypointTag[i].mockPoint.id);
-
-        this.waypointTag[i] = undefined;
-      };
-      this.editPoint.addDeleteListener(onEditPointDelete);
+      this.editPoint.addDeleteListener(this.onEditPointDelete);
     });
     this.sorting = new SortingWaypoint();
   }
+  onEditPointDelete(i) {
+    this.editPoint.remove();
+    this.#isFormOpen = false;
+    model.removePoint(this.waypointTag[i].mockPoint.id);
+
+    this.waypointTag[i] = undefined;
+  };
 
   init(waypoints) {
     this.waypoints = waypoints;
@@ -108,10 +107,9 @@ export default class BoardPresenter {
 
   replaceFormToPoint(i, update) {
     i = (+i) - 1;
-    model.point[i].type = update.type;
-    model.points[i].dateFrom = update.dateFrom;
-    model.points[i].dateTo = update.dateTo;
-    this.waypointTag[i] = new Waypoint(destinations, model.getPoints(), i);
+    console.log('update=', update);
+    model.setPoint(i, update);
+    this.waypointTag[i] = new Waypoint(destinations, model.getPoint(i), i);
     this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
     replaceElement(this.waypointTag[i].element, this.editPoint.element);
     this.#isFormOpen = false;
@@ -142,8 +140,7 @@ export default class BoardPresenter {
     this.editPoint.addDeleteListener(() => {
       this.editPoint.remove();
       this.#isFormOpen = false;
-      const index = model.points.findIndex((point) => point.id === this.waypointTag[i].mockPoint.id);
-      model.remove(index);
+      model.removePoint(this.waypointTag[i].mockPoint.id);
 
       this.waypointTag[i] = undefined;
     });
