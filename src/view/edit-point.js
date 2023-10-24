@@ -163,7 +163,7 @@ class editPoint extends AbstractStatefulView {
   }
 
   addDeleteListener(callback) {
-    this.element.querySelector('.event__reset-btn').addEventListener('click', () => callback(this.i));
+    this.element.querySelector('.event__reset-btn').addEventListener('click', () => callback(this.waypoint.id, this.i));
   }
 
   _restoreHandlers() {

@@ -8,7 +8,6 @@ class AppPresenter {
     this.filterPresenter = new FilterPresenter(this.appContainer, this.tripEvents, model.points);
     this.filterPresenter.init();
     this.boardPresenter = new BoardPresenter(this.tripEvents);
-    // this.filterPresenter.onChange = (sortType) => this.SortTypeChange(sortType);
     this.addPoint = false;
   }
 
@@ -28,7 +27,7 @@ class AppPresenter {
     this.boardPresenter.init(points);
   }
 
-  onchange(action, options) {
+  onChange(action, options) {
     if (action === 'delete') {
       model.removePoint(options);
     } else if (action === 'changeAll') {

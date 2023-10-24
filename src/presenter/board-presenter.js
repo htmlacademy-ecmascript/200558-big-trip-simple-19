@@ -18,6 +18,7 @@ const getNewPoint = () => ({
   dateFrom: dayjs().toString(),
   dateTo: dayjs().toString(),
 });
+
 const tripMainEventAddBtn = document.querySelector('.trip-main__event-add-btn');
 export default class BoardPresenter {
   #isFormOpen = false;
@@ -44,10 +45,10 @@ export default class BoardPresenter {
     });
     this.sorting = new SortingWaypoint();
   }
-  onEditPointDelete(i) {
+  onEditPointDelete(id, i) {
     this.editPoint.remove();
     this.#isFormOpen = false;
-    model.removePoint(this.waypointTag[i].mockPoint.id);
+    model.removePoint(id);
 
     this.waypointTag[i] = undefined;
   };
@@ -107,7 +108,6 @@ export default class BoardPresenter {
 
   replaceFormToPoint(i, update) {
     i = (+i) - 1;
-    console.log('update=', update);
     model.setPoint(i, update);
     this.waypointTag[i] = new Waypoint(destinations, model.getPoint(i), i);
     this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
@@ -137,11 +137,10 @@ export default class BoardPresenter {
     this.openFormIndex = i;
     replaceElement(this.editPoint.element, this.waypointTag[i].element);
     this.editPoint.addSubmitListener(this.replaceFormToPoint);
-    this.editPoint.addDeleteListener(() => {
+    this.editPoint.addDeleteListener((id) => {
       this.editPoint.remove();
       this.#isFormOpen = false;
-      model.removePoint(this.waypointTag[i].mockPoint.id);
-
+      model.removePoint(id);
       this.waypointTag[i] = undefined;
     });
     this.#isFormOpen = true;

@@ -310,7 +310,7 @@ class Model {
 
   removePoint(id) {
     const index = this.points.findIndex((point) => point.id === id);
-    this.point.splice(index, 1);
+    this.points.splice(index, 1);
   }
 }
 
