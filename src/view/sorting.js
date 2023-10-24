@@ -43,12 +43,10 @@ class Sorting extends AbstractView {
   }
 
   set onChange(callBack) {
-    const sortInput = this.element.querySelectorAll('.trip-sort__input');
-
-    for (const el of sortInput) {
-      this.callBack.push(() => { callBack(el.value); });
-      el.addEventListener('input', this.callBack[this.callBack.length - 1]);
-    }
+    this.element.addEventListener('input', function (evt) {
+      console.log('evt=', evt.target.value);
+      callBack(evt.target.value);
+    });
   }
 }
 export default Sorting;
