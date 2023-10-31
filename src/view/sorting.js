@@ -42,9 +42,8 @@ class Sorting extends AbstractView {
     return getSortingTemplate();
   }
 
-  set onChange(callBack) {
-    this.element.addEventListener('input', function (evt) {
-      console.log('evt=', evt.target.value);
+  addChangeListener(callBack) {
+    this.element.addEventListener('input', (evt) => {
       callBack(evt.target.value);
     });
   }

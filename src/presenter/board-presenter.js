@@ -19,7 +19,7 @@ const getNewPoint = () => ({
   dateTo: dayjs().toString(),
 });
 
-const tripMainEventAddBtn = document.querySelector('.trip-main__event-add-btn');
+const addBtn = document.querySelector('.trip-main__event-add-btn');
 export default class BoardPresenter {
   #isFormOpen = false;
   constructor(tripEvents) {
@@ -30,28 +30,31 @@ export default class BoardPresenter {
     this.waypointEditForm = null;
     this.replaceFormToPoint = this.replaceFormToPoint.bind(this);
     this.empty = new Empty();
-    tripMainEventAddBtn.addEventListener('click', () => {
-      const newPoint = getNewPoint();
-      this.waypoints.push(newPoint);
-      this.editPoint = new EditPoint(newPoint, data, this.waypoints.length - 1);
-      render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
-      this.editPoint.addSubmitListener((i, update) => {
-        this.replaceFormToPoint(i, update);
-        this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
-        this.init(this.waypoints);
-
-      });
-      this.editPoint.addDeleteListener(this.onEditPointDelete);
-    });
+    addBtn.addEventListener('click', this.onAddBtnCLick.bind(this));
     this.sorting = new SortingWaypoint();
   }
+
+  onAddBtnCLick() {
+    const newPoint = getNewPoint();
+    this.waypoints.push(newPoint);
+    this.editPoint = new EditPoint(newPoint, data, this.waypoints.length - 1);
+    render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
+    this.editPoint.addSubmitListener((i, update) => {
+      this.replaceFormToPoint(i, update);
+      this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
+      this.init(this.waypoints);
+
+    });
+    this.editPoint.addDeleteListener(this.onEditPointDelete);
+  }
+
   onEditPointDelete(id, i) {
     this.editPoint.remove();
     this.#isFormOpen = false;
     model.removePoint(id);
 
     this.waypointTag[i] = undefined;
-  };
+  }
 
   init(waypoints) {
     this.waypoints = waypoints;
@@ -69,7 +72,7 @@ export default class BoardPresenter {
   renderSort() {
 
     render(this.sorting, this.tripEvents, 'afterbegin');
-    this.sorting.onChange = (sortType) => this.onSortTypeChange(sortType);
+    this.sorting.addChangeListener((sortType) => this.onSortTypeChange(sortType));
 
   }
 
@@ -102,7 +105,6 @@ export default class BoardPresenter {
     pointCopy = [...model.points];
     if (flag) {
       this.init(model.points);
-      // this.onchange('changeAll', mockPoints);
     }
   }
 

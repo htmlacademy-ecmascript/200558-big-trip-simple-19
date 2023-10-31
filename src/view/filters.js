@@ -19,7 +19,7 @@ class Filters extends AbstractView {
     super();
   }
 
-  set onСhange(callBack) {
+  addChangeListener(callBack) {
     this.element.addEventListener('change', (evt) => {
       callBack(evt.target.value);
     });
