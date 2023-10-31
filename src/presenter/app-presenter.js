@@ -1,54 +1,39 @@
-import { mockPoints } from '../model/model.js';
-import { SortType } from '../view/sorting.js';
+import { model } from '../model/model.js';
 import BoardPresenter from './board-presenter.js';
-import SortPresenter from './sort-presenter.js';
-import { sort } from '../utils.js';
+import FilterPresenter from './filter-presenter.js';
 class AppPresenter {
   constructor({ appContainer }) {
     this.appContainer = appContainer;
     this.tripEvents = document.querySelector('.trip-events');
-    this.sortPresenter = new SortPresenter(this.appContainer, this.tripEvents);
+    this.filterPresenter = new FilterPresenter(this.appContainer, this.tripEvents, model.points);
+    this.filterPresenter.init();
     this.boardPresenter = new BoardPresenter(this.tripEvents);
-    this.waypoints = mockPoints;
+    this.addPoint = false;
   }
 
   init() {
-    this.sortPresenter.init();
-    this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
-    this.boardPresenter.init(this.waypoints);
-    this.sortPresenter.onChange = (sortType) => this.onSortTypeChange(sortType);
+
+    this.boardPresenter.init(model.points);
+    this.filterPresenter.setFilterChangeHandler(this.onFilterChange.bind(this));
   }
 
-  onSortTypeChange(sortType) {
-    let waypointsCopy = [...this.waypoints];
-    switch (sortType) {
-      case SortType.PRICE:
-        sort.min(mockPoints, 'basePrice');
-        break;
+  onFilterChange(type) {
+    let points;
+    if (type === 'future') {
+      points = model.points.filter((point) => new Date(point.dateFrom) >= new Date());
+    } else {
+      points = model.points;
+    }
+    this.boardPresenter.init(points);
+  }
 
-      case SortType.DAY:
-        mockPoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
-        break;
+  onChange(action, options) {
+    if (action === 'delete') {
+      model.removePoint(options);
+    } else if (action === 'changeAll') {
+      model.setPoints(options);
+    }
 
-      case SortType.TIME:
-        for (const el of mockPoints) {
-          const date = new Date(el.dateFrom);
-          el.startTime = date.getHours() * 60 + date.getMinutes();
-        }
-        sort.min(mockPoints, 'startTime');
-        break;
-    }
-    let flag = false;
-    for (let i in mockPoints) {
-      i = +i;
-      if (mockPoints[i].id !== waypointsCopy[i].id) {
-        flag = true;
-      }
-    }
-    waypointsCopy = [...mockPoints];
-    if (flag) {
-      this.boardPresenter.init(mockPoints);
-    }
   }
 }
 

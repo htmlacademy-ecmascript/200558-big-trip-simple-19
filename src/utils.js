@@ -1,7 +1,7 @@
 export const sort = {
   min: (object, property) => object.sort((a, b) => a[property] - b[property]),
 };
-const RenderPosition = {
+export const RenderPosition = {
   BEFOREBEGIN: 'beforebegin',
   AFTERBEGIN: 'afterbegin',
   BEFOREEND: 'beforeend',

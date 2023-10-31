@@ -12,11 +12,17 @@ function getFiltersTemplate() {
                 </div>
 
                 <button class="visually-hidden" type="submit">Accept filter</button>
-              </form>`;
+          </form>`;
 }
 class Filters extends AbstractView {
   constructor() {
     super();
+  }
+
+  addChangeListener(callBack) {
+    this.element.addEventListener('change', (evt) => {
+      callBack(evt.target.value);
+    });
   }
 
   get template() {

@@ -283,12 +283,45 @@ export const mockPoints = [
     destination: 1,
   }
 ];
+class Model {
+  constructor(points) {
+    this.points = [...points];
+  }
+
+  addPoint(value) {
+    this.points.push(value);
+  }
+
+  getPoints() {
+    return this.points;
+  }
+
+  getPoint(i) {
+    return this.points[i];
+  }
+
+  setPoint(i, value) {
+    this.points[i] = value;
+  }
+
+  setPoints(points) {
+    this.points = [...points];
+  }
+
+  removePoint(id) {
+    const index = this.points.findIndex((point) => point.id === id);
+    this.points.splice(index, 1);
+  }
+}
+
 for (const mockPoint of mockPoints) {
   mockPoint.type = getRandomType();
   mockPoint.basePrice = getRandomPrice();
   mockPoint.dateFrom = getRandomDateFrom();
   mockPoint.dateTo = getRandomDateFromTo();
 }
+mockPoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
+export const model = new Model(mockPoints);
 for (const da of data) {
   for (const offers of da.offers) {
     offers.price = getRandomPrice();

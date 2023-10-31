@@ -35,10 +35,17 @@ function getSortingTemplate() {
 class Sorting extends AbstractView {
   constructor() {
     super();
+    this.callBack = [];
   }
 
   get template() {
     return getSortingTemplate();
+  }
+
+  addChangeListener(callBack) {
+    this.element.addEventListener('input', (evt) => {
+      callBack(evt.target.value);
+    });
   }
 }
 export default Sorting;

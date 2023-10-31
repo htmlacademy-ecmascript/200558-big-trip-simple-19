@@ -2,12 +2,13 @@ import { destinations, data as eventTypes } from '../model/model.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
+
 const getEditPointTemplate = (waypoint, data, i) => {
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
   let options = '';
   for (const { name } of destinations) {
-    options += `<option value="${name}"></option>`;
+    options += `<option value="${name}">${name}</option>`;
   }
   const destination = destinations.find((el) => el.id === waypoint.destination);
   let imgs = '';
@@ -78,7 +79,7 @@ const getEditPointTemplate = (waypoint, data, i) => {
                       <span class="visually-hidden">Price</span>
                       €
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${waypoint.basePrice}">
+                    <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${waypoint.basePrice}">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -134,10 +135,11 @@ class editPoint extends AbstractStatefulView {
 
   setTime() {
     this.flatpickrStart = flatpickr(this.element.querySelector('#event-start-time-1'), {
-      defaultDate: this.waypoint.dateFrom,
+      defaultDate: this._state.dateFrom,
       enableTime: true,
       dateFormat: 'Y-m-d H:i',
-      maxDate: this.waypoint.dateTo,
+      'time_24hr': true,
+      maxDate: this._state.dateTo,
       onClose: (data) => {
         if (data.length > 0) {
           this.flatpickrEnd.set('minDate', data[0]);
@@ -146,10 +148,11 @@ class editPoint extends AbstractStatefulView {
       }
     });
     this.flatpickrEnd = flatpickr(this.element.querySelector('#event-end-time-1'), {
-      defaultDate: this.waypoint.dateTo,
+      defaultDate: this._state.dateTo,
       enableTime: true,
       dateFormat: 'Y-m-d H:i',
-      minDate: this.waypoint.dateFrom,
+      'time_24hr': true,
+      minDate: this._state.dateFrom,
       onClose: (data) => {
         if (data.length > 0) {
           this.flatpickrStart.set('maxDate', data[0]);
@@ -160,10 +163,13 @@ class editPoint extends AbstractStatefulView {
   }
 
   addDeleteListener(callback) {
-    this.element.querySelector('.event__reset-btn').addEventListener('click', () => callback(this.i));
+    this.element.querySelector('.event__reset-btn').addEventListener('click', () => callback(this.waypoint.id, this.i));
   }
 
   _restoreHandlers() {
+    this.element.querySelector('.event__input--price').addEventListener('change', (evt) => {
+      this._setState({ basePrice: evt.target.value });
+    });
     this.element.querySelector('.event__type-group').addEventListener('change', (evt) => {
       this.updateElement({ type: evt.target.value });
     });
