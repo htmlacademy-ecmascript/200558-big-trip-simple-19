@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import SortingWaypoint from '../view/sorting.js';
 import { sort } from '../utils.js';
 import { SortType } from '../view/sorting.js';
+import ApiService from '../api-service.js';
 
 const getNewPoint = () => ({
   id: `${Math.random()}${Date.now()}`,
@@ -39,12 +40,22 @@ export default class BoardPresenter {
     this.waypoints.push(newPoint);
     this.editPoint = new EditPoint(newPoint, data, this.waypoints.length - 1);
     render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
-    this.editPoint.addSubmitListener((i, update) => {
+    async function onEditPointSubmit(i, update) {
       this.replaceFormToPoint(i, update);
       this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
       this.init(this.waypoints);
+      let apiService = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic eo0w5902k298891');
+      console.log('update=', update);
+      try {
+        let st = await apiService.addPoint(JSON.stringify(update));
+        console.log('st=', st);
+      } catch (error) {
+        console.log('cath=', error);
 
-    });
+      }
+    }
+    this.editPoint.addSubmitListener(onEditPointSubmit.bind(this));
+
     this.editPoint.addDeleteListener(this.onEditPointDelete);
   }
 
