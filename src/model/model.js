@@ -292,10 +292,14 @@ class Model {
 
   addPoint(value) {
     this.points.push(value);
+    this._load({ url: 'points', method: 'post', body: this.points })
+      .then(ApiService.parseResponse);
   }
 
   getPoints() {
-    return this.points;
+    return this._load({ url: 'points' })
+      .then(ApiService.parseResponse);
+
   }
 
   getPoint(i) {

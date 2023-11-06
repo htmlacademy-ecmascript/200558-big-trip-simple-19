@@ -44,15 +44,7 @@ export default class BoardPresenter {
       this.replaceFormToPoint(i, update);
       this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
       this.init(this.waypoints);
-      let apiService = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic eo0w5902k298891');
-      console.log('update=', update);
-      try {
-        let st = await apiService.addPoint(JSON.stringify(update));
-        console.log('st=', st);
-      } catch (error) {
-        console.log('cath=', error);
-
-      }
+      model.addPoint(update);
     }
     this.editPoint.addSubmitListener(onEditPointSubmit.bind(this));
 
