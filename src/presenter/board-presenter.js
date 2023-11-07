@@ -10,6 +10,9 @@ import { sort } from '../utils.js';
 import { SortType } from '../view/sorting.js';
 import ApiService from '../api-service.js';
 
+function adapterServer(data) {
+
+}
 const getNewPoint = () => ({
   id: `${Math.random()}${Date.now()}`,
   offers: [],
@@ -44,7 +47,13 @@ export default class BoardPresenter {
       this.replaceFormToPoint(i, update);
       this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
       this.init(this.waypoints);
-      model.addPoint(update);
+      try {
+        await model.addPoint(update);
+        console.log('uspex');
+
+      } catch {
+        console.log('error');
+      }
     }
     this.editPoint.addSubmitListener(onEditPointSubmit.bind(this));
 

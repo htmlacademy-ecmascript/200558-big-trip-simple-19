@@ -285,20 +285,19 @@ function getRandomDateFromTo() {
 //     destination: 1,
 //   }
 // ];
+const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic eo0w5902k298891');
 class Model {
   constructor(points) {
     this.points = [...points];
   }
 
-  addPoint(value) {
+  async addPoint(value) {
     this.points.push(value);
-    this._load({ url: 'points', method: 'post', body: this.points })
-      .then(ApiService.parseResponse);
+    await api.addPoint(this.points);
   }
 
   getPoints() {
-    return this._load({ url: 'points' })
-      .then(ApiService.parseResponse);
+    return this.points;
 
   }
 
@@ -352,11 +351,14 @@ class Model {
 // }
 // xhr.send();
 
-const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic eo0w5902k298891');
 let points = await api.getPoints();
 let destinations = await api.getDestinations();
 let data = await api.getOffers();
+function replaceAt(string, index, property) {
+  console.log('property=', property);
 
+  return string.substring(0, index) + property + string.substring(index + 1);
+}
 function adapterClient(points) {
   for (let i in points) {
     i = +i;
@@ -364,7 +366,7 @@ function adapterClient(points) {
     for (let property of points[i]) {
       let indexWord = property[0].indexOf('_') + 1;
       if (indexWord > 0) {
-        property[0] = property[0].substring(0, indexWord) + property[0][indexWord].toUpperCase() + property[0].substring(indexWord + 1);
+        property[0] = replaceAt(property[0], indexWord, property[0][indexWord].toUpperCase());
       }
       property[0] = property[0].replace('_', '');
 
@@ -374,5 +376,6 @@ function adapterClient(points) {
   return points;
 }
 points = adapterClient(points);
+console.log('adapterClient=', points);
 const model = new Model(points);
 export { model, data, destinations };
