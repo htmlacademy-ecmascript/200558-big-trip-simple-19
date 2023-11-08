@@ -355,14 +355,13 @@ let points = await api.getPoints();
 let destinations = await api.getDestinations();
 let data = await api.getOffers();
 function replaceAt(string, index, property) {
-  console.log('property=', property);
-
   return string.substring(0, index) + property + string.substring(index + 1);
 }
 function adapterClient(points) {
   for (let i in points) {
     i = +i;
     points[i] = Object.entries(points[i]);
+
     for (let property of points[i]) {
       let indexWord = property[0].indexOf('_') + 1;
       if (indexWord > 0) {
@@ -378,4 +377,4 @@ function adapterClient(points) {
 points = adapterClient(points);
 console.log('adapterClient=', points);
 const model = new Model(points);
-export { model, data, destinations };
+export { model, data, destinations, replaceAt };
