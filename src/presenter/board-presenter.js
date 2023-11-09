@@ -2,7 +2,7 @@ import { render, replaceElement, RenderPosition } from '../utils.js';
 import Waypoint from '../view/waypoint.js';
 import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/edit-point.js';
-import { data, destinations, model, replaceAt } from '../model/model.js';
+import { data, destinations, model, replaceAt, adapterServer } from '../model/model.js';
 import Empty from '../view/empty.js';
 import dayjs from 'dayjs';
 import SortingWaypoint from '../view/sorting.js';
@@ -10,39 +10,9 @@ import { sort } from '../utils.js';
 import { SortType } from '../view/sorting.js';
 import ApiService from '../api-service.js';
 
-function adapterServer(points) {
-
-  console.log('points=', points);
-  points = [points];
-  for (let i in points) {
-
-    i = +i;
-    console.log('points[' + i + ']=', points[i]);
-
-    points[i] = Object.entries(points[i]);
-    for (let property of points[i]) {
-      console.log('property[0]=', property[0]);
-
-      let indexWord = property[0].match(/[A-Z]/);
-      // indexWord = indexWord.index;
-      console.log('indexWord=', indexWord);
-
-      if (indexWord > 0) {
-        property[0] = replaceAt(property[0], indexWord, property[0][indexWord].toLowerCase())
-        console.log('replace=', replaceAt(property[0], indexWord - 1, '_'));
-
-        property[0] = replaceAt(property[0], indexWord - 1, '_');
-      }
-
-    }
-    points[i] = Object.fromEntries(points[i]);
-  }
-  return points;
-}
-console.log('adapterServer==', adapterServer({ sirPir: 24 }));
 
 const getNewPoint = () => ({
-  id: `${Math.random()}${Date.now()}`,
+  id: `${Math.round(Math.random() * 1000)}${Date.now()}`,
   offers: [],
   destination: 1,
   type: 'taxi',
@@ -75,6 +45,7 @@ export default class BoardPresenter {
       this.replaceFormToPoint(i, update);
       this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
       console.log('adapterServer()=', adapterServer(update));
+      console.log('update=', update);
 
       this.init(this.waypoints);
       try {
@@ -141,9 +112,7 @@ export default class BoardPresenter {
     let flag = false;
     for (let i in model.points) {
       i = +i;
-      if (model.points[i].id !== pointCopy[i].id) {
-        flag = true;
-      }
+      flag = model.points[i].id !== pointCopy[i].id ? true : flag;
     }
     pointCopy = [...model.points];
     if (flag) {
@@ -164,6 +133,7 @@ export default class BoardPresenter {
   #renderPoints(waypoints) {
     this.#isFormOpen = false;
     this.waypointTag = [];
+
     for (let i = 0; i < waypoints.length; i++) {
       const waypointTag = new Waypoint(destinations, waypoints[i], i);
       this.waypointTag[i] = waypointTag;

@@ -1,7 +1,6 @@
 import { model } from '../model/model.js';
 import BoardPresenter from './board-presenter.js';
 import FilterPresenter from './filter-presenter.js';
-console.log('model=', model.getPoints());
 class AppPresenter {
   constructor({ appContainer }) {
     this.appContainer = appContainer;
