@@ -12,7 +12,7 @@ import ApiService from '../api-service.js';
 
 
 const getNewPoint = () => ({
-  id: `${Math.round(Math.random() * 1000)}${Date.now()}`,
+  // id: `${Math.round(Math.random() * 1000)}${Date.now()}`,
   offers: [],
   destination: 1,
   type: 'taxi',
@@ -44,12 +44,11 @@ export default class BoardPresenter {
     async function onEditPointSubmit(i, update) {
       this.replaceFormToPoint(i, update);
       this.waypoints.sort((a, b) => new Date(a.dateFrom).getDate() - new Date(b.dateFrom).getDate());
-      console.log('adapterServer()=', adapterServer(update));
-      console.log('update=', update);
 
       this.init(this.waypoints);
       try {
         await model.addPoint(update);
+
         console.log('uspex');
 
       } catch {

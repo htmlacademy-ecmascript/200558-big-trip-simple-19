@@ -6,7 +6,10 @@ export default class PointApiService extends ApiService {
             .then(ApiService.parseResponse);
     }
     addPoint(point) {
-        return this._load({ url: 'points', method: 'post', body: point })
+        return this._load({
+            url: 'points', method: 'post', body: JSON.stringify(point), headers:
+                new Headers({ 'Content-type': 'application/json' })
+        })
             .then(ApiService.parseResponse);
     }
     getDestinations() {

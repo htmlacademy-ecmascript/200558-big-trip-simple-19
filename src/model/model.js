@@ -9,8 +9,7 @@ class Model {
     this.points.push(value);
     this.points = adapterServer(this.points);
     console.log('this.points=', this.points);
-
-    await api.addPoint(this.points);
+    await api.addPoint(adapterServer(value));
   }
 
   getPoints() {
@@ -46,6 +45,7 @@ function replaceAt(string, index, property) {
   return string.substring(0, index) + property + string.substring(index + 1);
 }
 function adapter(points, callback) {
+  const isResaltArray = Array.isArray(points);
   points = !Array.isArray(points) ? [points] : points;
   console.log('points');
 
@@ -58,7 +58,10 @@ function adapter(points, callback) {
     }
     points[i] = Object.fromEntries(points[i]);
   }
-  return points;
+  if (isResaltArray) {
+    return points;
+  }
+  return points[0];
 }
 function adapterServer(points) {
   return adapter(points, (property) => {
