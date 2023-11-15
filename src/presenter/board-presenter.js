@@ -2,13 +2,12 @@ import { render, replaceElement, RenderPosition } from '../utils.js';
 import Waypoint from '../view/waypoint.js';
 import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/edit-point.js';
-import { data, destinations, model, replaceAt, adapterServer } from '../model/model.js';
+import { offers, destinations, model } from '../model/model.js';
 import Empty from '../view/empty.js';
 import dayjs from 'dayjs';
 import SortingWaypoint from '../view/sorting.js';
 import { sort } from '../utils.js';
 import { SortType } from '../view/sorting.js';
-import ApiService from '../api-service.js';
 
 const getNewPoint = () => ({
   // id: `${Math.round(Math.random() * 1000)}${Date.now()}`,
@@ -37,25 +36,20 @@ export default class BoardPresenter {
     this.sorting = new SortingWaypoint();
     this.sortType = this.sorting.element.querySelector('.trip-sort__input[checked]').value;
   }
+
   addOnAddBtnCLick() {
     addBtn.addEventListener('click', this.onAddBtnCLickBind, { once: true, passive: true });
   }
+
   onAddBtnCLick() {
     const newPoint = getNewPoint();
-    this.editPoint = new EditPoint(newPoint, data, this.waypoints.length - 1);
+    this.editPoint = new EditPoint(newPoint, offers, this.waypoints.length - 1);
     render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
-    console.log('start this.waypoints=', this.waypoints);
+
     async function onEditPointSubmit(i, update) {
-      try {
-        let data = await model.addPoint(update);
-
-        console.log('uspex data.id=', data.id);
-        this.onSortTypeChange(this.sortType);
-        this.addOnAddBtnCLick();
-
-      } catch {
-        console.log('error');
-      }
+      await model.addPoint(update);
+      this.onSortTypeChange(this.sortType);
+      this.addOnAddBtnCLick();
     }
     this.editPoint.addSubmitListener(onEditPointSubmit.bind(this));
     this.editPoint.addDeleteListener(this.onEditPointDelete);
@@ -71,9 +65,6 @@ export default class BoardPresenter {
 
   init(waypoints) {
     this.waypoints = waypoints;
-    console.log('/////////////');
-
-    console.log('model.points=', model.points);
     this.tripEvents.innerHTML = '';
     if (this.waypoints.length === 0) {
       render(this.empty, this.tripEvents);
@@ -94,7 +85,6 @@ export default class BoardPresenter {
   }
 
   onSortTypeChange(sortType) {
-    console.log('sortType=', sortType);
     this.sortType = sortType;
     let pointCopy = [...model.points];
     switch (sortType) {
@@ -145,7 +135,7 @@ export default class BoardPresenter {
       this.waypointTag[i] = waypointTag;
       waypointTag.addClickListener(() => this.onWaypointClick(i));
       render(this.waypointTag[i], this.containerWaypoint.element);
-      console.log('waypoints.id=', this.waypoints[i].id);
+
 
     }
   }
@@ -157,7 +147,7 @@ export default class BoardPresenter {
       const point = model.points[eventEdit.dataset.index];
       this.replaceFormToPoint(eventEdit.dataset.index, point);
     }
-    this.editPoint = new EditPoint(this.waypoints[i], data, i);
+    this.editPoint = new EditPoint(this.waypoints[i], offers, i);
     this.openFormIndex = i;
     replaceElement(this.editPoint.element, this.waypointTag[i].element);
     this.editPoint.addSubmitListener(this.replaceFormToPoint);

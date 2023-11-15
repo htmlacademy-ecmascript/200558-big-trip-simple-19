@@ -1,8 +1,15 @@
 import ApiService from '.././api-service.js';
 const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic eo0w5912k298892');
 class Model {
-  constructor(points) {
-    this.points = [...points];
+  constructor() {
+  }
+
+  async init() {
+    try {
+      this.points = adapterClient(await api.getPoints());
+    } catch {
+      this.points = [];
+    }
   }
 
   async addPoint(value) {
@@ -34,11 +41,9 @@ class Model {
   }
 }
 
-let points = await api.getPoints();
+const destinations = await api.getDestinations();
 
-let destinations = await api.getDestinations();
-
-let data = await api.getOffers();
+const offers = await api.getOffers();
 function replaceAt(string, index, property) {
   return string.substring(0, index) + property + string.substring(index + 1);
 }
@@ -49,7 +54,7 @@ function adapter(points, callback) {
   for (let i in points) {
     i = +i;
     points[i] = Object.entries(points[i]);
-    for (let property of points[i]) {
+    for (const property of points[i]) {
 
       property[0] = callback(property[0]);
     }
@@ -64,19 +69,19 @@ function adapterServer(points) {
   return adapter(points, (property) => {
 
     let indexWord = property.match(/[A-Z]/);
-    if (indexWord != null) {
+    if (indexWord !== null) {
       indexWord = indexWord.index;
     }
     if (indexWord > 0) {
-      property = replaceAt(property, indexWord, property[indexWord].toLowerCase())
-      property = property.substring(0, indexWord) + '_' + property.substring(indexWord);
+      property = replaceAt(property, indexWord, property[indexWord].toLowerCase());
+      property = `${property.substring(0, indexWord)}_${property.substring(indexWord)}`;
     }
     return property;
   });
 }
 function adapterClient(points) {
   return adapter(points, (property) => {
-    let indexWord = property.indexOf('_') + 1;
+    const indexWord = property.indexOf('_') + 1;
     if (indexWord > 0) {
       property = replaceAt(property, indexWord, property[indexWord].toUpperCase());
     }
@@ -84,6 +89,6 @@ function adapterClient(points) {
     return property;
   });
 }
-points = adapterClient(points);
-const model = new Model(points);
-export { model, data, destinations, replaceAt, adapterServer };
+const model = new Model();
+await model.init();
+export { model, offers, destinations, replaceAt, adapterServer };

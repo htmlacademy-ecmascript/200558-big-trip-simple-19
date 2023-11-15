@@ -128,7 +128,7 @@ class editPoint extends AbstractStatefulView {
       this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
         evt.preventDefault();
         const i = this.element.querySelector('.event--edit').dataset.index;
-        console.log('this._state=', this._state);
+
         callback(i, this._state);
       });
     }
