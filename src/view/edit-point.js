@@ -128,6 +128,7 @@ class editPoint extends AbstractStatefulView {
       this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
         evt.preventDefault();
         const i = this.element.querySelector('.event--edit').dataset.index;
+        console.log('this._state=', this._state);
         callback(i, this._state);
       });
     }
@@ -168,7 +169,7 @@ class editPoint extends AbstractStatefulView {
 
   _restoreHandlers() {
     this.element.querySelector('.event__input--price').addEventListener('change', (evt) => {
-      this._setState({ basePrice: evt.target.value });
+      this._setState({ basePrice: (+evt.target.value) });
     });
     this.element.querySelector('.event__type-group').addEventListener('change', (evt) => {
       this.updateElement({ type: evt.target.value });

@@ -12,7 +12,7 @@ class AppPresenter {
   }
 
   init() {
-
+    console.log('model.points=', model.points);
     this.boardPresenter.init(model.points);
     this.filterPresenter.setFilterChangeHandler(this.onFilterChange.bind(this));
   }

@@ -6,7 +6,6 @@ dayjs.extend(utc);
 function getWaypointTemplate(destinations, point, i) {
   const startTime = dayjs(point.dateFrom).format('HH:mm');
   const endTime = dayjs(point.dateTo).format('HH:mm');
-  console.log('point=', point.basePrice);
 
   let src = destinations.find((element) => element.id === point.destination);
   return `<li class="trip-events__item" data-index="${i}">
