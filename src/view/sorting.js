@@ -37,7 +37,9 @@ class Sorting extends AbstractView {
     super();
     this.callBack = [];
   }
-
+  get SortType() {
+    return this.element.querySelector('.trip-sort__input[checked]').value;
+  }
   get template() {
     return getSortingTemplate();
   }

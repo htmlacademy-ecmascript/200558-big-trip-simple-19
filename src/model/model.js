@@ -5,15 +5,24 @@ class Model {
   }
 
   async init() {
-    try {
-      this.points = adapterClient(await api.getPoints());
-    } catch {
-      this.points = [];
-    }
+    api.getPoints().then((points) => {
+      this.points = points;
+      console.log('this.points=', this.points);
+
+    }).catch(() => {
+      console.log('init error');
+    });
+    api.getDestinations().then((destinations) => {
+      this.destinations = destinations;
+      console.log('this.points=', this.points);
+    }).catch(() => {
+      console.log('init error');
+    });
+
   }
 
   async addPoint(value) {
-    value = adapterClient(await api.addPoint(adapterServer(value)));
+    value = adaptClient(await api.addPoint(adaptServer(value)));
     this.points.push(value);
     return { ...value };
   }
@@ -65,7 +74,7 @@ function adapter(points, callback) {
   }
   return points[0];
 }
-function adapterServer(points) {
+function adaptServer(points) {
   return adapter(points, (property) => {
 
     let indexWord = property.match(/[A-Z]/);
@@ -79,7 +88,7 @@ function adapterServer(points) {
     return property;
   });
 }
-function adapterClient(points) {
+function adaptClient(points) {
   return adapter(points, (property) => {
     const indexWord = property.indexOf('_') + 1;
     if (indexWord > 0) {
@@ -91,4 +100,4 @@ function adapterClient(points) {
 }
 const model = new Model();
 await model.init();
-export { model, offers, destinations, replaceAt, adapterServer };
+export { model, offers, destinations, replaceAt, adaptServer };

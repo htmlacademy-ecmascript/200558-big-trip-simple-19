@@ -10,7 +10,6 @@ import { sort } from '../utils.js';
 import { SortType } from '../view/sorting.js';
 
 const getNewPoint = () => ({
-  // id: `${Math.round(Math.random() * 1000)}${Date.now()}`,
   offers: [],
   destination: 1,
   type: 'taxi',
@@ -34,7 +33,7 @@ export default class BoardPresenter {
 
     this.addOnAddBtnCLick();
     this.sorting = new SortingWaypoint();
-    this.sortType = this.sorting.element.querySelector('.trip-sort__input[checked]').value;
+    this.sortType = this.sorting.SortType;
   }
 
   addOnAddBtnCLick() {
@@ -66,6 +65,7 @@ export default class BoardPresenter {
   init(waypoints) {
     this.waypoints = waypoints;
     this.tripEvents.innerHTML = '';
+    console.log('this.waypoints.length=', this.waypoints);
     if (this.waypoints.length === 0) {
       render(this.empty, this.tripEvents);
     } else {

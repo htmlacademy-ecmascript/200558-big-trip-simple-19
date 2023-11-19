@@ -1,9 +1,9 @@
-import { destinations, data as eventTypes } from '../model/model.js';
+import { destinations, offers } from '../model/model.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 
-const getEditPointTemplate = (waypoint, data, i) => {
+const getEditPointTemplate = (waypoint, offers, i) => {
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
   let options = '';
@@ -15,12 +15,11 @@ const getEditPointTemplate = (waypoint, data, i) => {
   for (const picture of destination.pictures) {
     imgs += `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`;
   }
-  const transports = eventTypes.map(({ type }) => `<div class="event__type-item">
+  const transports = offers.map(({ type }) => `<div class="event__type-item">
   <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${type === options.type ? 'checked' : ''}>
   <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
 </div>`).join('');
-  let offers = '';
-  offers = data.find((el) => el.type === waypoint.type).offers;
+  offers = offers.find((el) => el.type === waypoint.type).offers;
   offers = offers.map((offer, index) => {
     let checked = '';
     for (const el of waypoint.offers) {
