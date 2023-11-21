@@ -1,23 +1,15 @@
 import ApiService from '.././api-service.js';
+import Observable from '../framework/observable.js';
 const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic eo0w5912k298892');
 class Model {
   constructor() {
   }
 
   async init() {
-    api.getPoints().then((points) => {
-      this.points = points;
-      console.log('this.points=', this.points);
-
-    }).catch(() => {
-      console.log('init error');
-    });
-    api.getDestinations().then((destinations) => {
-      this.destinations = destinations;
-      console.log('this.points=', this.points);
-    }).catch(() => {
-      console.log('init error');
-    });
+    console.log('api');
+    this.points = await api.getPoints(),
+      this.destinations = await api.getDestinations();
+    console.log('prin');
 
   }
 
@@ -99,5 +91,4 @@ function adaptClient(points) {
   });
 }
 const model = new Model();
-await model.init();
 export { model, offers, destinations, replaceAt, adaptServer };
