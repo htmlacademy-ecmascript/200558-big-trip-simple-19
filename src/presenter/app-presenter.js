@@ -12,11 +12,9 @@ class AppPresenter {
   }
 
   init() {
-    console.log('ok');
-    this.boardPresenter.init(model.points);
+    this.boardPresenter.init(model.getPoints());
     this.filterPresenter.setFilterChangeHandler(this.onFilterChange.bind(this));
   }
-
   onFilterChange(type) {
     let points;
     if (type === 'future') {

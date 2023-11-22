@@ -2,7 +2,7 @@ import { render, replaceElement, RenderPosition } from '../utils.js';
 import Waypoint from '../view/waypoint.js';
 import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/edit-point.js';
-import { offers, destinations, model } from '../model/model.js';
+import { model } from '../model/model.js';
 import Empty from '../view/empty.js';
 import dayjs from 'dayjs';
 import SortingWaypoint from '../view/sorting.js';
@@ -30,7 +30,6 @@ export default class BoardPresenter {
     this.replaceFormToPoint = this.replaceFormToPoint.bind(this);
     this.empty = new Empty();
     this.onAddBtnCLickBind = this.onAddBtnCLick.bind(this);
-
     this.addOnAddBtnCLick();
     this.sorting = new SortingWaypoint();
     this.sortType = this.sorting.SortType;
@@ -42,10 +41,12 @@ export default class BoardPresenter {
 
   onAddBtnCLick() {
     const newPoint = getNewPoint();
-    this.editPoint = new EditPoint(newPoint, offers, this.waypoints.length - 1);
+    this.editPoint = new EditPoint(newPoint, model.getOffers(), this.waypoints.length - 1);
     render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
 
     async function onEditPointSubmit(i, update) {
+      console.log('dox');
+
       await model.addPoint(update);
       this.onSortTypeChange(this.sortType);
       this.addOnAddBtnCLick();
@@ -65,7 +66,6 @@ export default class BoardPresenter {
   init(waypoints) {
     this.waypoints = waypoints;
     this.tripEvents.innerHTML = '';
-    console.log('this.waypoints.length=', this.waypoints);
     if (this.waypoints.length === 0) {
       render(this.empty, this.tripEvents);
     } else {
@@ -119,7 +119,7 @@ export default class BoardPresenter {
     this.addOnAddBtnCLick();
     i = (+i) - 1;
     model.setPoint(i, update);
-    this.waypointTag[i] = new Waypoint(destinations, model.getPoint(i), i);
+    this.waypointTag[i] = new Waypoint(model.getDestinations(), model.getPoint(i), i);
     this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
     replaceElement(this.waypointTag[i].element, this.editPoint.element);
     this.#isFormOpen = false;
@@ -131,7 +131,7 @@ export default class BoardPresenter {
     this.waypointTag = [];
 
     for (let i = 0; i < waypoints.length; i++) {
-      const waypointTag = new Waypoint(destinations, waypoints[i], i);
+      const waypointTag = new Waypoint(model.getDestinations(), waypoints[i], i);
       this.waypointTag[i] = waypointTag;
       waypointTag.addClickListener(() => this.onWaypointClick(i));
       render(this.waypointTag[i], this.containerWaypoint.element);
@@ -147,7 +147,7 @@ export default class BoardPresenter {
       const point = model.points[eventEdit.dataset.index];
       this.replaceFormToPoint(eventEdit.dataset.index, point);
     }
-    this.editPoint = new EditPoint(this.waypoints[i], offers, i);
+    this.editPoint = new EditPoint(this.waypoints[i], model.getOffers(), i);
     this.openFormIndex = i;
     replaceElement(this.editPoint.element, this.waypointTag[i].element);
     this.editPoint.addSubmitListener(this.replaceFormToPoint);

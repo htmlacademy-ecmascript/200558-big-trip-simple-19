@@ -6,7 +6,6 @@ dayjs.extend(utc);
 function getWaypointTemplate(destinations, point, i) {
   const startTime = dayjs(point.dateFrom).format('HH:mm');
   const endTime = dayjs(point.dateTo).format('HH:mm');
-
   return `<li class="trip-events__item" data-index="${i}">
               <div class="event">
                 <time class="event__date" datetime="2019-07-${dayjs(point.dateFrom).format('DD')}">MAR ${dayjs(point.dateFrom).format('DD')}</time>

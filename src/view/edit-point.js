@@ -1,4 +1,4 @@
-import { destinations, offers } from '../model/model.js';
+import { model } from '../model/model.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
@@ -7,10 +7,10 @@ const getEditPointTemplate = (waypoint, offers, i) => {
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
   let options = '';
-  for (const { name } of destinations) {
+  for (const { name } of model.getDestinations()) {
     options += `<option value="${name}">${name}</option>`;
   }
-  const destination = destinations.find((el) => el.id === waypoint.destination);
+  const destination = model.getDestinations().find((el) => el.id === waypoint.destination);
   let imgs = '';
   for (const picture of destination.pictures) {
     imgs += `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`;
@@ -98,7 +98,7 @@ const getEditPointTemplate = (waypoint, offers, i) => {
 
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">${destinations.find((el) => el.id === waypoint.destination).description}</p>
+                    <p class="event__destination-description">${model.getDestinations().find((el) => el.id === waypoint.destination).description}</p>
                     <div class="event__photos-container">
                       <div class="event__photos-tape">
                         ${imgs}
