@@ -17,6 +17,7 @@ class AppPresenter {
     this.boardPresenter.init(model.getPoints());
     this.filterPresenter.setFilterChangeHandler(this.onFilterChange.bind(this));
   }
+
   onFilterChange(type) {
     let points;
     if (type === 'future') {

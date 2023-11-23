@@ -45,7 +45,6 @@ export default class BoardPresenter {
     render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
 
     function onEditPointSubmit(i, update) {
-      console.log('onEditPointSubmit');
       model.addPoint(update);
       this.onSortTypeChange(this.sortType);
       this.addOnAddBtnCLick();
@@ -79,12 +78,12 @@ export default class BoardPresenter {
   renderSort() {
 
     render(this.sorting, this.tripEvents, 'afterbegin');
-    this.sorting.addChangeListener(sortType => this.onSortTypeChange(sortType));
+    this.sorting.addChangeListener((sortType) => this.onSortTypeChange(sortType));
 
   }
 
   onSortTypeChange(sortType) {
-    if (sortType != undefined) {
+    if (sortType !== undefined) {
       this.sortType = sortType;
     }
     let pointCopy = [...model.getPoints()];

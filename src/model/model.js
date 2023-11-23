@@ -1,7 +1,7 @@
 import ApiService from '.././api-service.js';
 import Observable from '../framework/observable.js';
 const observable = new Observable();
-import { boardPresenter } from '../presenter/app-presenter.js'
+import { boardPresenter } from '../presenter/app-presenter.js';
 const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic Dimasic 1');
 class Model {
   constructor() {
@@ -15,25 +15,24 @@ class Model {
     this.points = adaptClient(this.points);
     this.destinations = adaptClient(this.destinations);
     this.offers = adaptClient(this.offers);
-    console.log('this.points', this.points);
-    console.log('this.destinations', this.destinations);
-    console.log('this.offers', this.offers);
     observable._notify();
 
   }
 
   async addPoint(value) {
     value = adaptClient(await api.addPoint(adaptServer(value)));
-    console.log('boardPresenter=', boardPresenter);
     this.points.push(value);
     boardPresenter.onSortTypeChange();
   }
+
   getDestinations() {
     return this.destinations;
   }
+
   getOffers() {
     return this.offers;
   }
+
   getPoints() {
     return this.points;
 
