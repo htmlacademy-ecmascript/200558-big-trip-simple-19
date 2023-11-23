@@ -2,7 +2,7 @@ import ApiService from '.././api-service.js';
 import Observable from '../framework/observable.js';
 const observable = new Observable();
 import { boardPresenter } from '../presenter/app-presenter.js'
-const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic eo0w5912k298892');
+const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic Dimasic 1');
 class Model {
   constructor() {
   }

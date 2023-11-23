@@ -44,10 +44,9 @@ export default class BoardPresenter {
     this.editPoint = new EditPoint(newPoint, model.getOffers(), this.waypoints.length - 1);
     render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
 
-    async function onEditPointSubmit(i, update) {
-      console.log('dox');
-
-      await model.addPoint(update);
+    function onEditPointSubmit(i, update) {
+      console.log('onEditPointSubmit');
+      model.addPoint(update);
       this.onSortTypeChange(this.sortType);
       this.addOnAddBtnCLick();
     }
