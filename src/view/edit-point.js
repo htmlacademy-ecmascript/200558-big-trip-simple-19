@@ -59,7 +59,7 @@ const getEditPointTemplate = (waypoint, offers, i) => {
                     <label class="event__label  event__type-output" for="event-destination-1">
                       ${waypoint.type} to
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinations.find((el) => el.id === waypoint.destination).name}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${model.getDestinations().find((el) => el.id === waypoint.destination).name}" list="destination-list-1">
                     <datalist id="destination-list-1">
                     ${options}
                     </datalist>

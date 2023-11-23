@@ -80,13 +80,15 @@ export default class BoardPresenter {
   renderSort() {
 
     render(this.sorting, this.tripEvents, 'afterbegin');
-    this.sorting.addChangeListener((sortType) => this.onSortTypeChange(sortType));
+    this.sorting.addChangeListener(sortType => this.onSortTypeChange(sortType));
 
   }
 
   onSortTypeChange(sortType) {
-    this.sortType = sortType;
-    let pointCopy = [...model.points];
+    if (sortType != undefined) {
+      this.sortType = sortType;
+    }
+    let pointCopy = [...model.getPoints()];
     switch (sortType) {
       case SortType.PRICE:
         sort.min(model.points, 'basePrice');

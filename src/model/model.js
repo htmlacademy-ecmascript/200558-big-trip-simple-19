@@ -1,6 +1,7 @@
 import ApiService from '.././api-service.js';
 import Observable from '../framework/observable.js';
 const observable = new Observable();
+import { boardPresenter } from '../presenter/app-presenter.js'
 const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic eo0w5912k298892');
 class Model {
   constructor() {
@@ -23,7 +24,9 @@ class Model {
 
   async addPoint(value) {
     value = adaptClient(await api.addPoint(adaptServer(value)));
+    console.log('boardPresenter=', boardPresenter);
     this.points.push(value);
+    boardPresenter.onSortTypeChange();
   }
   getDestinations() {
     return this.destinations;
