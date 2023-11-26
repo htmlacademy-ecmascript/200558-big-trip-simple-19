@@ -56,9 +56,6 @@ class Model {
   }
 }
 
-const destinations = await api.getDestinations();
-
-const offers = await api.getOffers();
 function replaceAt(string, index, property) {
   return string.substring(0, index) + property + string.substring(index + 1);
 }
@@ -105,4 +102,4 @@ function adaptClient(points) {
   });
 }
 const model = new Model();
-export { model, offers, destinations, observable, replaceAt, adaptServer };
+export { model, observable, replaceAt, adaptServer };

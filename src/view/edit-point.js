@@ -12,6 +12,7 @@ const getEditPointTemplate = (waypoint, offers, i) => {
   }
   const destination = model.getDestinations().find((el) => el.id === waypoint.destination);
   let imgs = '';
+  console.log('destination.pictures=', destination.pictures);
   for (const picture of destination.pictures) {
     imgs += `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`;
   }

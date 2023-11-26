@@ -27,7 +27,7 @@ export default class Observable {
    * @param {*} payload Дополнительная информация
    */
   _notify() {
-    this.#observers.forEach((observer) => { observer.init(); });
+    this.#observers.forEach((observer) => { observer(); });
   }
 }
 
