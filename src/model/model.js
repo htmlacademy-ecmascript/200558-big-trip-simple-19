@@ -1,22 +1,54 @@
 import ApiService from '.././api-service.js';
 import Observable from '../framework/observable.js';
-const observable = new Observable();
+// const observable = new Observable();
+const UPDATE_TYPE = {
+  INIT: 'INIT',
+  REMOVE: 'REMOVE'
+}
 import { boardPresenter } from '../presenter/app-presenter.js';
 const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic Dimasic 1');
-class Model {
+class Model extends Observable {
   constructor() {
+    super();
+    this.points = [];
+    this.destinations = [];
+    this.offers = [];
+
   }
 
   async init() {
-    this.points = await api.getPoints();
-    this.destinations = await api.getDestinations();
-    this.offers = await api.getOffers();
 
-    this.points = adaptClient(this.points);
-    this.destinations = adaptClient(this.destinations);
-    this.offers = adaptClient(this.offers);
-    observable._notify();
+    // try {
+    //   this.points = await api.getPoints();
+    //   this.destinations = await api.getDestinations();
+    //   this.offers = await api.getOffers();
+    //   this.points = adaptClient(this.points);
+    //   this.destinations = adaptClient(this.destinations);
+    //   this.offers = adaptClient(this.offers);
+    //   this._notify(UPDATE_TYPE.INIT);
 
+    // } catch (error) {
+    //   console.log('error=', error);
+    // }
+
+
+    let i = 0;
+    const dataParameters = [[api.getPoints(), 'points'], [api.getDestinations(), 'destinations'], [api.getOffers(), 'offers']];
+
+    for (let [promis, nameData] of dataParameters) {
+      promis.then((data) => {
+        this[nameData] = adaptClient(data);
+        i++;
+        console.log('i=', i);
+        if (i === 3) {
+          console.log('this=', this);
+
+          this._notify(UPDATE_TYPE.INIT);
+        }
+      }).catch(() => {
+        console.log('error');
+      });
+    }
   }
 
   async addPoint(value) {
@@ -53,6 +85,7 @@ class Model {
   removePoint(id) {
     const index = this.points.findIndex((point) => point.id === id);
     this.points.splice(index, 1);
+    this._notify(UPDATE_TYPE.REMOVE);
   }
 }
 
@@ -102,4 +135,4 @@ function adaptClient(points) {
   });
 }
 const model = new Model();
-export { model, observable, replaceAt, adaptServer };
+export { model, UPDATE_TYPE, replaceAt, adaptServer };

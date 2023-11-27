@@ -10,7 +10,11 @@ export default class Observable {
    * @param {observerCallback} observer Функция, которая будет вызвана при наступлении события
    */
   addObserver(observer) {
+    console.log('observer=', observer);
+
     this.#observers.add(observer);
+    console.log('this.#observers=', this.#observers);
+
   }
 
   /**
@@ -26,8 +30,9 @@ export default class Observable {
    * @param {*} event Тип события
    * @param {*} payload Дополнительная информация
    */
-  _notify() {
-    this.#observers.forEach((observer) => { observer(); });
+  _notify(update) {
+    console.log('observers=', this.#observers);
+    this.#observers.forEach((observer) => { observer(update); });
   }
 }
 

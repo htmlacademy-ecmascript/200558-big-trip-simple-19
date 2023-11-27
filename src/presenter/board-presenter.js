@@ -2,7 +2,7 @@ import { render, replaceElement, RenderPosition } from '../utils.js';
 import Waypoint from '../view/waypoint.js';
 import ContainerWaypoint from '../view/waypoint-container.js';
 import EditPoint from '../view/edit-point.js';
-import { model } from '../model/model.js';
+import { model, UPDATE_TYPE } from '../model/model.js';
 import Empty from '../view/empty.js';
 import dayjs from 'dayjs';
 import SortingWaypoint from '../view/sorting.js';
@@ -33,8 +33,20 @@ export default class BoardPresenter {
     this.addOnAddBtnCLick();
     this.sorting = new SortingWaypoint();
     this.sortType = this.sorting.SortType;
+    model.addObserver(this.handelModelEvent);
+    model.init();
   }
-
+  handelModelEvent = (update) => {
+    console.log('update=', update);
+    switch (update) {
+      case UPDATE_TYPE.INIT:
+        this.init(model.getPoints());
+        break;
+      case UPDATE_TYPE.REMOVE:
+        this.init(model.getPoints());
+        break;
+    }
+  }
   addOnAddBtnCLick() {
     addBtn.addEventListener('click', this.onAddBtnCLickBind, { once: true, passive: true });
   }
@@ -138,9 +150,12 @@ export default class BoardPresenter {
     for (let i = 0; i < waypoints.length; i++) {
       const waypointTag = new Waypoint(model.getDestinations(), waypoints[i], i);
       this.waypointTag[i] = waypointTag;
-      console.log('waypointTag=', waypointTag);
-
-      waypointTag.addClickListener(() => this.onWaypointClick(i));
+      // console.log('this=', this);
+      //this.onWaypointClickBind = onWaypointClick.bind(this);
+      waypointTag.addClickListener(() => {
+        console.log('this s=', this);
+        this.onWaypiontClick(i);
+      });
       render(this.waypointTag[i], this.containerWaypoint.element);
 
 
@@ -152,9 +167,8 @@ export default class BoardPresenter {
     console.log('onWaypiontClick=');
 
     if (this.#isFormOpen) {
-      const eventEdit = document.querySelector('.event--edit');
-      const point = model.points[eventEdit.dataset.index];
-      this.replaceFormToPoint(eventEdit.dataset.index, point);
+      const point = model.points[this.editPoint.i];
+      this.replaceFormToPoint(this.editPoint.i, point);
     }
     this.editPoint = new EditPoint(this.waypoints[i], model.getOffers(), i);
     this.openFormIndex = i;
@@ -164,7 +178,6 @@ export default class BoardPresenter {
       this.editPoint.remove();
       this.#isFormOpen = false;
       model.removePoint(id);
-      this.waypointTag[i] = undefined;
     });
     this.#isFormOpen = true;
   }
