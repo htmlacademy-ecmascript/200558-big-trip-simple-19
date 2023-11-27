@@ -4,7 +4,7 @@ import Observable from '../framework/observable.js';
 const UPDATE_TYPE = {
   INIT: 'INIT',
   REMOVE: 'REMOVE'
-}
+};
 import { boardPresenter } from '../presenter/app-presenter.js';
 const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic Dimasic 1');
 class Model extends Observable {
@@ -34,19 +34,19 @@ class Model extends Observable {
 
     let i = 0;
     const dataParameters = [[api.getPoints(), 'points'], [api.getDestinations(), 'destinations'], [api.getOffers(), 'offers']];
-
-    for (let [promis, nameData] of dataParameters) {
+    let errrorLog = () => {
+      console.log('error');
+    };
+    for (const [promis, nameData] of dataParameters) {
       promis.then((data) => {
         this[nameData] = adaptClient(data);
         i++;
-        console.log('i=', i);
         if (i === 3) {
-          console.log('this=', this);
-
           this._notify(UPDATE_TYPE.INIT);
         }
       }).catch(() => {
-        console.log('error');
+        errrorLog();
+        errrorLog = null;
       });
     }
   }

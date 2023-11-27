@@ -36,8 +36,8 @@ export default class BoardPresenter {
     model.addObserver(this.handelModelEvent);
     model.init();
   }
+
   handelModelEvent = (update) => {
-    console.log('update=', update);
     switch (update) {
       case UPDATE_TYPE.INIT:
         this.init(model.getPoints());
@@ -46,7 +46,8 @@ export default class BoardPresenter {
         this.init(model.getPoints());
         break;
     }
-  }
+  };
+
   addOnAddBtnCLick() {
     addBtn.addEventListener('click', this.onAddBtnCLickBind, { once: true, passive: true });
   }
@@ -58,7 +59,6 @@ export default class BoardPresenter {
 
     function onEditPointSubmit(i, update) {
       model.addPoint(update);
-      console.log('dox');
 
       this.onSortTypeChange(this.sortType);
       this.addOnAddBtnCLick();
@@ -68,10 +68,8 @@ export default class BoardPresenter {
   }
 
   onEditPointDelete(id, i) {
-    console.log('this.editPoint=', this);
 
     this.editPoint.remove();
-    console.log('Delete');
     this.#isFormOpen = false;
     model.removePoint(id);
     this.waypointTag[i] = undefined;
@@ -150,10 +148,8 @@ export default class BoardPresenter {
     for (let i = 0; i < waypoints.length; i++) {
       const waypointTag = new Waypoint(model.getDestinations(), waypoints[i], i);
       this.waypointTag[i] = waypointTag;
-      // console.log('this=', this);
       //this.onWaypointClickBind = onWaypointClick.bind(this);
       waypointTag.addClickListener(() => {
-        console.log('this s=', this);
         this.onWaypiontClick(i);
       });
       render(this.waypointTag[i], this.containerWaypoint.element);
@@ -164,7 +160,6 @@ export default class BoardPresenter {
 
   onWaypiontClick(i) {
     addBtn.removeEventListener('click', this.onAddBtnCLickBind, { once: true });
-    console.log('onWaypiontClick=');
 
     if (this.#isFormOpen) {
       const point = model.points[this.editPoint.i];

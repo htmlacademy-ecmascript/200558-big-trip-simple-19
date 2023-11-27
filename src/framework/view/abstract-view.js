@@ -55,7 +55,6 @@ export default class AbstractView {
   }
 
   remove() {
-    console.log('remove');
     this.element.parentNode.removeChild(this.element);
   }
 
