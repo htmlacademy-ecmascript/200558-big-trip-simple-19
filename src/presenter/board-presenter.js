@@ -54,7 +54,7 @@ export default class BoardPresenter {
 
   onAddBtnCLick() {
     const newPoint = getNewPoint();
-    this.editPoint = new EditPoint(newPoint, model.getOffers(), this.waypoints.length - 1);
+    this.editPoint = new EditPoint(newPoint, this.waypoints.length - 1);
     render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
 
     function onEditPointSubmit(i, update) {
@@ -132,7 +132,7 @@ export default class BoardPresenter {
 
   replaceFormToPoint(i, update) {
     this.addOnAddBtnCLick();
-    i = (+i) - 1;
+    i = (+i);
     model.setPoint(i, update);
     this.waypointTag[i] = new Waypoint(model.getDestinations(), model.getPoint(i), i);
     this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
@@ -148,9 +148,8 @@ export default class BoardPresenter {
     for (let i = 0; i < waypoints.length; i++) {
       const waypointTag = new Waypoint(model.getDestinations(), waypoints[i], i);
       this.waypointTag[i] = waypointTag;
-      //this.onWaypointClickBind = onWaypointClick.bind(this);
       waypointTag.addClickListener(() => {
-        this.onWaypiontClick(i);
+        this.onWaypointClick(i);
       });
       render(this.waypointTag[i], this.containerWaypoint.element);
 
@@ -158,14 +157,13 @@ export default class BoardPresenter {
     }
   }
 
-  onWaypiontClick(i) {
+  onWaypointClick(i) {
     addBtn.removeEventListener('click', this.onAddBtnCLickBind, { once: true });
-
     if (this.#isFormOpen) {
       const point = model.points[this.editPoint.i];
       this.replaceFormToPoint(this.editPoint.i, point);
     }
-    this.editPoint = new EditPoint(this.waypoints[i], model.getOffers(), i);
+    this.editPoint = new EditPoint(this.waypoints[i], i);
     this.openFormIndex = i;
     replaceElement(this.editPoint.element, this.waypointTag[i].element);
     this.editPoint.addSubmitListener(this.replaceFormToPoint);
@@ -179,6 +177,6 @@ export default class BoardPresenter {
 
   resetPoints() {
     const form = document.querySelector('.event--edit');
-    replaceElement(this.waypointTag[Number(form.dataset.index) - 1].element, form);
+    replaceElement(this.waypointTag[Number(form.dataset.index)].element, form);
   }
 }

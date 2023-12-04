@@ -26,8 +26,8 @@ export default class Observable {
    * @param {*} event Тип события
    * @param {*} payload Дополнительная информация
    */
-  _notify(update) {
-    this.#observers.forEach((observer) => { observer(update); });
+  _notify(typeDate, update) {
+    this.#observers.forEach((observer) => { observer(typeDate, update); });
   }
 }
 

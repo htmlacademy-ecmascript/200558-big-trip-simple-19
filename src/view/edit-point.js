@@ -3,7 +3,7 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 
-const getEditPointTemplate = (waypoint, offers, i) => {
+const getEditPointTemplate = (waypoint, i) => {
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
   let options = '';
@@ -15,11 +15,11 @@ const getEditPointTemplate = (waypoint, offers, i) => {
   for (const picture of destination.pictures) {
     imgs += `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`;
   }
-  const transports = offers.map(({ type }) => `<div class="event__type-item">
+  const transports = model.getOffers().map(({ type }) => `<div class="event__type-item">
   <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${type === options.type ? 'checked' : ''}>
   <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
 </div>`).join('');
-  offers = offers.find((el) => el.type === waypoint.type).offers;
+  let offers = model.getOffers().find((el) => el.type === waypoint.type).offers;
   offers = offers.map((offer, index) => {
     let checked = '';
     for (const el of waypoint.offers) {
@@ -110,11 +110,11 @@ const getEditPointTemplate = (waypoint, offers, i) => {
             </li>`;
 };
 class editPoint extends AbstractStatefulView {
-  constructor(waypoint, data, i) {
+  constructor(waypoint, i) {
     super();
     this.waypoint = waypoint;
-    this.data = data;
     this.i = i;
+
     this.flatpickrEnd = {};
     this.flatpick = {};
     this._setState(waypoint);
@@ -178,7 +178,7 @@ class editPoint extends AbstractStatefulView {
   }
 
   get template() {
-    return getEditPointTemplate(this._state, this.data, this.i + 1);
+    return getEditPointTemplate(this._state, this.i);
   }
 }
 export default editPoint;

@@ -33,22 +33,29 @@ class Model extends Observable {
 
 
     let i = 0;
-    const dataParameters = [[api.getPoints(), 'points'], [api.getDestinations(), 'destinations'], [api.getOffers(), 'offers']];
-    let errrorLog = () => {
-      console.log('error');
-    };
-    for (const [promis, nameData] of dataParameters) {
-      promis.then((data) => {
-        this[nameData] = adaptClient(data);
-        i++;
-        if (i === 3) {
-          this._notify(UPDATE_TYPE.INIT);
-        }
-      }).catch(() => {
-        errrorLog();
-        errrorLog = null;
-      });
-    }
+    //const dataParameters = [[api.getPoints(), 'points'], [api.getDestinations(), 'destinations'], [api.getOffers(), 'offers']];
+    const dataParameters = [api.getPoints(), api.getDestinations(), api.getOffers()];
+
+    // for (const [promis, nameData] of dataParameters) {
+    //   promis.then((data) => {
+    //     this[nameData] = adaptClient(data);
+    //     i++;
+    //     if (i === 3) {
+    //       this._notify(UPDATE_TYPE.INIT);
+    //     }
+    //   }).catch(() => {
+    //     errrorLog();
+    //     errrorLog = null;
+    //   });
+    //  }
+
+    Promise.all(dataParameters).then(([points, destinations, offers]) => {
+      this.points = adaptClient(points);
+      this.destinations = adaptClient(destinations);
+      this.offers = adaptClient(offers);
+      this._notify(UPDATE_TYPE.INIT);
+
+    });
   }
 
   async addPoint(value) {
