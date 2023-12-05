@@ -32,7 +32,7 @@ class Model extends Observable {
     // }
 
 
-    let i = 0;
+    //let i = 0;
     //const dataParameters = [[api.getPoints(), 'points'], [api.getDestinations(), 'destinations'], [api.getOffers(), 'offers']];
     const dataParameters = [api.getPoints(), api.getDestinations(), api.getOffers()];
 
