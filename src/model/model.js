@@ -17,21 +17,6 @@ class Model extends Observable {
   }
 
   async init() {
-
-    // try {
-    //   this.points = await api.getPoints();
-    //   this.destinations = await api.getDestinations();
-    //   this.offers = await api.getOffers();
-    //   this.points = adaptClient(this.points);
-    //   this.destinations = adaptClient(this.destinations);
-    //   this.offers = adaptClient(this.offers);
-    //   this._notify(UPDATE_TYPE.INIT);
-
-    // } catch (error) {
-    //   console.log('error=', error);
-    // }
-
-
     //let i = 0;
     //const dataParameters = [[api.getPoints(), 'points'], [api.getDestinations(), 'destinations'], [api.getOffers(), 'offers']];
     const dataParameters = [api.getPoints(), api.getDestinations(), api.getOffers()];
@@ -83,6 +68,8 @@ class Model extends Observable {
 
   setPoint(i, value) {
     this.points[i] = value;
+    let s = api.changePoint(adaptServer(value));
+    console.log('s=', s);
   }
 
   setPoints(points) {
