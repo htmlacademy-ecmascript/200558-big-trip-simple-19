@@ -68,8 +68,7 @@ class Model extends Observable {
 
   setPoint(i, value) {
     this.points[i] = value;
-    let s = api.changePoint(adaptServer(value));
-    console.log('s=', s);
+    api.changePoint(adaptServer(value));
   }
 
   setPoints(points) {

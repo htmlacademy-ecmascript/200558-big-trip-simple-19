@@ -13,15 +13,13 @@ export default class PointApiService extends ApiService {
     })
       .then(ApiService.parseResponse);
   }
+
   changePoint(point) {
-    console.log('point=', point);
     return this._load({
-      url: 'points/' + point.id,
-      method: 'put',
-      headers: new Headers({ 'Content-type': 'application/json' }),
-      body: JSON.stringify(point)
+      url: `points/${point.id}`, method: 'put', headers: new Headers({ 'Content-type': 'application/json' }), body: JSON.stringify(point)
     }).then(ApiService.parseResponse);
   }
+
   getDestinations() {
     return this._load({ url: 'destinations' })
       .then(ApiService.parseResponse);
