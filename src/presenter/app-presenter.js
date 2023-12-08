@@ -1,19 +1,20 @@
 import { model } from '../model/model.js';
 import BoardPresenter from './board-presenter.js';
 import FilterPresenter from './filter-presenter.js';
+const tripEvents = document.querySelector('.trip-events');
+const boardPresenter = new BoardPresenter(tripEvents);
 class AppPresenter {
   constructor({ appContainer }) {
     this.appContainer = appContainer;
-    this.tripEvents = document.querySelector('.trip-events');
+    this.tripEvents = tripEvents;
     this.filterPresenter = new FilterPresenter(this.appContainer, this.tripEvents, model.points);
     this.filterPresenter.init();
-    this.boardPresenter = new BoardPresenter(this.tripEvents);
+    this.boardPresenter = boardPresenter;
     this.addPoint = false;
   }
 
   init() {
-
-    this.boardPresenter.init(model.points);
+    this.boardPresenter.init(model.getPoints());
     this.filterPresenter.setFilterChangeHandler(this.onFilterChange.bind(this));
   }
 
@@ -37,4 +38,4 @@ class AppPresenter {
   }
 }
 
-export default AppPresenter;
+export { AppPresenter, boardPresenter };

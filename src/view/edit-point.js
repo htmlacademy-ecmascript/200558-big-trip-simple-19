@@ -1,26 +1,25 @@
-import { destinations, data as eventTypes } from '../model/model.js';
+import { model } from '../model/model.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 
-const getEditPointTemplate = (waypoint, data, i) => {
+const getEditPointTemplate = (waypoint, i) => {
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
   let options = '';
-  for (const { name } of destinations) {
+  for (const { name } of model.getDestinations()) {
     options += `<option value="${name}">${name}</option>`;
   }
-  const destination = destinations.find((el) => el.id === waypoint.destination);
+  const destination = model.getDestinations().find((el) => el.id === waypoint.destination);
   let imgs = '';
   for (const picture of destination.pictures) {
     imgs += `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`;
   }
-  const transports = eventTypes.map(({ type }) => `<div class="event__type-item">
+  const transports = model.getOffers().map(({ type }) => `<div class="event__type-item">
   <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${type === options.type ? 'checked' : ''}>
   <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
 </div>`).join('');
-  let offers = '';
-  offers = data.find((el) => el.type === waypoint.type).offers;
+  let offers = model.getOffers().find((el) => el.type === waypoint.type).offers;
   offers = offers.map((offer, index) => {
     let checked = '';
     for (const el of waypoint.offers) {
@@ -60,7 +59,7 @@ const getEditPointTemplate = (waypoint, data, i) => {
                     <label class="event__label  event__type-output" for="event-destination-1">
                       ${waypoint.type} to
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destinations.find((el) => el.id === waypoint.destination).name}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${model.getDestinations().find((el) => el.id === waypoint.destination).name}" list="destination-list-1">
                     <datalist id="destination-list-1">
                     ${options}
                     </datalist>
@@ -99,7 +98,7 @@ const getEditPointTemplate = (waypoint, data, i) => {
 
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">${destinations.find((el) => el.id === waypoint.destination).description}</p>
+                    <p class="event__destination-description">${model.getDestinations().find((el) => el.id === waypoint.destination).description}</p>
                     <div class="event__photos-container">
                       <div class="event__photos-tape">
                         ${imgs}
@@ -111,11 +110,11 @@ const getEditPointTemplate = (waypoint, data, i) => {
             </li>`;
 };
 class editPoint extends AbstractStatefulView {
-  constructor(waypoint, data, i) {
+  constructor(waypoint, i) {
     super();
     this.waypoint = waypoint;
-    this.data = data;
     this.i = i;
+
     this.flatpickrEnd = {};
     this.flatpick = {};
     this._setState(waypoint);
@@ -128,6 +127,7 @@ class editPoint extends AbstractStatefulView {
       this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
         evt.preventDefault();
         const i = this.element.querySelector('.event--edit').dataset.index;
+
         callback(i, this._state);
       });
     }
@@ -168,7 +168,7 @@ class editPoint extends AbstractStatefulView {
 
   _restoreHandlers() {
     this.element.querySelector('.event__input--price').addEventListener('change', (evt) => {
-      this._setState({ basePrice: evt.target.value });
+      this._setState({ basePrice: (+evt.target.value) });
     });
     this.element.querySelector('.event__type-group').addEventListener('change', (evt) => {
       this.updateElement({ type: evt.target.value });
@@ -178,7 +178,7 @@ class editPoint extends AbstractStatefulView {
   }
 
   get template() {
-    return getEditPointTemplate(this._state, this.data, this.i + 1);
+    return getEditPointTemplate(this._state, this.i);
   }
 }
 export default editPoint;
