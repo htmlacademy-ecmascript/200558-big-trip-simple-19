@@ -67,13 +67,21 @@ export default class BoardPresenter {
     this.editPoint.addDeleteListener(this.onEditPointDelete.bind(this));
   }
 
-  onEditPointDelete(id, i) {
+  async onEditPointDelete(id, i) {
+    try {
+      console.log('ok');
+      let s = await model.deletePoint(id);
 
-    this.editPoint.remove();
-    this.#isFormOpen = false;
-    model.removePoint(id);
-    this.waypointTag[i] = undefined;
-    this.addOnAddBtnCLick();
+      this.editPoint.remove();
+      this.#isFormOpen = false;
+      model.removePoint(id);
+      this.waypointTag[i] = undefined;
+      this.addOnAddBtnCLick();
+      console.log('uspex');
+    } catch (error) {
+      console.log('error');
+
+    }
   }
 
   init(waypoints) {
@@ -170,7 +178,6 @@ export default class BoardPresenter {
     this.editPoint.addDeleteListener((id) => {
       this.editPoint.remove();
       this.#isFormOpen = false;
-      model.removePoint(id);
     });
     this.#isFormOpen = true;
   }
