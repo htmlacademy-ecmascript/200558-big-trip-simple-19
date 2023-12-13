@@ -3,7 +3,7 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 
-const getEditPointTemplate = (waypoint, i) => {
+const getEditPointTemplate = (waypoint, i, isSubmiting) => {
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
   let options = '';
@@ -81,7 +81,7 @@ const getEditPointTemplate = (waypoint, i) => {
                     <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${waypoint.basePrice}">
                   </div>
 
-                  <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+                  <button class="event__save-btn  btn  btn--blue" ${isSubmiting ? 'disabled' : ''} type="submit">${isSubmiting ? 'Saving...' : 'Save'}</button>
                   <button class="event__reset-btn" type="reset">Delete</button>
                   <button class="event__rollup-btn" type="button">
                     <span class="visually-hidden">Open event</span>
@@ -114,11 +114,16 @@ class editPoint extends AbstractStatefulView {
     super();
     this.waypoint = waypoint;
     this.i = i;
-
+    this.isSubmiting = false;
     this.flatpickrEnd = {};
     this.flatpick = {};
     this._setState(waypoint);
     this._restoreHandlers();
+  }
+  switchButtonMode() {
+    console.log('block');
+    this.updateElement(state);
+
   }
 
   addSubmitListener(callback) {
@@ -127,7 +132,7 @@ class editPoint extends AbstractStatefulView {
       this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
         evt.preventDefault();
         const i = this.element.querySelector('.event--edit').dataset.index;
-
+        this.isSubmiting = true;
         callback(i, this._state);
       });
     }
@@ -163,6 +168,7 @@ class editPoint extends AbstractStatefulView {
   }
 
   addDeleteListener(callback) {
+    console.log('this.waypoint=', this.waypoint);
     this.element.querySelector('.event__reset-btn').addEventListener('click', () => callback(this.waypoint.id, this.i));
   }
 
@@ -178,7 +184,15 @@ class editPoint extends AbstractStatefulView {
   }
 
   get template() {
-    return getEditPointTemplate(this._state, this.i);
+    return getEditPointTemplate(this._state, this.i, this.isSubmiting);
+  }
+
+  get buttonSave() {
+    return this.element.querySelector('.event--edit');
+  }
+
+  get buttonDelete() {
+    return this.element.querySelector('.event__reset-btn');
   }
 }
 export default editPoint;

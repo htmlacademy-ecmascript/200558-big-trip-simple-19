@@ -14,11 +14,11 @@ export default class PointApiService extends ApiService {
       .then(ApiService.parseResponse);
   }
   deletePoint(id) {
+    console.log('delete');
     return this._load({
-      url: `points/${id}`, method: 'delete', body: JSON.stringify(point), headers:
+      url: `points/${id}`, method: 'delete', headers:
         new Headers({ 'Content-type': 'application/json' })
     })
-      .then(ApiService.parseResponse);
   }
   changePoint(point) {
     return this._load({

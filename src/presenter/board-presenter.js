@@ -45,43 +45,47 @@ export default class BoardPresenter {
       case UPDATE_TYPE.REMOVE:
         this.init(model.getPoints());
         break;
+      case UPDATE_TYPE.FORM_PENDING:
+        this.blockForm();
+        break;
     }
   };
 
   addOnAddBtnCLick() {
     addBtn.addEventListener('click', this.onAddBtnCLickBind, { once: true, passive: true });
   }
+  blockForm = () => {
+    this.editPoint?.switchButtonMode();
 
+  }
   onAddBtnCLick() {
     const newPoint = getNewPoint();
     this.editPoint = new EditPoint(newPoint, this.waypoints.length - 1);
     render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
 
-    function onEditPointSubmit(i, update) {
-      model.addPoint(update);
+    async function onEditPointSubmit(i, update) {
+      try {
 
-      this.onSortTypeChange(this.sortType);
-      this.addOnAddBtnCLick();
+        let point = await model.addPoint(update);
+
+        console.log('this=', this);
+        this.waypoints[i].id = point.id;
+        this.onSortTypeChange(this.sortType);
+        this.addOnAddBtnCLick();
+      } catch (error) {
+        console.log('error');
+
+      }
     }
     this.editPoint.addSubmitListener(onEditPointSubmit.bind(this));
     this.editPoint.addDeleteListener(this.onEditPointDelete.bind(this));
   }
 
   async onEditPointDelete(id, i) {
-    try {
-      console.log('ok');
-      let s = await model.deletePoint(id);
-
-      this.editPoint.remove();
-      this.#isFormOpen = false;
-      model.removePoint(id);
-      this.waypointTag[i] = undefined;
-      this.addOnAddBtnCLick();
-      console.log('uspex');
-    } catch (error) {
-      console.log('error');
-
-    }
+    this.editPoint.remove();
+    this.#isFormOpen = false;
+    this.waypointTag[i] = undefined;
+    this.addOnAddBtnCLick();
   }
 
   init(waypoints) {
@@ -138,14 +142,18 @@ export default class BoardPresenter {
     }
   }
 
-  replaceFormToPoint(i, update) {
-    this.addOnAddBtnCLick();
+  async replaceFormToPoint(i, update) {
     i = (+i);
-    model.setPoint(i, update);
-    this.waypointTag[i] = new Waypoint(model.getDestinations(), model.getPoint(i), i);
-    this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
-    replaceElement(this.waypointTag[i].element, this.editPoint.element);
-    this.#isFormOpen = false;
+    try {
+      await model.setPoint(i, update);
+      this.addOnAddBtnCLick();
+      this.waypointTag[i] = new Waypoint(model.getDestinations(), model.getPoint(i), i);
+      this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
+      replaceElement(this.waypointTag[i].element, this.editPoint.element);
+      this.#isFormOpen = false;
+    } catch (error) {
+
+    }
 
   }
 
@@ -175,9 +183,19 @@ export default class BoardPresenter {
     this.openFormIndex = i;
     replaceElement(this.editPoint.element, this.waypointTag[i].element);
     this.editPoint.addSubmitListener(this.replaceFormToPoint);
-    this.editPoint.addDeleteListener((id) => {
-      this.editPoint.remove();
-      this.#isFormOpen = false;
+    this.editPoint.addDeleteListener(async (id) => {
+      console.log('this=', this.editPoint);
+
+      try {
+        console.log('id=', id);
+
+        await model.removePoint(id);
+        this.#isFormOpen = false;
+        console.log('uspex');
+
+      } catch (error) {
+        console.log('error=', error);
+      }
     });
     this.#isFormOpen = true;
   }
