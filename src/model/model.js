@@ -74,7 +74,7 @@ class Model extends Observable {
   }
 
   async setPoint(i, value) {
-    document.querySelector('.event__save-btn').textContent = 'Saving...';
+    this._notify(UPDATE_TYPE.FORM_PENDING);
     await api.changePoint(adaptServer(value));
     this.points[i] = value;
   }

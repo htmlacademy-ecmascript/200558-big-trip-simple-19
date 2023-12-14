@@ -4,6 +4,8 @@ import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 
 const getEditPointTemplate = (waypoint, i, isSubmiting) => {
+  console.log('isSubmiting=', isSubmiting);
+
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
   let options = '';
@@ -122,14 +124,15 @@ class editPoint extends AbstractStatefulView {
   }
   switchButtonMode() {
     console.log('block');
-    this.updateElement(state);
+    this.updateElement(this._state);
 
   }
 
   addSubmitListener(callback) {
     if (callback) {
       this.callbackSubmit = callback;
-      this.element.querySelector('.event--edit').addEventListener('submit', (evt) => {
+      this.element.addEventListener('submit', (evt) => {
+        console.log('submitt');
         evt.preventDefault();
         const i = this.element.querySelector('.event--edit').dataset.index;
         this.isSubmiting = true;

@@ -38,6 +38,8 @@ export default class BoardPresenter {
   }
 
   handelModelEvent = (update) => {
+    console.log('update=', update);
+
     switch (update) {
       case UPDATE_TYPE.INIT:
         this.init(model.getPoints());
@@ -56,6 +58,7 @@ export default class BoardPresenter {
   }
   blockForm = () => {
     this.editPoint?.switchButtonMode();
+    console.log('this.editPoint=', this.editPoint);
 
   }
   onAddBtnCLick() {
