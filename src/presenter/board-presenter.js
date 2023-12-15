@@ -38,8 +38,6 @@ export default class BoardPresenter {
   }
 
   handelModelEvent = (update) => {
-    console.log('update=', update);
-
     switch (update) {
       case UPDATE_TYPE.INIT:
         this.init(model.getPoints());
@@ -58,7 +56,6 @@ export default class BoardPresenter {
   }
   blockForm = () => {
     this.editPoint?.switchButtonMode();
-    console.log('this.editPoint=', this.editPoint);
 
   }
   onAddBtnCLick() {
@@ -70,13 +67,10 @@ export default class BoardPresenter {
       try {
 
         let point = await model.addPoint(update);
-
-        console.log('this=', this);
         this.waypoints[i].id = point.id;
         this.onSortTypeChange(this.sortType);
         this.addOnAddBtnCLick();
       } catch (error) {
-        console.log('error');
 
       }
     }
@@ -148,14 +142,16 @@ export default class BoardPresenter {
   async replaceFormToPoint(i, update) {
     i = (+i);
     try {
+      this.sorting.mode = true;
       await model.setPoint(i, update);
       this.addOnAddBtnCLick();
       this.waypointTag[i] = new Waypoint(model.getDestinations(), model.getPoint(i), i);
       this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
       replaceElement(this.waypointTag[i].element, this.editPoint.element);
+      this.sorting.mode = false;
       this.#isFormOpen = false;
     } catch (error) {
-
+      this.sorting.mode = false;
     }
 
   }
@@ -187,17 +183,11 @@ export default class BoardPresenter {
     replaceElement(this.editPoint.element, this.waypointTag[i].element);
     this.editPoint.addSubmitListener(this.replaceFormToPoint);
     this.editPoint.addDeleteListener(async (id) => {
-      console.log('this=', this.editPoint);
-
       try {
-        console.log('id=', id);
 
         await model.removePoint(id);
         this.#isFormOpen = false;
-        console.log('uspex');
-
       } catch (error) {
-        console.log('error=', error);
       }
     });
     this.#isFormOpen = true;

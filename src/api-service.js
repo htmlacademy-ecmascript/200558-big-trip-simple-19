@@ -14,7 +14,6 @@ export default class PointApiService extends ApiService {
       .then(ApiService.parseResponse);
   }
   deletePoint(id) {
-    console.log('delete');
     return this._load({
       url: `points/${id}`, method: 'delete', headers:
         new Headers({ 'Content-type': 'application/json' })

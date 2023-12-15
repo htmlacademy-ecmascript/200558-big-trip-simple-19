@@ -45,13 +45,10 @@ class Model extends Observable {
   }
 
   async addPoint(value) {
-    console.log('Saving');
-
     this._notify(UPDATE_TYPE.FORM_PENDING);
     value = await api.addPoint(adaptServer(value));
     value = adaptClient(value);
     this.points.push(value);
-    console.log('value=', value);
     boardPresenter.onSortTypeChange();
     return value;
   }
