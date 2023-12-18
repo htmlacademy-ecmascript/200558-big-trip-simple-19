@@ -152,6 +152,8 @@ export default class BoardPresenter {
       this.#isFormOpen = false;
     } catch (error) {
       this.sorting.mode = false;
+      this.editPoint.state = false;
+      this.editPoint.shake(() => { });
     }
 
   }
@@ -171,7 +173,6 @@ export default class BoardPresenter {
 
     }
   }
-
   onWaypointClick(i) {
     addBtn.removeEventListener('click', this.onAddBtnCLickBind, { once: true });
     if (this.#isFormOpen) {

@@ -138,13 +138,13 @@ class editPoint extends AbstractStatefulView {
   }
   set state(state) {
     this.isSubmiting = state;
-    // if (state) {
-    //   this.element.querySelector('.event__save-btn').textContent = "Saving...";
-    //   this.element.querySelector('.event__reset-btn').textContent = "Deleting...";
-    // } else {
-    //   this.element.querySelector('.event__save-btn').textContent = "Delete";
-    //   this.element.querySelector('.event__reset-btn').textContent = "Deleting...";
-    // }
+    if (state) {
+      this.element.querySelector('.event__save-btn').textContent = "Saving...";
+      this.element.querySelector('.event__reset-btn').textContent = "Deleting...";
+    } else {
+      this.element.querySelector('.event__save-btn').textContent = "Save";
+      this.element.querySelector('.event__reset-btn').textContent = "Delete";
+    }
   }
   setTime() {
     this.flatpickrStart = flatpickr(this.element.querySelector('#event-start-time-1'), {
