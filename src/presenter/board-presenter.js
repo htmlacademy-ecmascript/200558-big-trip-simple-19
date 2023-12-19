@@ -55,7 +55,7 @@ export default class BoardPresenter {
     addBtn.addEventListener('click', this.onAddBtnCLickBind, { once: true, passive: true });
   }
   blockForm = () => {
-    this.editPoint?.switchButtonMode();
+    // this.editPoint?.switchButtonMode(true);
 
   }
   onAddBtnCLick() {
@@ -143,6 +143,8 @@ export default class BoardPresenter {
     i = (+i);
     try {
       this.sorting.mode = true;
+      console.log('this.editPoint=', this.editPoint);
+      this.editPoint?.switchButtonMode(true);
       await model.setPoint(i, update);
       this.addOnAddBtnCLick();
       this.waypointTag[i] = new Waypoint(model.getDestinations(), model.getPoint(i), i);
@@ -152,8 +154,10 @@ export default class BoardPresenter {
       this.#isFormOpen = false;
     } catch (error) {
       this.sorting.mode = false;
-      this.editPoint.state = false;
-      this.editPoint.shake(() => { });
+      this.editPoint.shake(() => {
+        console.log('lol');
+        this.editPoint?.switchButtonMode(false);
+      });
     }
 
   }
@@ -189,6 +193,10 @@ export default class BoardPresenter {
         await model.removePoint(id);
         this.#isFormOpen = false;
       } catch (error) {
+        this.editPoint.shake(() => {
+          console.log('lol');
+          this.editPoint?.setStastusButtonDelete(false);
+        });
       }
     });
     this.#isFormOpen = true;

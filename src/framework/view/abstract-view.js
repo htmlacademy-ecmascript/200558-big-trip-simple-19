@@ -64,6 +64,7 @@ export default class AbstractView {
    */
   shake(callback) {
     this.element.classList.add(SHAKE_CLASS_NAME);
+    console.log('this.element=', this.element);
     setTimeout(() => {
       this.element.classList.remove(SHAKE_CLASS_NAME);
       callback?.();

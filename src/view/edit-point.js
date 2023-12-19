@@ -4,6 +4,8 @@ import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 
 const getEditPointTemplate = (waypoint, i, isSubmiting, isDelete) => {
+  console.log('isSubmiting=', isSubmiting);
+
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
   let options = '';
@@ -82,7 +84,7 @@ const getEditPointTemplate = (waypoint, i, isSubmiting, isDelete) => {
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" ${isSubmiting ? 'disabled' : ''} type="submit">${isSubmiting ? 'Saving...' : 'Save'}</button>
-                  <button class="event__reset-btn" type="reset">${isDelete ? 'Deleting...' : 'Delete'}</button>
+                  <button class="event__reset-btn" type="reset" ${isDelete ? 'disabled' : ''} >${isDelete ? 'Deleting...' : 'Delete'}</button>
                   <button class="event__rollup-btn" type="button">
                     <span class="visually-hidden">Open event</span>
                   </button>
@@ -121,9 +123,19 @@ class editPoint extends AbstractStatefulView {
     this._setState(waypoint);
     this._restoreHandlers();
   }
-  switchButtonMode() {
+  switchButtonMode(submitStatus) {
+    console.log('switchButtonMode');
+    if (typeof submitStatus === "boolean") {
+      this.isSubmiting = submitStatus;
+    }
     this.updateElement(this._state);
 
+  }
+  setStastusButtonDelete(submitStatus) {
+    if (typeof submitStatus === "boolean") {
+      this.isDelete = submitStatus;
+    }
+    this.updateElement(this._state);
   }
   addSubmitListener(callback) {
     if (callback) {
@@ -131,19 +143,9 @@ class editPoint extends AbstractStatefulView {
       this.element.addEventListener('submit', (evt) => {
         evt.preventDefault();
         const i = this.element.querySelector('.event--edit').dataset.index;
-        this.isSubmiting = true;
+        // this.isSubmiting = true;
         callback(i, this._state);
       });
-    }
-  }
-  set state(state) {
-    this.isSubmiting = state;
-    if (state) {
-      this.element.querySelector('.event__save-btn').textContent = "Saving...";
-      this.element.querySelector('.event__reset-btn').textContent = "Deleting...";
-    } else {
-      this.element.querySelector('.event__save-btn').textContent = "Save";
-      this.element.querySelector('.event__reset-btn').textContent = "Delete";
     }
   }
   setTime() {
