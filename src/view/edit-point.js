@@ -4,8 +4,6 @@ import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 
 const getEditPointTemplate = (waypoint, i, isSubmiting, isDelete) => {
-  console.log('isSubmiting=', isSubmiting);
-
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
   let options = '';
@@ -124,7 +122,6 @@ class editPoint extends AbstractStatefulView {
     this._restoreHandlers();
   }
   switchButtonMode(submitStatus) {
-    console.log('switchButtonMode');
     if (typeof submitStatus === "boolean") {
       this.isSubmiting = submitStatus;
     }
