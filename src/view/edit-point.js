@@ -175,7 +175,7 @@ class editPoint extends AbstractStatefulView {
   }
 
   addDeleteListener(callback) {
-
+    this.deleteCallback = callback;
     this.element.querySelector('.event__reset-btn').addEventListener('click', () => {
       this.isDelete = true;
       callback(this.waypoint.id, this.i);
@@ -183,6 +183,7 @@ class editPoint extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
+    this.addDeleteListener(this.deleteCallback);
     this.element.querySelector('.event__input--price').addEventListener('change', (evt) => {
       this._setState({ basePrice: (+evt.target.value) });
     });

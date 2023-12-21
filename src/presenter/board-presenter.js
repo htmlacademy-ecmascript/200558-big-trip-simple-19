@@ -165,7 +165,7 @@ export default class BoardPresenter {
           console.log('this.edit=', this.editPoint);
           this.sorting.mode = true;
           this.editPoint?.switchButtonMode(true);
-          model.setPoint(i, update);
+          await model.setPoint(i, update);
           console.log('this.waypointTag[i]=', this.waypointTag[i]);
           this.addOnAddBtnCLick();
           this.waypointTag[i] = new Waypoint(model.getDestinations(), model.getPoint(i), i);
@@ -175,7 +175,6 @@ export default class BoardPresenter {
           this.#isFormOpen = false;
         } catch (error) {
           console.log('error=', error);
-
           this.sorting.mode = false;
           this.editPoint.shake(() => {
             this.editPoint?.switchButtonMode(false);
@@ -185,10 +184,14 @@ export default class BoardPresenter {
       }
       this.editPoint.addDeleteListener(async (id) => {
         try {
-
+          console.log('lol');
           await model.removePoint(id);
           this.#isFormOpen = false;
+          replaceElement(this.waypointTag[i].element, this.editPoint.element);
+
         } catch (error) {
+          console.log('error=', error);
+
           this.editPoint.shake(() => {
             this.editPoint?.setStastusButtonDelete(false);
           });
