@@ -128,6 +128,12 @@ class editPoint extends AbstractStatefulView {
     this.updateElement(this._state);
 
   }
+  static index() {
+    return document.querySelector('.event--edit').dataset.index;
+  }
+  static tag() {
+    return document.querySelector('.event--edit');
+  }
   setStastusButtonDelete(submitStatus) {
     if (typeof submitStatus === "boolean") {
       this.isDelete = submitStatus;
@@ -175,11 +181,16 @@ class editPoint extends AbstractStatefulView {
   }
 
   addDeleteListener(callback) {
-    this.deleteCallback = callback;
-    this.element.querySelector('.event__reset-btn').addEventListener('click', () => {
-      this.isDelete = true;
-      callback(this.waypoint.id, this.i);
-    });
+    console.log('addDelete');
+
+    if (callback) {
+      this.deleteCallback = callback;
+      this.element.querySelector('.event__reset-btn').addEventListener('click', () => {
+        this.isDelete = true;
+        console.log('callback=', callback);
+        callback(this.waypoint.id, this.i);
+      });
+    }
   }
 
   _restoreHandlers() {
