@@ -71,7 +71,6 @@ class Model extends Observable {
   }
 
   async setPoint(i, value) {
-    console.log('lol');
     this._notify(UPDATE_TYPE.FORM_PENDING);
     await api.changePoint(adaptServer(value));
     this.points[i] = value;
@@ -84,7 +83,7 @@ class Model extends Observable {
   async removePoint(id) {
     const index = this.points.findIndex((point) => point.id === id);
     document.querySelector('.event__reset-btn').textContent = 'Deleting...';
-    let s = await api.deletePoint(id);
+    await api.deletePoint(id);
     this.points.splice(index, 1);
     this._notify(UPDATE_TYPE.REMOVE);
   }

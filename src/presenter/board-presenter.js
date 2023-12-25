@@ -53,10 +53,12 @@ export default class BoardPresenter {
   addOnAddBtnCLick() {
     addBtn.addEventListener('click', this.onAddBtnCLickBind, { once: true, passive: true });
   }
+
   blockForm = () => {
     // this.editPoint?.switchButtonMode(true);
 
-  }
+  };
+
   onAddBtnCLick() {
     const newPoint = getNewPoint();
     this.editPoint = new EditPoint(newPoint, this.waypoints.length - 1);
@@ -64,14 +66,14 @@ export default class BoardPresenter {
 
     async function onEditPointSubmit(i, update) {
       try {
-        this.sorting.mode = true;
-        let point = await model.addPoint(update);
+        this.sorting.mode(true);
+        const point = await model.addPoint(update);
         this.waypoints[i].id = point.id;
         this.onSortTypeChange(this.sortType);
-        this.sorting.mode = false;
+        this.sorting.mode(false);
         this.addOnAddBtnCLick();
       } catch (error) {
-        this.sorting.mode = false;
+        this.sorting.mode(false);
         this.editPoint.shake(() => {
           this.editPoint?.setStastusButtonDelete(false);
         });
@@ -157,59 +159,53 @@ export default class BoardPresenter {
 
     }
   }
+
   onWaypointClick(i) {
     addBtn.removeEventListener('click', this.onAddBtnCLickBind, { once: true });
     this.editPoint = new EditPoint(this.waypoints[i], i);
     function editPointHandlers() {
-      console.log('this=', this);
-      console.log('this.edit=', this);
       this.editPoint.addSubmitListener(onEditPointSubmit.bind(this));
-      let previousUpdate = this.editPoint._state;
-      console.log('previousUpdate=', previousUpdate);
+      const previousUpdate = JSON.stringify(this.editPoint._state);
 
-      async function onEditPointSubmit(i, update) {
-        i = (+i);
-        if (previousUpdate != update) {
+      async function onEditPointSubmit(index, update) {
+        index = +index;
+        if (JSON.stringify(update) !== previousUpdate) {
+
           try {
-            this.sorting.mode = true;
+            this.sorting.mode(true);
             this.editPoint?.switchButtonMode(true);
-            await model.setPoint(i, update);
-            console.log('this.waypointTag[i]=', this.waypointTag[i]);
+            await model.setPoint(index, update);
             this.addOnAddBtnCLick();
-            this.waypointTag[i] = new Waypoint(model.getDestinations(), model.getPoint(i), i);
-            this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
-            replaceElement(this.waypointTag[i].element, this.editPoint.element);
-            this.sorting.mode = false;
+            this.waypointTag[index] = new Waypoint(model.getDestinations(), model.getPoint(i), i);
+            this.waypointTag[index].addClickListener(() => this.onWaypointClick(index));
+            replaceElement(this.waypointTag[index].element, this.editPoint.element);
+            this.sorting.mode(false);
             this.#isFormOpen = false;
           } catch (error) {
-            console.log('error=', error);
             this.editPoint.shake(() => {
               this.editPoint?.switchButtonMode(false);
             });
           }
-          previousUpdate = update;
         } else {
           this.#isFormOpen = false;
-          this.waypointTag[i] = new Waypoint(model.getDestinations(), model.getPoint(i), i);
-          this.waypointTag[i].addClickListener(() => this.onWaypointClick(i));
+          this.waypointTag[index] = new Waypoint(model.getDestinations(), model.getPoint(index), index);
+          this.waypointTag[index].addClickListener(() => this.onWaypointClick(index));
           replaceElement(this.waypointTag[i].element, this.editPoint.element);
         }
       }
       this.editPoint.addDeleteListener(async (id) => {
         try {
-          console.log('this', this);
-          this.sorting.mode = true;
+          this.sorting.mode(true);
           await model.removePoint(id);
           this.addOnAddBtnCLick();
           this.#isFormOpen = false;
           replaceElement(this.waypointTag[i].element, this.editPoint.element);
           this.sorting.mode = false;
         } catch (error) {
-          console.log('error=', error);
           this.editPoint.shake(() => {
             this.editPoint?.setStastusButtonDelete(false);
           });
-          this.sorting.mode = false;
+          this.sorting.mode(false);
         }
       });
     }
@@ -217,9 +213,7 @@ export default class BoardPresenter {
     if (!this.#isFormOpen) {
       this.#isFormOpen = true;
     } else {
-      let index = +EditPoint.index();
-      console.log('index=', index);
-
+      const index = +EditPoint.index();
       replaceElement(this.waypointTag[index].element, EditPoint.tag());
     }
     replaceElement(this.editPoint.element, this.waypointTag[i].element);

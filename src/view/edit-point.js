@@ -121,25 +121,30 @@ class editPoint extends AbstractStatefulView {
     this._setState(waypoint);
     this._restoreHandlers();
   }
+
   switchButtonMode(submitStatus) {
-    if (typeof submitStatus === "boolean") {
+    if (typeof submitStatus === 'boolean') {
       this.isSubmiting = submitStatus;
     }
     this.updateElement(this._state);
 
   }
+
   static index() {
     return document.querySelector('.event--edit').dataset.index;
   }
+
   static tag() {
     return document.querySelector('.event--edit');
   }
+
   setStastusButtonDelete(submitStatus) {
-    if (typeof submitStatus === "boolean") {
+    if (typeof submitStatus === 'boolean') {
       this.isDelete = submitStatus;
     }
     this.updateElement(this._state);
   }
+
   addSubmitListener(callback) {
     if (callback) {
       this.callbackSubmit = callback;
@@ -151,6 +156,7 @@ class editPoint extends AbstractStatefulView {
       });
     }
   }
+
   setTime() {
     this.flatpickrStart = flatpickr(this.element.querySelector('#event-start-time-1'), {
       defaultDate: this._state.dateFrom,
@@ -181,13 +187,10 @@ class editPoint extends AbstractStatefulView {
   }
 
   addDeleteListener(callback) {
-    console.log('addDelete');
-
     if (callback) {
       this.deleteCallback = callback;
       this.element.querySelector('.event__reset-btn').addEventListener('click', () => {
         this.isDelete = true;
-        console.log('callback=', callback);
         callback(this.waypoint.id, this.i);
       });
     }

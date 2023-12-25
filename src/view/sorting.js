@@ -43,18 +43,21 @@ class Sorting extends AbstractView {
   get SortType() {
     return this.element.querySelector('.trip-sort__input[checked]').value;
   }
-  set mode(state) {
+
+  mode(state) {
+
     const inputs = this.element.querySelectorAll('.trip-sort__input');
     if (state) {
-      for (let input of inputs) {
+      for (const input of inputs) {
         input.disabled = true;
       }
     } else {
-      for (let input of inputs) {
+      for (const input of inputs) {
         input.disabled = false;
       }
     }
   }
+
   get template() {
     return getSortingTemplate();
   }
