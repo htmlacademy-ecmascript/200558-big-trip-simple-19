@@ -122,7 +122,7 @@ class editPoint extends AbstractStatefulView {
     this._restoreHandlers();
   }
 
-  switchButtonMode(submitStatus) {
+  setSubmitButtonStatus(submitStatus) {
     if (typeof submitStatus === 'boolean') {
       this.isSubmiting = submitStatus;
     }
@@ -130,17 +130,17 @@ class editPoint extends AbstractStatefulView {
 
   }
 
-  static index() {
+  index() {
     return document.querySelector('.event--edit').dataset.index;
   }
 
-  static tag() {
+  tag() {
     return document.querySelector('.event--edit');
   }
 
-  setStastusButtonDelete(submitStatus) {
+  setDeleteButtonStastus(submitStatus) {
     if (typeof submitStatus === 'boolean') {
-      this.isDelete = submitStatus;
+      this.isDeleting = deletingStatus;
     }
     this.updateElement(this._state);
   }
@@ -151,7 +151,6 @@ class editPoint extends AbstractStatefulView {
       this.element.addEventListener('submit', (evt) => {
         evt.preventDefault();
         const i = this.element.querySelector('.event--edit').dataset.index;
-        // this.isSubmiting = true;
         callback(i, this._state);
       });
     }
