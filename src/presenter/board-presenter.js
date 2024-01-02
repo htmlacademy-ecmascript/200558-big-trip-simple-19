@@ -157,18 +157,14 @@ export default class BoardPresenter {
     this.editPoint = new EditPoint(this.waypoints[i], i);
     this.editPoint.addSubmitListener(onEditPointSubmit.bind(this));
     const previousUpdate = JSON.stringify(this.editPoint._state);
-
     async function onEditPointSubmit(index, update) {
       index = +index;
       if (JSON.stringify(update) !== previousUpdate) {
-
         try {
           this.sorting.setMode(true);
           this.editPoint?.setSubmitButtonStatus(true);
           await model.setPoint(index, update);
           this.addOnAddBtnCLick();
-          this.waypointTag[index] = new Waypoint(model.getDestinations(), model.getPoint(i), i);
-          this.waypointTag[index].addClickListener(() => this.onWaypointClick(index));
           replaceElement(this.waypointTag[index].element, this.editPoint.element);
           this.sorting.setMode(false);
           this.#isFormOpen = false;
@@ -187,6 +183,7 @@ export default class BoardPresenter {
     this.editPoint.addDeleteListener(async (id) => {
       try {
         this.sorting.setMode(true);
+        this.editPoint.setButtonDelete(true);
         await model.removePoint(id);
         this.addOnAddBtnCLick();
         this.#isFormOpen = false;
@@ -202,8 +199,8 @@ export default class BoardPresenter {
     if (!this.#isFormOpen) {
       this.#isFormOpen = true;
     } else {
-      const index = this.editPoint.index();
-      replaceElement(this.waypointTag[index].element, this.editPoint.tag());
+      const index = this.editPoint.getIndex();
+      replaceElement(this.waypointTag[index].element, this.editPoint.getTag());
     }
     replaceElement(this.editPoint.element, this.waypointTag[i].element);
   }

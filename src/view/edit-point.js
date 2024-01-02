@@ -3,7 +3,7 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 
-const getEditPointTemplate = (waypoint, i, isSubmiting, isDelete) => {
+const getEditPointTemplate = (waypoint, i, isSubmiting, isDeleting) => {
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
   let options = '';
@@ -82,7 +82,7 @@ const getEditPointTemplate = (waypoint, i, isSubmiting, isDelete) => {
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" ${isSubmiting ? 'disabled' : ''} type="submit">${isSubmiting ? 'Saving...' : 'Save'}</button>
-                  <button class="event__reset-btn" type="reset" ${isDelete ? 'disabled' : ''} >${isDelete ? 'Deleting...' : 'Delete'}</button>
+                  <button class="event__reset-btn" type="reset" ${isDeleting ? 'disabled' : ''} >${isDeleting ? 'Deleting...' : 'Delete'}</button>
                   <button class="event__rollup-btn" type="button">
                     <span class="visually-hidden">Open event</span>
                   </button>
@@ -115,11 +115,13 @@ class editPoint extends AbstractStatefulView {
     this.waypoint = waypoint;
     this.i = i;
     this.isSubmiting = false;
-    this.isDelete = false;
+    this.isDeleting = false;
     this.flatpickrEnd = {};
     this.flatpick = {};
     this._setState(waypoint);
     this._restoreHandlers();
+    this.buttonSave = this.element.querySelector('.event--edit');
+    this.buttonDelete = this.element.querySelector('.event__reset-btn');
   }
 
   setSubmitButtonStatus(submitStatus) {
@@ -130,12 +132,12 @@ class editPoint extends AbstractStatefulView {
 
   }
 
-  index() {
-    return document.querySelector('.event--edit').dataset.index;
+  getIndex() {
+    return this.buttonSave.dataset.index;
   }
 
-  tag() {
-    return document.querySelector('.event--edit');
+  getTag() {
+    return this.buttonSave;
   }
 
   setDeleteButtonStastus(submitStatus) {
@@ -150,7 +152,7 @@ class editPoint extends AbstractStatefulView {
       this.callbackSubmit = callback;
       this.element.addEventListener('submit', (evt) => {
         evt.preventDefault();
-        const i = this.element.querySelector('.event--edit').dataset.index;
+        const i = this.buttonSave.dataset.index;
         callback(i, this._state);
       });
     }
@@ -188,8 +190,8 @@ class editPoint extends AbstractStatefulView {
   addDeleteListener(callback) {
     if (callback) {
       this.deleteCallback = callback;
-      this.element.querySelector('.event__reset-btn').addEventListener('click', () => {
-        this.isDelete = true;
+      this.buttonDelete.addEventListener('click', () => {
+        this.isDeleting = true;
         callback(this.waypoint.id, this.i);
       });
     }
@@ -208,15 +210,15 @@ class editPoint extends AbstractStatefulView {
   }
 
   get template() {
-    return getEditPointTemplate(this._state, this.i, this.isSubmiting, this.isDelete);
+    return getEditPointTemplate(this._state, this.i, this.isSubmiting, this.isDeleting);
+  }
+  setButtonDelete(state) {
+    if (state) {
+      this.buttonDelete.textContent = "Deleting...";
+      return;
+    }
+    this.buttonDelete.textContent = "Delete...";
   }
 
-  get buttonSave() {
-    return this.element.querySelector('.event--edit');
-  }
-
-  get buttonDelete() {
-    return this.element.querySelector('.event__reset-btn');
-  }
 }
 export default editPoint;
