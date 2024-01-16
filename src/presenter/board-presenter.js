@@ -183,7 +183,7 @@ export default class BoardPresenter {
     this.editPoint.addDeleteListener(async (id) => {
       try {
         this.sorting.setMode(true);
-        this.editPoint.setButtonDelete(true);
+        this.editPoint.setDeleteButtonStastus(true);
         await model.removePoint(id);
         this.addOnAddBtnCLick();
         this.#isFormOpen = false;
@@ -196,12 +196,20 @@ export default class BoardPresenter {
         this.sorting.setMode(false);
       }
     });
+    console.log('this.editPoint=', this.editPoint.element);
+
     if (!this.#isFormOpen) {
       this.#isFormOpen = true;
     } else {
-      const index = this.editPoint.getIndex();
-      replaceElement(this.waypointTag[index].element, this.editPoint.getTag());
+      console.log('EditPoint.form=', new EditPoint.form());
+
+      const index = new EditPoint.index();
+      console.log('EditPoint.index()=', index);
+
+      replaceElement(this.waypointTag[index].element, new EditPoint.form());
     }
+    console.log('this.waypointTag[i].element=', this.waypointTag[i].element);
+
     replaceElement(this.editPoint.element, this.waypointTag[i].element);
   }
 

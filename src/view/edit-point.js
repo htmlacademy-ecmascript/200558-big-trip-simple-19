@@ -123,7 +123,12 @@ class editPoint extends AbstractStatefulView {
     this.buttonSave = this.element.querySelector('.event--edit');
     this.buttonDelete = this.element.querySelector('.event__reset-btn');
   }
-
+  static form() {
+    return document.querySelector('.event--edit');
+  }
+  static index() {
+    return document.querySelector('.event--edit').dataset.index;
+  }
   setSubmitButtonStatus(submitStatus) {
     if (typeof submitStatus === 'boolean') {
       this.isSubmiting = submitStatus;
@@ -133,6 +138,7 @@ class editPoint extends AbstractStatefulView {
   }
 
   getIndex() {
+
     return this.buttonSave.dataset.index;
   }
 
@@ -140,8 +146,8 @@ class editPoint extends AbstractStatefulView {
     return this.buttonSave;
   }
 
-  setDeleteButtonStastus(submitStatus) {
-    if (typeof submitStatus === 'boolean') {
+  setDeleteButtonStastus(deletingStatus) {
+    if (typeof deletingStatus === 'boolean') {
       this.isDeleting = deletingStatus;
     }
     this.updateElement(this._state);
@@ -212,13 +218,5 @@ class editPoint extends AbstractStatefulView {
   get template() {
     return getEditPointTemplate(this._state, this.i, this.isSubmiting, this.isDeleting);
   }
-  setButtonDelete(state) {
-    if (state) {
-      this.buttonDelete.textContent = "Deleting...";
-      return;
-    }
-    this.buttonDelete.textContent = "Delete...";
-  }
-
 }
 export default editPoint;

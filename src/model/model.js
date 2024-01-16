@@ -70,7 +70,7 @@ class Model extends Observable {
   }
 
   async setPoint(i, value) {
-    this._notify(UPDATE_TYPE.FORM_PENDING);
+    this._notify(UPDATE_TYPE.REMOVE);
     await api.changePoint(adaptServer(value));
     this.points[i] = value;
   }
