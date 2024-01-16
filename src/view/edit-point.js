@@ -127,7 +127,7 @@ class editPoint extends AbstractStatefulView {
     return document.querySelector('.event--edit');
   }
   static index() {
-    return document.querySelector('.event--edit').dataset.index;
+    return this.form().dataset.index;
   }
   setSubmitButtonStatus(submitStatus) {
     if (typeof submitStatus === 'boolean') {

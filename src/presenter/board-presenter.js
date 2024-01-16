@@ -201,12 +201,12 @@ export default class BoardPresenter {
     if (!this.#isFormOpen) {
       this.#isFormOpen = true;
     } else {
-      console.log('EditPoint.form=', new EditPoint.form());
+      console.log('EditPoint.form=', EditPoint.form());
 
-      const index = new EditPoint.index();
+      const index = EditPoint.index();
       console.log('EditPoint.index()=', index);
 
-      replaceElement(this.waypointTag[index].element, new EditPoint.form());
+      replaceElement(this.waypointTag[index].element, EditPoint.form());
     }
     console.log('this.waypointTag[i].element=', this.waypointTag[i].element);
 
