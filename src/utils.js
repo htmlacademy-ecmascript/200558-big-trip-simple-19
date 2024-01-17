@@ -17,8 +17,5 @@ export function render(component, container, place = RenderPosition.BEFOREEND) {
   container.insertAdjacentElement(place, component.element);
 }
 export function replaceElement(newElement, oldElement) {
-
-  console.log('newElement=', newElement);
-  console.log('oldElement=', oldElement);
   oldElement.parentNode.replaceChild(newElement, oldElement);
 }

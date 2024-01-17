@@ -39,7 +39,7 @@ class Model extends Observable {
       this.points = adaptClient(points);
       this.destinations = adaptClient(destinations);
       this.offers = adaptClient(offers);
-      this._notify(UPDATE_TYPE.INIT);
+      this._notify(UPDATE_TYPE.MINOR);
 
     });
   }
@@ -70,7 +70,7 @@ class Model extends Observable {
   }
 
   async setPoint(i, value) {
-    this._notify(UPDATE_TYPE.REMOVE);
+    this._notify(UPDATE_TYPE.MINOR);
     await api.changePoint(adaptServer(value));
     this.points[i] = value;
   }
@@ -80,10 +80,10 @@ class Model extends Observable {
   }
 
   async removePoint(id) {
-    const index = this.points.findIndex((point) => point.id === id)
+    const index = this.points.findIndex((point) => point.id === id);
     await api.deletePoint(id);
     this.points.splice(index, 1);
-    this._notify(UPDATE_TYPE.REMOVE);
+    this._notify(UPDATE_TYPE.MINOR);
   }
 }
 

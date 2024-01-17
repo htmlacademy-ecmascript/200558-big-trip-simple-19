@@ -38,10 +38,10 @@ export default class BoardPresenter {
 
   handelModelEvent = (update) => {
     switch (update) {
-      case UPDATE_TYPE.INIT:
+      case UPDATE_TYPE.MINOR:
         this.init(model.getPoints());
         break;
-      case UPDATE_TYPE.REMOVE:
+      case UPDATE_TYPE.MAJOR:
         this.init(model.getPoints());
         break;
     }
@@ -56,10 +56,9 @@ export default class BoardPresenter {
     this.editPoint = new EditPoint(newPoint, this.waypoints.length - 1);
     render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
 
-    async function onEditPointSubmit(i, update) {
+    async function onEditPointSubmit() {
       try {
         this.sorting.setMode(true);
-        const point = await model.addPoint(update);
         this.onSortTypeChange(this.sortType);
         this.sorting.setMode(false);
         this.addOnAddBtnCLick();
@@ -159,7 +158,7 @@ export default class BoardPresenter {
     } else {
       const index = this.editPoint.getIndex();
 
-      replaceElement(this.waypointTag[index].element, this.editPoint);
+      replaceElement(this.waypointTag[index].element, this.editPoint.element);
     }
     this.editPoint = new EditPoint(this.waypoints[i], i);
     this.editPoint.addSubmitListener(onEditPointSubmit.bind(this));
