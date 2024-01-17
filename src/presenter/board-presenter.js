@@ -154,6 +154,13 @@ export default class BoardPresenter {
 
   onWaypointClick(i) {
     addBtn.removeEventListener('click', this.onAddBtnCLickBind, { once: true });
+    if (!this.#isFormOpen) {
+      this.#isFormOpen = true;
+    } else {
+      const index = this.editPoint.getIndex();
+
+      replaceElement(this.waypointTag[index].element, this.editPoint);
+    }
     this.editPoint = new EditPoint(this.waypoints[i], i);
     this.editPoint.addSubmitListener(onEditPointSubmit.bind(this));
     const previousUpdate = JSON.stringify(this.editPoint._state);
@@ -196,20 +203,6 @@ export default class BoardPresenter {
         this.sorting.setMode(false);
       }
     });
-    console.log('this.editPoint=', this.editPoint.element);
-
-    if (!this.#isFormOpen) {
-      this.#isFormOpen = true;
-    } else {
-      console.log('EditPoint.form=', EditPoint.form());
-
-      const index = EditPoint.index();
-      console.log('EditPoint.index()=', index);
-
-      replaceElement(this.waypointTag[index].element, EditPoint.form());
-    }
-    console.log('this.waypointTag[i].element=', this.waypointTag[i].element);
-
     replaceElement(this.editPoint.element, this.waypointTag[i].element);
   }
 
