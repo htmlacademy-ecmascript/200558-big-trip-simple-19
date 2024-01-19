@@ -166,12 +166,13 @@ export default class BoardPresenter {
     async function onEditPointSubmit(index, update) {
       index = +index;
       if (JSON.stringify(update) !== previousUpdate) {
+        console.log('update=', update);
+
         try {
           this.sorting.setMode(true);
           this.editPoint?.setSubmitButtonStatus(true);
           await model.setPoint(index, update);
           this.addOnAddBtnCLick();
-          replaceElement(this.waypointTag[index].element, this.editPoint.element);
           this.sorting.setMode(false);
           this.#isFormOpen = false;
         } catch (error) {
@@ -187,14 +188,19 @@ export default class BoardPresenter {
       }
     }
     this.editPoint.addDeleteListener(async (id) => {
+      console.log('CLICK');
+
       try {
         this.sorting.setMode(true);
         this.editPoint.setDeleteButtonStastus(true);
         await model.removePoint(id);
         this.addOnAddBtnCLick();
         this.#isFormOpen = false;
-        replaceElement(this.waypointTag[i].element, this.editPoint.element);
-        this.sorting.setMode = false;
+        console.log('this.waypointTag[i].element=', this.waypointTag[i].element);
+        console.log('this.editPoint.element=', this.editPoint.element);
+
+        // replaceElement(this.waypointTag[i].element, this.editPoint.element);
+        this.sorting.setMode(false);
       } catch (error) {
         this.editPoint.shake(() => {
           this.editPoint?.setDeleteButtonStastus(false);

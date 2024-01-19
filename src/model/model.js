@@ -7,7 +7,7 @@ const UPDATE_TYPE = {
   FORM_PENDING: 'FORM_PENDING'
 };
 import { boardPresenter } from '../presenter/app-presenter.js';
-const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic Dimasi 3');
+const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic Dimasic1');
 class Model extends Observable {
   constructor() {
     super();
@@ -70,9 +70,9 @@ class Model extends Observable {
   }
 
   async setPoint(i, value) {
-    this._notify(UPDATE_TYPE.MINOR);
     await api.changePoint(adaptServer(value));
     this.points[i] = value;
+    this._notify(UPDATE_TYPE.MINOR);
   }
 
   setPoints(points) {
