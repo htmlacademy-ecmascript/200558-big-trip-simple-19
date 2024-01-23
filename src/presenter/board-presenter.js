@@ -56,7 +56,7 @@ export default class BoardPresenter {
     this.editPoint = new EditPoint(newPoint, this.waypoints.length - 1);
     render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
 
-    async function onEditPointSubmit(Ш, state) {
+    async function onEditPointSubmit(i, state) {
       try {
         console.log('this.sortType=', this.sortType);
 
@@ -182,12 +182,12 @@ export default class BoardPresenter {
             this.editPoint?.setSubmitButtonStatus(false);
           });
         }
-      } else {
-        this.#isFormOpen = false;
-        this.waypointTag[index] = new Waypoint(model.getDestinations(), model.getPoint(index), index);
-        this.waypointTag[index].addClickListener(() => this.onWaypointClick(index));
-        replaceElement(this.waypointTag[i].element, this.editPoint.element);
+        return;
       }
+      this.#isFormOpen = false;
+      this.waypointTag[index] = new Waypoint(model.getDestinations(), model.getPoint(index), index);
+      this.waypointTag[index].addClickListener(() => this.onWaypointClick(index));
+      replaceElement(this.waypointTag[i].element, this.editPoint.element);
     }
     this.editPoint.addDeleteListener(async (id) => {
       try {
