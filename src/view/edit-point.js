@@ -3,7 +3,7 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import dayjs from 'dayjs';
 import flatpickr from 'flatpickr';
 
-const getEditPointTemplate = (waypoint, i, isSubmiting, isDeleting) => {
+const getEditPointTemplate = (waypoint, i, isSubmiting, isDeleting, formType) => {
   const startTime = dayjs(waypoint.dateFrom).format('hh:mm'),
     endTime = dayjs(waypoint.dateTo).format('hh:mm');
   let options = '';
@@ -37,6 +37,8 @@ const getEditPointTemplate = (waypoint, i, isSubmiting, isDeleting) => {
               </div>
               `);
   }).join('');
+  let buttonDeletion = isDeleting ? 'Deleting...' : 'Delete';
+  buttonDeletion = formType ? 'cancel' : buttonDeletion;
   return `<li class="trip-events__item"> 
               <form class="event event--edit" action="#" method="post"  data-index='${i}'>
                 <header class="event__header">
@@ -82,7 +84,7 @@ const getEditPointTemplate = (waypoint, i, isSubmiting, isDeleting) => {
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" ${isSubmiting ? 'disabled' : ''} type="submit">${isSubmiting ? 'Saving...' : 'Save'}</button>
-                  <button class="event__reset-btn" type="reset" ${isDeleting ? 'disabled' : ''} >${isDeleting ? 'Deleting...' : 'Delete'}</button>
+                  <button class="event__reset-btn" type="reset" ${isDeleting ? 'disabled' : ''} > ${buttonDeletion}</button>
                   <button class="event__rollup-btn" type="button">
                     <span class="visually-hidden">Open event</span>
                   </button>
@@ -110,8 +112,9 @@ const getEditPointTemplate = (waypoint, i, isSubmiting, isDeleting) => {
             </li>`;
 };
 class editPoint extends AbstractStatefulView {
-  constructor(waypoint, i) {
+  constructor(waypoint, i, formType) {
     super();
+    this.formType = formType;
     this.waypoint = waypoint;
     this.i = i;
     this.isSubmiting = false;
@@ -210,7 +213,7 @@ class editPoint extends AbstractStatefulView {
   }
 
   get template() {
-    return getEditPointTemplate(this._state, this.i, this.isSubmiting, this.isDeleting);
+    return getEditPointTemplate(this._state, this.i, this.isSubmiting, this.isDeleting, this.formType);
   }
 }
 export default editPoint;

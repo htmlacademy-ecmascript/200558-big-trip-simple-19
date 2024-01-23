@@ -53,7 +53,7 @@ export default class BoardPresenter {
 
   onAddBtnCLick() {
     const newPoint = getNewPoint();
-    this.editPoint = new EditPoint(newPoint, this.waypoints.length - 1);
+    this.editPoint = new EditPoint(newPoint, this.waypoints.length - 1, true);
     render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
 
     async function onEditPointSubmit(i, state) {
@@ -79,8 +79,6 @@ export default class BoardPresenter {
   async onEditPointDelete(id, i) {
     this.editPoint.remove();
     this.#isFormOpen = false;
-    this.waypointTag.splice(i, 1);
-    this.init();
     this.addOnAddBtnCLick();
   }
 
