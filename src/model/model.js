@@ -74,11 +74,6 @@ class Model extends Observable {
     this.points[i] = value;
     this._notify(UPDATE_TYPE.MINOR);
   }
-  async setPointUnshift(value) {
-    await api.addPoint(adaptServer(value));
-    this.points.unshift(value);
-    this._notify(UPDATE_TYPE.MINOR);
-  }
   setPoints(points) {
     this.points = [...points];
   }

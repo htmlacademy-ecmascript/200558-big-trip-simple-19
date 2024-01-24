@@ -56,12 +56,13 @@ export default class BoardPresenter {
     this.editPoint = new EditPoint(newPoint, this.waypoints.length - 1, true);
     render(this.editPoint, this.containerWaypoint.element, RenderPosition.AFTERBEGIN);
 
-    async function onEditPointSubmit(i, state) {
+    async function onEditPointFormSubmit(i, state) {
       try {
         console.log('this.sortType=', this.sortType);
-
+        this.editPoint?.setSubmitButtonStatus(true);
         this.sorting.setMode(true);
-        await model.setPointUnshift(state);
+        await model.addPoint(state);
+        this.editPoint?.setSubmitButtonStatus(false);
         this.onSortTypeChange(this.sortType);
         this.sorting.setMode(false);
         this.addOnAddBtnCLick();
@@ -72,7 +73,7 @@ export default class BoardPresenter {
         });
       }
     }
-    this.editPoint.addSubmitListener(onEditPointSubmit.bind(this));
+    this.editPoint.addSubmitListener(onEditPointFormSubmit.bind(this));
     this.editPoint.addDeleteListener(this.onEditPointDelete.bind(this));
   }
 
@@ -163,9 +164,9 @@ export default class BoardPresenter {
       replaceElement(this.waypointTag[index].element, this.editPoint.element);
     }
     this.editPoint = new EditPoint(this.waypoints[i], i);
-    this.editPoint.addSubmitListener(onEditPointSubmit.bind(this));
+    this.editPoint.addSubmitListener(onEditPointFormSubmit.bind(this));
     const previousUpdate = JSON.stringify(this.editPoint._state);
-    async function onEditPointSubmit(index, update) {
+    async function onEditPointFormSubmit(index, update) {
       index = +index;
       if (JSON.stringify(update) !== previousUpdate) {
         try {
@@ -186,6 +187,7 @@ export default class BoardPresenter {
       this.waypointTag[index] = new Waypoint(model.getDestinations(), model.getPoint(index), index);
       this.waypointTag[index].addClickListener(() => this.onWaypointClick(index));
       replaceElement(this.waypointTag[i].element, this.editPoint.element);
+      this.addOnAddBtnCLick();
     }
     this.editPoint.addDeleteListener(async (id) => {
       try {
@@ -203,6 +205,7 @@ export default class BoardPresenter {
         });
         this.sorting.setMode(false);
       }
+      this.addOnAddBtnCLick();
     });
     replaceElement(this.editPoint.element, this.waypointTag[i].element);
   }

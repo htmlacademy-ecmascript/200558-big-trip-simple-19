@@ -37,8 +37,8 @@ const getEditPointTemplate = (waypoint, i, isSubmiting, isDeleting, formType) =>
               </div>
               `);
   }).join('');
-  let buttonDeletion = isDeleting ? 'Deleting...' : 'Delete';
-  buttonDeletion = formType ? 'cancel' : buttonDeletion;
+  let deleteButtonText = isDeleting ? 'Deleting...' : 'Delete';
+  deleteButtonText = formType ? 'Cancel' : deleteButtonText;
   return `<li class="trip-events__item"> 
               <form class="event event--edit" action="#" method="post"  data-index='${i}'>
                 <header class="event__header">
@@ -84,7 +84,7 @@ const getEditPointTemplate = (waypoint, i, isSubmiting, isDeleting, formType) =>
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" ${isSubmiting ? 'disabled' : ''} type="submit">${isSubmiting ? 'Saving...' : 'Save'}</button>
-                  <button class="event__reset-btn" type="reset" ${isDeleting ? 'disabled' : ''} > ${buttonDeletion}</button>
+                  <button class="event__reset-btn" type="reset" ${isDeleting ? 'disabled' : ''} > ${deleteButtonText}</button>
                   <button class="event__rollup-btn" type="button">
                     <span class="visually-hidden">Open event</span>
                   </button>
