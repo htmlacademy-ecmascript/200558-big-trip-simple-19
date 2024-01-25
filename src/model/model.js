@@ -74,6 +74,7 @@ class Model extends Observable {
     this.points[i] = value;
     this._notify(UPDATE_TYPE.MINOR);
   }
+
   setPoints(points) {
     this.points = [...points];
   }

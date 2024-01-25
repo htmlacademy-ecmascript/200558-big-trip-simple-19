@@ -58,7 +58,6 @@ export default class BoardPresenter {
 
     async function onEditPointFormSubmit(i, state) {
       try {
-        console.log('this.sortType=', this.sortType);
         this.editPoint?.setSubmitButtonStatus(true);
         this.sorting.setMode(true);
         await model.addPoint(state);
@@ -77,15 +76,13 @@ export default class BoardPresenter {
     this.editPoint.addDeleteListener(this.onEditPointDelete.bind(this));
   }
 
-  async onEditPointDelete(id, i) {
+  async onEditPointDelete() {
     this.editPoint.remove();
     this.#isFormOpen = false;
     this.addOnAddBtnCLick();
   }
 
   init(waypoints) {
-    console.log('waypoints=', waypoints);
-
     this.waypoints = waypoints;
     this.tripEvents.innerHTML = '';
     if (this.waypoints.length === 0) {
