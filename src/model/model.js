@@ -3,10 +3,11 @@ import Observable from '../framework/observable.js';
 // const observable = new Observable();
 const UPDATE_TYPE = {
   INIT: 'INIT',
-  REMOVE: 'REMOVE'
+  REMOVE: 'REMOVE',
+  FORM_PENDING: 'FORM_PENDING'
 };
 import { boardPresenter } from '../presenter/app-presenter.js';
-const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic Dimasic 1');
+const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic Dimasic1');
 class Model extends Observable {
   constructor() {
     super();
@@ -38,15 +39,17 @@ class Model extends Observable {
       this.points = adaptClient(points);
       this.destinations = adaptClient(destinations);
       this.offers = adaptClient(offers);
-      this._notify(UPDATE_TYPE.INIT);
+      this._notify(UPDATE_TYPE.MINOR);
 
     });
   }
 
   async addPoint(value) {
-    value = adaptClient(await api.addPoint(adaptServer(value)));
+    value = await api.addPoint(adaptServer(value));
+    value = adaptClient(value);
     this.points.push(value);
     boardPresenter.onSortTypeChange();
+    return value;
   }
 
   getDestinations() {
@@ -66,19 +69,21 @@ class Model extends Observable {
     return this.points[i];
   }
 
-  setPoint(i, value) {
+  async setPoint(i, value) {
+    await api.changePoint(adaptServer(value));
     this.points[i] = value;
-    api.changePoint(adaptServer(value));
+    this._notify(UPDATE_TYPE.MINOR);
   }
 
   setPoints(points) {
     this.points = [...points];
   }
 
-  removePoint(id) {
+  async removePoint(id) {
     const index = this.points.findIndex((point) => point.id === id);
+    await api.deletePoint(id);
     this.points.splice(index, 1);
-    this._notify(UPDATE_TYPE.REMOVE);
+    this._notify(UPDATE_TYPE.MINOR);
   }
 }
 

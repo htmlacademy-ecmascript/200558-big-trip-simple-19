@@ -4,6 +4,8 @@ export const SortType = {
   DAY: 'sort-day',
   TIME: 'sort-time'
 };
+
+
 function getSortingTemplate() {
   return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
             <div class="trip-sort__item  trip-sort__item--day">
@@ -40,6 +42,20 @@ class Sorting extends AbstractView {
 
   get SortType() {
     return this.element.querySelector('.trip-sort__input[checked]').value;
+  }
+
+  setMode(state) {
+
+    const inputs = this.element.querySelectorAll('.trip-sort__input');
+    if (state) {
+      for (const input of inputs) {
+        input.disabled = true;
+      }
+    } else {
+      for (const input of inputs) {
+        input.disabled = false;
+      }
+    }
   }
 
   get template() {

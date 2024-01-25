@@ -14,6 +14,13 @@ export default class PointApiService extends ApiService {
       .then(ApiService.parseResponse);
   }
 
+  deletePoint(id) {
+    return this._load({
+      url: `points/${id}`, method: 'delete', headers:
+        new Headers({ 'Content-type': 'application/json' })
+    });
+  }
+
   changePoint(point) {
     return this._load({
       url: `points/${point.id}`, method: 'put', headers: new Headers({ 'Content-type': 'application/json' }), body: JSON.stringify(point)
