@@ -114,6 +114,7 @@ const getEditPointTemplate = (waypoint, i, isSubmiting, isDeleting, formType) =>
 class editPoint extends AbstractStatefulView {
   constructor(waypoint, i, formType) {
     super();
+
     this.formType = formType;
     this.waypoint = waypoint;
     this.i = i;
@@ -124,7 +125,6 @@ class editPoint extends AbstractStatefulView {
     this._setState(waypoint);
     this._restoreHandlers();
     this.buttonSave = this.element.querySelector('.event--edit');
-    this.buttonDelete = this.element.querySelector('.event__reset-btn');
   }
 
   setSubmitButtonStatus(submitStatus) {
@@ -201,6 +201,7 @@ class editPoint extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
+    this.buttonDelete = this.element.querySelector('.event__reset-btn');
     this.addDeleteListener(this.deleteCallback);
     this.element.querySelector('.event__input--price').addEventListener('change', (evt) => {
       this._setState({ basePrice: (+evt.target.value) });

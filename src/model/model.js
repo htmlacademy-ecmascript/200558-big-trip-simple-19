@@ -6,7 +6,7 @@ const UPDATE_TYPE = {
   FORM_PENDING: 'FORM_PENDING'
 };
 import { boardPresenter } from '../presenter/app-presenter.js';
-const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic Dimasic1');
+const api = new ApiService('https://19.ecmascript.htmlacademy.pro/big-trip-simple/', 'Basic simasic22');
 class Model extends Observable {
   constructor() {
     super();
