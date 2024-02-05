@@ -1,13 +1,12 @@
 import ApiService from '.././api-service.js';
 import Observable from '../framework/observable.js';
-// const observable = new Observable();
 const UPDATE_TYPE = {
   INIT: 'INIT',
   REMOVE: 'REMOVE',
   FORM_PENDING: 'FORM_PENDING'
 };
 import { boardPresenter } from '../presenter/app-presenter.js';
-const api = new ApiService('https://19.ecmascript.pages.academy/big-trip-simple', 'Basic Dimasic1');
+const api = new ApiService('https://19.ecmascript.htmlacademy.pro/big-trip-simple/', 'Basic simasic22');
 class Model extends Observable {
   constructor() {
     super();
@@ -18,23 +17,7 @@ class Model extends Observable {
   }
 
   async init() {
-    //let i = 0;
-    //const dataParameters = [[api.getPoints(), 'points'], [api.getDestinations(), 'destinations'], [api.getOffers(), 'offers']];
     const dataParameters = [api.getPoints(), api.getDestinations(), api.getOffers()];
-
-    // for (const [promis, nameData] of dataParameters) {
-    //   promis.then((data) => {
-    //     this[nameData] = adaptClient(data);
-    //     i++;
-    //     if (i === 3) {
-    //       this._notify(UPDATE_TYPE.INIT);
-    //     }
-    //   }).catch(() => {
-    //     errrorLog();
-    //     errrorLog = null;
-    //   });
-    //  }
-
     Promise.all(dataParameters).then(([points, destinations, offers]) => {
       this.points = adaptClient(points);
       this.destinations = adaptClient(destinations);

@@ -194,7 +194,6 @@ export default class BoardPresenter {
         this.addOnAddBtnCLick();
         this.#isFormOpen = false;
 
-        // replaceElement(this.waypointTag[i].element, this.editPoint.element);
         this.sorting.setMode(false);
       } catch (error) {
         this.editPoint.shake(() => {
